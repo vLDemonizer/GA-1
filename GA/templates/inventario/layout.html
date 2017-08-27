@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% block extra_styles %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/babel.js' %}"></script>
+    <script src="{% static 'js/react.js' %}"></script>
+    <script src="{% static 'js/react-dom.js' %}"></script>
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

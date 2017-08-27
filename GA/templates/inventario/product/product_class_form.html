@@ -1,0 +1,13 @@
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<form>
+  {% csrf_token %}
+<div id="root"></div>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel" src="{% static 'react/product_create_control.js' %}"></script>
+{% endblock %}

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'inventario',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'GA.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,3 +119,53 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/staticfiles/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+COUNTRY = 'VZLA'
+CITY = 'PLC'
+ENTERPRISE = 'GA'
+PRIMARY_LOCATION = 'Almacen'
+
+LOCATIONS = [
+    {
+        'VZLA':
+        {
+            'OFFICES':
+            {
+                'PLC':
+                {
+                    'DEPARTMENTS': [
+                        ('EPP',  'Equipo de Proteccion Personal'),
+                        ('DOT', 'Dotacines'),
+                        ('PM', 'Productos y Mantenimiento'),
+                        ('EE', 'Equipos y Enseres'),
+                        ('MAQ', 'Maquinaria'),
+                        ('FER', 'Ferreteria'),
+                    ]
+                }
+            }
+        },
+
+        'COL':
+        {
+            'OFFICES':
+            {
+                'BOG':
+                {
+                    'DEPARTMENTS': [
+
+                    ]
+                }
+            }
+        },
+    }
+]
+
+"""ENTERPRISE = [
+    ('GA', 'Grupo Alcars'),
+    ('CE', 'CE Services'),
+]"""
