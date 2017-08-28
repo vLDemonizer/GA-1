@@ -1,2 +1,20 @@
-hi
-{{form.as_table}}
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <div class="jumbotron">
+    <h3 class="display-3 text-center">User Create</h3>
+  </div>
+  {% for field in form %}
+  <div class="form-group">
+    {{field.label}}
+    {{field}}
+  </div>
+  {% endfor %}
+  <div class="text-center">
+    <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+  </div>
+</form>
+{% endblock %}

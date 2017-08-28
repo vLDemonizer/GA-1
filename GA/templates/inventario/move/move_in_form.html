@@ -1,6 +1,49 @@
-{% extends 'inventario/layout' %}
+{% extends 'inventario/layout.html' %}
 {% load staticfiles %}
 
 {% block content %}
-{{form}}
+<form method="post">
+  {% csrf_token %}
+<div id="root"></div>
+<div id="test"></div>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel" src="{% static 'react/product_details.js' %}"></script>
+<script type="text/babel">
+$(document).ready(function () {
+  $.ajax({
+    url: '/ajax/products/',
+    data: {
+      'products': true
+    },
+    dataType: 'json',
+    success: function (data) {
+      ReactDOM.render(
+        <ProductDetails products={data}/>,
+        document.getElementById('test')
+      );
+    }
+  });
+
+});
+</script>
+<script type="text/babel">
+  $("#id_product_class").change(function () {
+    var product_class_pk = $(this).val();
+
+    $.ajax({
+      url: '/ajax/product_class_details/',
+      data: {
+        'product_class': product_class_pk
+      },
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+
+      }
+    });
+  });
+</script>
 {% endblock %}

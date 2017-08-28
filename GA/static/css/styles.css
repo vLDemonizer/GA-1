@@ -3,3 +3,9 @@
   font-size: 16px;
   margin-bottom: 5%;
 }
+
+option {
+  font-size: 1rem;
+  line-height: 1.25;
+  color: #495057;
+}

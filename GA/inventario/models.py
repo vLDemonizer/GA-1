@@ -43,11 +43,13 @@ class ProductClass(models.Model):
             'name': _('There is already another product in the database with this same characteristics')
         })
 
+
 class Product(models.Model):
     product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)
     full_code = models.CharField(max_length=60, blank=True, unique=True)
     available = models.BooleanField(default=True)
     location = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
+    min_amount = models.SmallIntegerField()
 
     def __str__(self):
         return self.product_class.name + '-' + self.full_code
