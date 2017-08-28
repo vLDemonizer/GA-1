@@ -2,10 +2,25 @@
 {% load staticfiles %}
 
 {% block content %}
-<form>
+<div class="text-center">
+  <h1 class="display-2">Create Product</h1>
+  <p class="form-errors">{{ form.name.errors|striptags }}</p>
+</div>
+<form id="form" method="post">
   {% csrf_token %}
-<div id="root"></div>
+  <div id="root"></div>
+  <div className="row">
+    <div class="col"><button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button></div>
+    <div class="col"><input type="submit" class="btn btn-primary btn-lg" value="Submit"/></div>
+    <div class="col"><a href="{% url 'create-product' %}" class="btn btn-primary btn-lg">Clear Fields</a></div>
+  </div>
 </form>
+<script>
+function changeRedirect() {
+  document.getElementById('id_redirect').value = "Save and Add another one";
+  return;
+}
+</script>
 {% endblock %}
 
 {% block extra_scripts %}

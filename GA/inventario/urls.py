@@ -1,8 +1,9 @@
 from django.conf.urls import url
-from .views import index, UserCreate, MoveIn, ProductClassCreate
+from .views import UserCreate, MoveIn, ProductClassCreate, LandingPage
 
 urlpatterns = [
-    url(r'sd^$', UserCreate.as_view(), name='create-user'),
-    url(r'^$', ProductClassCreate.as_view(), name='create-move-in'),
+    url(r'^$', LandingPage.as_view(), name='home'),
+    url(r'^product-create/$', ProductClassCreate.as_view(), name='create-product'),
+    url(r'^product-in/$', MoveIn.as_view(), name='move-in'),
 
 ]

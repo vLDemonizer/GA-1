@@ -1,6 +1,8 @@
 from random import randint
 
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User as CoreUser
 
 from GA import settings
@@ -15,8 +17,9 @@ def generate_product_code():
 
 class ProductClass(models.Model):
     name = models.CharField(max_length=100)
+    product_type = models.CharField(max_length=100)
     brand = models.CharField(max_length=30)
-    departament = models.CharField(max_length=50)
+    department = models.CharField(max_length=50)
     size = models.CharField(max_length=15, blank=True, null=True)
     description = models.TextField(max_length=120, blank=True)
     code = models.CharField(max_length=5, unique=True, default=generate_product_code)
@@ -24,6 +27,21 @@ class ProductClass(models.Model):
     def __str__(self):
         return self.name
 
+    def clean_fields(self, exclude=None):
+        super(ProductClass, self).clean_fields(exclude=exclude)
+        try:
+            ProductClass.objects.get(
+                name=self.name,
+                product_type=self.product_type,
+                brand=self.brand,
+                department=self.department,
+                size=self.size
+            )
+        except:
+            return
+        raise ValidationError({
+            'name': _('There is already another product in the database with this same characteristics')
+        })
 
 class Product(models.Model):
     product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)

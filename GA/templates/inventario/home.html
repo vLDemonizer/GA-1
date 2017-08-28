@@ -1,0 +1,12 @@
+{% extends 'inventario/layout.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col">
+    <a class="btn btn-primary btn-lg" href="{% url 'create-product' %}">Create Product</a>
+  </div>
+  <div class="col">
+    <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Products In</a>
+  </div>
+</div>
+{% endblock %}
