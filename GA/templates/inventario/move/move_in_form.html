@@ -4,12 +4,27 @@
 {% block content %}
 <form method="post">
   {% csrf_token %}
-<div id="root"></div>
-<div id="test"></div>
+  <div class="text-center">
+    <h1 class="display-2">Make Move In</h1>
+    <p class="form-errors">{{ form.errors|striptags }}</p>
+  </div>
+  <div id="root"></div>
+  <div id="test"></div>
+  <div className="row">
+    <div class="col"><button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button></div>
+    <div class="col"><input type="submit" class="btn btn-primary btn-lg" value="Submit"/></div>
+    <div class="col"><a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a></div>
+  </div>
 </form>
 {% endblock %}
 
 {% block extra_scripts %}
+<script>
+function changeRedirect() {
+  document.getElementById('id_redirect').value = "Save and Add another one";
+  return;
+}
+</script>
 <script type="text/babel" src="{% static 'react/product_details.js' %}"></script>
 <script type="text/babel">
 $(document).ready(function () {
@@ -20,6 +35,7 @@ $(document).ready(function () {
     },
     dataType: 'json',
     success: function (data) {
+      console.log(data);
       ReactDOM.render(
         <ProductDetails products={data}/>,
         document.getElementById('test')
@@ -28,22 +44,5 @@ $(document).ready(function () {
   });
 
 });
-</script>
-<script type="text/babel">
-  $("#id_product_class").change(function () {
-    var product_class_pk = $(this).val();
-
-    $.ajax({
-      url: '/ajax/product_class_details/',
-      data: {
-        'product_class': product_class_pk
-      },
-      dataType: 'json',
-      success: function (data) {
-        console.log(data);
-
-      }
-    });
-  });
 </script>
 {% endblock %}

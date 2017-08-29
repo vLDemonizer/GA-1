@@ -1,0 +1,30 @@
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/signin.css' %}">
+{% endblock %}
+
+{% block raw_content %}
+<div class="container">
+  <div class="align-center">
+    <form class="form-signin" method="post" autocomplete="off">
+      {% csrf_token %}
+      <h2 class="form-signin-heading text-center">Please sign in</h2>
+      {% if form.username.errors %}
+      <div class="text-center">
+        <p class="form-errors">{{form.errors}}.</p>
+      </div>
+      {% endif %}
+      <label for="inputEmail" class="sr-only">Username</label>
+      <input type="text" id="id_username" name="username" class="form-control text-center" placeholder="Username" required="" autofocus="">
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="id_password" name="password" class="form-control text-center" placeholder="Password" required="">
+      <br>
+      <div class="text-center">
+        <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

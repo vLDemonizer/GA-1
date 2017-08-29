@@ -1,12 +1,14 @@
 from django.conf.urls import url
 from .views import (
     UserCreate, MoveIn, ProductClassCreate,
-    LandingPage, UserCreate,
+    LandingPage, UserCreate, Login, log_out,
     get_product_class_details, get_products
 )
 
 urlpatterns = [
-    url(r'^$', UserCreate.as_view(), name='user-create'),
+    url(r'^$', Login.as_view(), name='login'),
+    url(r'^log-out/$', log_out, name='log-out'),
+    url(r'^create-user/$', UserCreate.as_view(), name='user-create'),
     url(r'^home/$', LandingPage.as_view(), name='home'),
     url(r'^product-create/$', ProductClassCreate.as_view(), name='create-product'),
     url(r'^product-in/$', MoveIn.as_view(), name='move-in'),

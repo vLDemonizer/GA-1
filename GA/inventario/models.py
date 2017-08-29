@@ -3,7 +3,7 @@ from random import randint
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User as CoreUser
+from django.contrib.auth.models import AbstractUser
 
 from GA import settings
 
@@ -23,6 +23,7 @@ class ProductClass(models.Model):
     size = models.CharField(max_length=15, blank=True, null=True)
     description = models.TextField(max_length=120, blank=True)
     code = models.CharField(max_length=5, unique=True, default=generate_product_code)
+    min_amount = models.SmallIntegerField(blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -49,7 +50,6 @@ class Product(models.Model):
     full_code = models.CharField(max_length=60, blank=True, unique=True)
     available = models.BooleanField(default=True)
     location = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
-    min_amount = models.SmallIntegerField()
 
     def __str__(self):
         return self.product_class.name + '-' + self.full_code
@@ -76,7 +76,7 @@ class MoveOut(MoveIn):
         return self.product_class.name + ' Moved out on the ' + str(self.date) + ' ' + self.reason
 
 
-class User(CoreUser):
+class User(AbstractUser):
     enterprise = models.CharField(max_length=5, default=settings.ENTERPRISE)
     country = models.CharField(max_length=5, default=settings.COUNTRY)
     city = models.CharField(max_length=10, default=settings.CITY)

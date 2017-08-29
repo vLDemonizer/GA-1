@@ -180,6 +180,45 @@ class Size extends React.Component {
   }
 };
 
+class MinimunAmount extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '',
+      limit:  6,
+      current: 0,
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    var current = event.target.value.length;
+    if (!(current > this.state.limit))
+      this.setState({
+        value: event.target.value,
+        current: current
+      });
+  }
+
+  render () {
+    return (
+      <div className="form-group">
+        <label>Minimun amount for the product stock <small className="text-form text-muted">Character limit {this.state.current} of 6.</small></label>
+        <input
+          id="id_min_amount"
+          name="min_amount"
+          type="number"
+          className="form-control"
+          placeholder="Enter product's size name"
+          value={this.state.value}
+          onChange={this.handleChange}
+          required
+        />
+      </div>
+    );
+  }
+}
+
 class Description extends React.Component {
   constructor(props) {
     super(props);
@@ -229,6 +268,7 @@ class ProductForm extends React.Component {
         <Brand />
         <Departments />
         <Size />
+        <MinimunAmount />
         <Description />
       </div>
     );

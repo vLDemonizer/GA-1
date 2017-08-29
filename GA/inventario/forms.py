@@ -1,5 +1,7 @@
 from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, CheckboxInput, PasswordInput
+
+from GA import settings
 from .models import ProductClass, MoveIn, User
 
 class ProductClassForm(ModelForm):
@@ -13,43 +15,31 @@ class ProductClassForm(ModelForm):
             'brand',
             'department',
             'size',
+            'min_amount',
             'description',
         ]
 
-class MoveInForm(ModelForm):
+
+class MoveInForm(forms.Form):
     amount = forms.IntegerField()
+    redirect = forms.CharField(max_length=50, required=False)
+    destiny = forms.CharField(max_length=30)
+    product_class = forms.IntegerField()
 
-    class Meta:
-        model = MoveIn
-        fields = [
-            'destiny',
-            'product_class',
-        ]
 
-class UserCreateForm(ModelForm):
-    class Meta:
-        model = User
-        fields = [
-            'first_name',
-            'last_name',
-            'email',
-            'username',
-            'password',
-            'enterprise',
-            'country',
-            'city',
-            'designation',
-            'admin'
-        ]
-        widgets = {
-            'first_name': TextInput(attrs={'class': 'form-control'}),
-            'last_name': TextInput(attrs={'class': 'form-control'}),
-            'email': EmailInput(attrs={'class': 'form-control'}),
-            'username': TextInput(attrs={'class': 'form-control'}),
-            'password': PasswordInput(attrs={'class': 'form-control'}),
-            'enterprise': TextInput(attrs={'class': 'form-control'}),
-            'country': TextInput(attrs={'class': 'form-control'}),
-            'city': TextInput(attrs={'class': 'form-control'}),
-            'designation': TextInput(attrs={'class': 'form-control'}),
-            'admin': CheckboxInput(attrs={'class': 'form-control'})
-        }
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
+class UserCreateForm(forms.Form):
+    first_name = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=PasswordInput(attrs={'class': 'form-control'}))
+    enterprise = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}), initial=settings.ENTERPRISE)
+    country = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}), initial=settings.COUNTRY)
+    city = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}), initial=settings.CITY)
+    designation = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
+    admin = forms.BooleanField(widget=CheckboxInput(attrs={'class': 'form-control'}))
