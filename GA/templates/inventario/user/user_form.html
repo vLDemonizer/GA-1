@@ -2,19 +2,15 @@
 {% load staticfiles %}
 
 {% block content %}
-<form method="post">
+<form id="id_form" method="post">
   {% csrf_token %}
   <div class="jumbotron">
-    <h3 class="display-3 text-center">User Create</h3>
+    <h3 class="display-3 text-center">Create an User</h3>
   </div>
-  {% for field in form %}
-  <div class="form-group">
-    {{field.label}}
-    {{field}}
-  </div>
-  {% endfor %}
-  <div class="text-center">
-    <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
-  </div>
+  <div id="root"></div>
 </form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel" src="{% static 'react/user_create_control.js' %}"></script>
 {% endblock %}

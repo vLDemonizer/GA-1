@@ -2,7 +2,7 @@ import json
 
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
-from django.contrib.auth.views import LoginView
+#from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, FormView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
