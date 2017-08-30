@@ -8,13 +8,16 @@
 {% block raw_content %}
 <div class="container">
     <div class="align-center">
+      <div class="text-center">
+        <img  class="img-responsive" style="background: #e6e6e6;" src="{% static 'img/logo_mejorado.png' %}" alt="Card image cap">
+      </div>
       <form class="form-signin" method="post" autocomplete="off">
         {% csrf_token %}
-        <h2 class="form-signin-heading text-center">Sign In</h2>
+        <h2 class="form-signin-heading text-center">Welcome!</h2>
         <label for="inputEmail" class="sr-only">Username</label>
-        <input type="text" id="id_username" name="username" class="form-control text-center" placeholder="Username" required="" autofocus="">
+        <input type="text" id="id_username" name="username" class="form-control text-center" placeholder="Username" required="" autofocus="" autoComplete="off">
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="id_password" name="password" class="form-control text-center" placeholder="Password" required="">
+        <input type="password" id="id_password" name="password" class="form-control text-center" placeholder="Password" required="" autoComplete="off">
         <br>
         <div class="text-center">
           <button class="btn btn-lg btn-primary" type="submit">Sign in</button>

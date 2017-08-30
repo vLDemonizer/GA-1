@@ -2,7 +2,9 @@ class Option extends React.Component {
   render () {
     let product = this.props.product;
     return (
-      <option name={product.pk}>{product.name} - {product.type} - {product.size} - {product.brand} - {product.department}</option>
+      <option
+        name={product.pk}>{product.name} - {product.type} - {product.size} - {product.brand} - {product.department}
+      </option>
     );
   }
 }
@@ -27,7 +29,15 @@ class DataList extends React.Component {
     return (
         <div className="form-group">
           <label>Search Product</label>
-          <input onInput={this.handleSelection} id="product_info" className="form-control" type="text" list="options" autoComplete="off" />
+          <input
+            onInput={this.handleSelection}
+            id="product_info"
+            className="form-control"
+            type="text"
+            list="options"
+            autoComplete="off"
+            required={true}
+          />
           <datalist id="options">
             {product_list}
           </datalist>
@@ -82,8 +92,14 @@ class ProductDetails extends React.Component {
   }
 
   handleAmountChange(event) {
-    this.setState({amount: event.target.value});
+    console.log(event.target.value)
+      if(event.target.value >= 0){
+        this.setState({amount: parseInt(event.target.value.toString())});
+        return true;
+      }
+      return false;
   }
+
 
   render () {
     return (
@@ -94,14 +110,22 @@ class ProductDetails extends React.Component {
             className="form-control"
             type="text" id="id_destiny"
             name="destiny"
-            value="Almacen" 
+            value="Almacen"
             readOnly={true}
           />
         </div>
         <DataList products={this.props.products} handleKey={this.handleSubmitKey}/>
         <div className="form-group">
           <label>Amount</label>
-          <input id="id_amount" name="amount" className="form-control" type="number" onChange={this.handleAmountChange}/>
+          <input
+            id="id_amount"
+            name="amount"
+            className="form-control"
+            type="number"
+            value={this.state.amount}
+            onChange={this.handleAmountChange}
+            required={this.state.amount < 1 ? true : false}
+          />
         </div>
         <HiddenInput primary_key={this.state.key} />
         <table className="table">
@@ -120,7 +144,7 @@ class ProductDetails extends React.Component {
             <td>{this.state.brand}</td>
             <td>{this.state.size}</td>
             <td>{this.state.department}</td>
-            <td>{this.state.amount}</td>
+            <td>{this.handleAmountChange ? this.state.amount : ''}</td>
             <td>{this.state.date}</td>
           </tbody>
         </table>

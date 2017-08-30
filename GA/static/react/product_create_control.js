@@ -23,7 +23,7 @@ class Name extends React.Component {
     var current = event.target.value.length;
     if (!(current > this.state.limit))
       this.setState({
-        value: event.target.value,
+        value: event.target.value.toUpperCase(),
         current: current
       });
   }
@@ -63,7 +63,7 @@ class ProductType extends React.Component {
     var current = event.target.value.length;
     if (!(current > this.state.limit))
       this.setState({
-        value: event.target.value,
+        value: event.target.value.toUpperCase(),
         current: current
       });
   }
@@ -101,7 +101,7 @@ class Brand extends React.Component {
     var current = event.target.value.length;
     if (!(current > this.state.limit))
       this.setState({
-        value: event.target.value,
+        value: event.target.value.toUpperCase(),
         current: current
       });
   }
@@ -156,7 +156,7 @@ class Size extends React.Component {
     var current = event.target.value.length;
     if (!(current > this.state.limit))
       this.setState({
-        value: event.target.value,
+        value: event.target.value.toUpperCase(),
         current: current
       });
   }
@@ -193,7 +193,7 @@ class MinimunAmount extends React.Component {
 
   handleChange(event) {
     var current = event.target.value.length;
-    if (!(current > this.state.limit))
+    if (!(current > this.state.limit) && event.target.value >= 0)
       this.setState({
         value: event.target.value,
         current: current

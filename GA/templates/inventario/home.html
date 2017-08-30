@@ -2,36 +2,71 @@
 {% load staticfiles %}
 
 {% block content %}
-<div class="row form-group">
-  <div class="col">
-    <div class="card" style="width: 15rem;">
-      <img class="card-img-top" src="{% static 'img/create_product.jpg' %}" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title">Create a New Product</h4>
-        <p class="card-text">Add a Name, Brand, Department and some description to the new product.</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'create-product' %}">Create Product</a>
+{% if request.user.is_superuser %}
+  <div class="row form-group">
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/create_product.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Create a New Product</h4>
+          <p class="card-text">Add a Name, Brand, Department and some description to the new product.</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'create-product' %}">Create Product</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/product_in.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Add a New Product</h4>
+          <p class="card-text">Select an existing product on the database and add a new set of them. Remember to double check the info that you'll enter.</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Products In</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Move a Product</h4>
+          <p class="card-text">Gotta move out a product? Check who's authorizing it and where it will go.</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'move-out' %}">Products Out</a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col">
-    <div class="card" style="width: 15rem;">
-      <img class="card-img-top" src="{% static 'img/product_in.jpg' %}" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title">Add a New Product</h4>
-        <p class="card-text">Select an existing product on the database and add a new set of them. Remember to double check the info that you'll enter.</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Products In</a>
+{% else %}
+  <div class="row form-group">
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/create_product.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Crear Un Producto Nuevo</h4>
+          <p class="card-text">Crea un nuevo producto inexistente en la base de datos.</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'create-product' %}">Crear Producto</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/product_in.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Entrada de Productos Nuevos (ENTRADA)</h4>
+          <p class="card-text">Seleccione un producto existente y dele entrada al mismo. Recuerde verificar la informacion.</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Entrada</a>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Mover o Desincorporar algun Producto (SALIDA)</h4>
+          <p class="card-text"></p>
+          <a class="btn btn-primary btn-lg" href="{% url 'move-out' %}">Salida</a>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col">
-    <div class="card" style="width: 15rem;">
-      <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
-      <div class="card-body">
-        <h4 class="card-title">Move a Product</h4>
-        <p class="card-text">Gotta move out a product? Check who's authorizing it and where it will go.</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'move-out' %}">Products Out</a>
-      </div>
-    </div>
-  </div>
-</div>
+{% endif %}
 {% endblock %}

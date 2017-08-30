@@ -4,8 +4,13 @@
 {% block content %}
 <form id="id_form" method="post">
   {% csrf_token %}
+  {% if request.user.staff %}
   <div class="jumbotron">
     <h3 class="display-3 text-center">Create an User</h3>
+  </div>
+  {% enif %}
+  <div class="jumbotron">
+    <h3 class="display-3 text-center">Crear un Nuevo Usuario</h3>
   </div>
   <div id="root"></div>
 </form>

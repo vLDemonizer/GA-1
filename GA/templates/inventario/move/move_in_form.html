@@ -10,9 +10,15 @@
   </div>
   <div id="root"></div>
   <div class="row text-center form-group">
-    <div class="col"><button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button></div>
-    <div class="col"><input type="submit" class="btn btn-primary btn-lg" value="Submit"/></div>
-    <div class="col"><a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a></div>
+    <div class="col">
+      <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
+    </div>
+    <div class="col">
+      <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+    </div>
+    <div class="col">
+      <a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+    </div>
   </div>
   <div class="row text-center">
     <div class="col">
