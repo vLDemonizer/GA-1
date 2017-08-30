@@ -94,8 +94,6 @@ class MoveInCreate(LoginRequiredMixin, FormView):
     login_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        if "Save and Add another one" in form.cleaned_data['redirect']:
-            self.success_url = reverse_lazy('move-in')
         destiny = form.cleaned_data['destiny']
         pk = form.cleaned_data['product_class']
         product_class = ProductClass.objects.get(pk=pk)
@@ -104,27 +102,17 @@ class MoveInCreate(LoginRequiredMixin, FormView):
             product_class=product_class,
         )
         products = []
-        
-        print(pk)
-        print(form.cleaned_data['destiny'])
-        print(form.cleaned_data['product_class'])
-        print(form.cleaned_data['amount'])
-       
         amount = form.cleaned_data['amount']
         amount_of_products = Product.objects.filter(
             product_class=product_class,
         ).count()
         for i in range(amount):
-            print(' Cycle: %d' % i)
             product_number = amount_of_products + i + 1
-            print(' Products in the database: %d' % amount_of_products)
-            print(' Current product number: %d' % product_number)
             full_code = generate_full_code(
                 self.request.user,
                 product_class,
                 product_number
             )
-            print(' Full code: ' + full_code)
             product = Product.objects.create(
                 product_class=product_class,
                 full_code=full_code,
@@ -132,13 +120,13 @@ class MoveInCreate(LoginRequiredMixin, FormView):
                 location=destiny,
             )
             product.save()
-            print(product)
             products.append(product)
 
         move_in.products.add(*products)
 
        
-        print(move_in)
+        if "Save and Add another one" in form.cleaned_data['redirect']:
+            self.success_url = reverse_lazy('move-in')
 
         return super(MoveInCreate, self).form_valid(form)
 
