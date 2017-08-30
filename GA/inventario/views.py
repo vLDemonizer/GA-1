@@ -10,7 +10,7 @@ from django.views.generic import TemplateView, FormView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
-from .forms import ProductClassForm, MoveInForm, UserCreateForm, LoginForm
+from .forms import ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, LoginForm
 from .models import ProductClass, Product, MoveIn, MoveOut, User
 
 
@@ -116,6 +116,11 @@ class MoveIn(LoginRequiredMixin, FormView):
 
         return super(MoveIn, self).form_valid(form)
 
+class MoveOut(LoginRequiredMixin, FormView):
+    form_class = MoveInForm
+    template_name = 'inventario/move/move_out_form.html'
+    success_url = reverse_lazy('home')
+    login_url = reverse_lazy('login')
 
 @login_required
 def log_out(request):

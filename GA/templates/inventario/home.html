@@ -1,18 +1,37 @@
 {% extends 'inventario/layout.html' %}
+{% load staticfiles %}
 
 {% block content %}
-<div class="row">
+<div class="row form-group">
   <div class="col">
-    <a class="btn btn-primary btn-lg" href="{% url 'create-product' %}">Create Product</a>
+    <div class="card" style="width: 15rem;">
+      <img class="card-img-top" src="{% static 'img/create_product.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title">Create a New Product</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'create-product' %}">Create Product</a>
+      </div>
+    </div>
   </div>
   <div class="col">
-    <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Products In</a>
+    <div class="card" style="width: 20rem;">
+      <img class="card-img-top" src="{% static 'img/product_in.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title">Add a New Product</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Products In</a>
+      </div>
+    </div>
   </div>
   <div class="col">
-    <a class="btn btn-primary btn-lg" href="{% url 'login' %}">Login</a>
-  </div>
-  <div class="col">
-    <a class="btn btn-primary btn-lg" href="{% url 'user-create' %}">User Create</a>
+    <div class="card" style="width: 15rem;">
+      <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title">Move a Product</h4>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'move-out' %}">Products Out</a>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

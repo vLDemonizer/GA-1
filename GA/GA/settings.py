@@ -133,42 +133,14 @@ CITY = 'PLC'
 ENTERPRISE = 'GA'
 PRIMARY_LOCATION = 'Almacen'
 
-LOCATIONS = [
-    {
-        'VZLA':
-        {
-            'OFFICES':
-            {
-                'PLC':
-                {
-                    'DEPARTMENTS': [
-                        ('EPP',  'Equipo de Proteccion Personal'),
-                        ('DOT', 'Dotacines'),
-                        ('PM', 'Productos y Mantenimiento'),
-                        ('EE', 'Equipos y Enseres'),
-                        ('MAQ', 'Maquinaria'),
-                        ('FER', 'Ferreteria'),
-                    ]
+COUNTRY_DIC = { 'Venezuela' : 'VZLA'}
+CITY_DIC = {'Puerto La Cruz' : 'PLC'}
+ENTERPRISE = {'Grupo Alcars' : 'GA'}
+DEPARTMENTS =   { 'Dotacion' : 'DOT',
+                  'Equipos y Enseres' : 'EQEN',
+                  'Productos de Mantenimiento' : 'PM',
+                  'Equipos de Proteccion Personal' : 'EPP',
+                  'Papeleria' : 'PAP',
+                  'Ferreteria': 'FERR',
+                  'Computacion' : 'COMP'
                 }
-            }
-        },
-
-        'COL':
-        {
-            'OFFICES':
-            {
-                'BOG':
-                {
-                    'DEPARTMENTS': [
-
-                    ]
-                }
-            }
-        },
-    }
-]
-
-"""ENTERPRISE = [
-    ('GA', 'Grupo Alcars'),
-    ('CE', 'CE Services'),
-]"""

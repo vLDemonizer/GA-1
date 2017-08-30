@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, CheckboxInput, PasswordInput
 
 from GA import settings
-from .models import ProductClass, MoveIn, User
+from .models import ProductClass, MoveIn, MoveOut, User
 
 class ProductClassForm(ModelForm):
     redirect = forms.CharField(max_length=50, required=False)
@@ -23,6 +23,16 @@ class ProductClassForm(ModelForm):
 class MoveInForm(forms.Form):
     amount = forms.IntegerField()
     redirect = forms.CharField(max_length=50, required=False)
+    destiny = forms.CharField(max_length=30)
+    product_class = forms.IntegerField()
+
+class MoveOutForm(forms.Form):
+    amount = forms.IntegerField()
+    authorized_by = forms.IntegerField()
+    received_by = forms.IntegerField()
+    given_by = forms.IntegerField()
+    reason = forms.CharField(max_length=15)
+    reason_description = forms.CharField(max_length=300)
     destiny = forms.CharField(max_length=30)
     product_class = forms.IntegerField()
 

@@ -90,7 +90,13 @@ class ProductDetails extends React.Component {
       <div className="container-fluid">
         <div className="form-group">
           <label>Destiny</label>
-          <input className="form-control" type="text" id="id_destiny" name="destiny" value="Almacen" readOnly={true}/>
+          <input
+            className="form-control"
+            type="text" id="id_destiny"
+            name="destiny"
+            value="Almacen" 
+            readOnly={true}
+          />
         </div>
         <DataList products={this.props.products} handleKey={this.handleSubmitKey}/>
         <div className="form-group">

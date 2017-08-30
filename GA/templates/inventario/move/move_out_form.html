@@ -1,0 +1,18 @@
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <div class="text-center">
+    <h3 class="display-3">Make A Move Out</h3>
+  </div>
+  <div id="root">HI ROOT</div>
+  <div id="test"></div>
+
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel" src="{% static 'react/move_out_control.js' %}"></script>
+{% endblock %}
