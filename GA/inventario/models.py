@@ -50,7 +50,7 @@ class Product(models.Model):
     full_code = models.CharField(max_length=60, blank=True, unique=True)
     available = models.BooleanField(default=True)
     location = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
-
+    
     def __str__(self):
         return self.product_class.name + '-' + self.full_code
 

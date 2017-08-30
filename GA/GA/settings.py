@@ -133,14 +133,21 @@ CITY = 'PLC'
 ENTERPRISE = 'GA'
 PRIMARY_LOCATION = 'Almacen'
 
-COUNTRY_DIC = { 'Venezuela' : 'VZLA'}
-CITY_DIC = {'Puerto La Cruz' : 'PLC'}
-ENTERPRISE = {'Grupo Alcars' : 'GA'}
-DEPARTMENTS =   { 'Dotacion' : 'DOT',
-                  'Equipos y Enseres' : 'EQEN',
-                  'Productos de Mantenimiento' : 'PM',
-                  'Equipos de Proteccion Personal' : 'EPP',
-                  'Papeleria' : 'PAP',
-                  'Ferreteria': 'FERR',
-                  'Computacion' : 'COMP'
-                }
+COUNTRY_DIC = {
+    'Venezuela': 'VZLA'
+}
+CITY_DIC = {
+    'Puerto La Cruz': 'PLC'
+}
+ENTERPRISE_DIC = {
+    'Grupo Alcars': 'GA'
+}
+DEPARTMENTS_DIC = {
+    'Dotacion': 'DOT',
+    'Equipos y Enseres': 'EQEN',
+    'Productos de Mantenimiento': 'PM',
+    'Equipo de Proteccion Personal': 'EPP',
+    'Papeleria': 'PAP',
+    'Ferreteria': 'FERR',
+    'Computacion': 'COMP',
+}
