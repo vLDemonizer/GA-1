@@ -177,7 +177,6 @@ class Password extends React.Component{
         <div className="form-group">
         <label>Password (Confirm):</label>
           <input
-            name="password"
             type="password"
             className="form-control"
             value={this.props.value2}
@@ -255,24 +254,24 @@ class CreateUserForm extends React.Component{
     }
 
     handleOnChange1(evt){
-      console.log(1);
       this.setState({
         value1: evt.target.value,
       });
     }
 
     handleOnChange2(evt){
-      console.log(2);
       this.setState({
         value2: evt.target.value,
       });
     }
 
     checkPassword(e){
-      if(this.state.value1.localeCompare(this.state.value2) == 0){
-        document.getElementById('id_form').submit()
+      if (this.state.flag) {
+        this.setState({flag: false});
       }
-      else{
+      if (this.state.value1.localeCompare(this.state.value2) == 0){
+        document.getElementById('id_form').submit()
+      } else {
         e.preventDefault()
         this.setState({
           flag: true,

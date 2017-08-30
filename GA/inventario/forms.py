@@ -52,4 +52,4 @@ class UserCreateForm(forms.Form):
     country = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}), initial=settings.COUNTRY)
     city = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}), initial=settings.CITY)
     designation = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
-    admin = forms.BooleanField(widget=CheckboxInput(attrs={'class': 'form-control'}))
+    admin = forms.BooleanField(widget=CheckboxInput(attrs={'class': 'form-control'}), required=False)
