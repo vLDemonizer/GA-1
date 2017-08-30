@@ -9,7 +9,6 @@
     <p class="form-errors">{{ form.errors|striptags }}</p>
   </div>
   <div id="root"></div>
-  <div id="test"></div>
   <div className="row">
     <div class="col"><button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button></div>
     <div class="col"><input type="submit" class="btn btn-primary btn-lg" value="Submit"/></div>
@@ -38,7 +37,7 @@ $(document).ready(function () {
       console.log(data);
       ReactDOM.render(
         <ProductDetails products={data}/>,
-        document.getElementById('test')
+        document.getElementById('root')
       );
     }
   });

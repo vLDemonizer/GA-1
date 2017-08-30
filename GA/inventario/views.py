@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 
 from .forms import ProductClassForm, MoveInForm, UserCreateForm, LoginForm
 from .models import ProductClass, Product, MoveIn, MoveOut, User
+from .code_generator import generate_full_code
 
 
 class LandingPage(LoginRequiredMixin, TemplateView):
@@ -86,7 +87,7 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
 
         return super(ProductClassCreate, self).form_valid(form)
 
-class MoveIn(LoginRequiredMixin, FormView):
+class MoveInCreate(LoginRequiredMixin, FormView):
     form_class = MoveInForm
     template_name = 'inventario/move/move_in_form.html'
     success_url = reverse_lazy('home')
@@ -95,32 +96,56 @@ class MoveIn(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         if "Save and Add another one" in form.cleaned_data['redirect']:
             self.success_url = reverse_lazy('move-in')
-
         destiny = form.cleaned_data['destiny']
         pk = form.cleaned_data['product_class']
-        print(pk)
         product_class = ProductClass.objects.get(pk=pk)
-        amount = form.cleaned_data['amount']
-        product = Product.objects.create(
+        move_in = MoveIn.objects.create(
+            destiny=destiny,
             product_class=product_class,
-            full_code='Dummy' + str(amount),
-            available=True,
-            location=destiny
         )
-        print(product_class.pk)
-        print(product)
+        products = []
+        
+        print(pk)
         print(form.cleaned_data['destiny'])
         print(form.cleaned_data['product_class'])
         print(form.cleaned_data['amount'])
+       
+        amount = form.cleaned_data['amount']
+        amount_of_products = Product.objects.filter(
+            product_class=product_class,
+        ).count()
+        for i in range(amount):
+            print(' Cycle: %d' % i)
+            product_number = amount_of_products + i + 1
+            print(' Products in the database: %d' % amount_of_products)
+            print(' Current product number: %d' % product_number)
+            full_code = generate_full_code(
+                self.request.user,
+                product_class,
+                product_number
+            )
+            print(' Full code: ' + full_code)
+            product = Product.objects.create(
+                product_class=product_class,
+                full_code=full_code,
+                available=True,
+                location=destiny,
+            )
+            product.save()
+            print(product)
+            products.append(product)
 
+        move_in.products.add(*products)
 
-        return super(MoveIn, self).form_valid(form)
+       
+        print(move_in)
+
+        return super(MoveInCreate, self).form_valid(form)
 
 
 @login_required
 def log_out(request):
     logout(request)
-    print('login out')
     return redirect(reverse_lazy('login'))
 
 
