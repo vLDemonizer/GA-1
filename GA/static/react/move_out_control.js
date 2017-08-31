@@ -55,8 +55,7 @@ class HiddenInput extends React.Component {
         type="hidden" 
         id={"id_" + name} 
         name={name} 
-        value={this.props.primary_key} 
-        required 
+        value={this.props.primary_key}
       />
     );
   }
@@ -73,6 +72,7 @@ class Details extends React.Component {
       size: '',
       department: '',
       amount: 0,
+      stock: 0,
       date: '',
     }
 
@@ -85,6 +85,15 @@ class Details extends React.Component {
     for(; i < options.length; i++) {
       if (options[i].innerText === productText) {
         let product = this.props.products[i];
+        var product_stock = 0;
+        $.ajax({
+          url: '/ajax/get_product_stock/',
+          data : {
+            'product_class': product.pk,
+            'location': $("#id_destiny").val(),
+          },
+          success: (data) => this.setState({stock: data})
+        });
         this.setState({
           key: product.pk,
           name: product.fields.name,
@@ -92,6 +101,7 @@ class Details extends React.Component {
           brand: product.fields.brand,
           size: product.fields.size,
           department: product.fields.department,
+          stock: product_stock,
           date: new Date().toDateString(),
         });
       }
@@ -138,7 +148,7 @@ class Details extends React.Component {
             <td>{this.state.size}</td>
             <td>{this.state.department}</td>
             <td>{this.state.amount}</td>
-            <td>Nothing Yet</td>
+            <td>{this.state.stock}</td>
             <td>{this.state.date}</td>
           </tbody>
         </table>
@@ -157,7 +167,7 @@ class LocationSelect extends React.Component {
     return (
       <div className="form-group">
         <label>Location</label>
-        <select className="form-control">
+        <select id="id_destiny" name="destiny" className="form-control">
           {location_list}
         </select>
       </div>
@@ -234,16 +244,21 @@ class ReasonSelect extends React.Component {
 class UsersComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {key: ''};
+    this.state = {
+      user_key: 0,
+    }
     this.handleKey = this.handleKey.bind(this);
   }
 
   handleKey(e) {
     let options = e.target.list.options;
-    let input_text = $("#id_" + name).val();
+    let input_text = $("#id_" + this.props.name).val();
     for (var i = 0; i < options.length; i++) {
       if (options[i].innerText === input_text) {
-        this.setState({key: this.props.users[i].pk});
+        let key = this.props.users[i].pk;
+        this.setState({
+          user_key: key,
+        });
       }
     }
   }
@@ -252,7 +267,6 @@ class UsersComponent extends React.Component {
     let users = this.props.users;
     var user_list = [];
     let name = this.props.name;
-
     for (var i = 0; i < users.length; i++) {
       user_list.push(
         <option name={users[i].pk}>
@@ -264,18 +278,18 @@ class UsersComponent extends React.Component {
       <div className="form-group">
         <label>{this.props.tittle}</label>
         <input
-        onInput={this.handleKey}
-        id={"id_" + name}
-        name={name}
-        className="form-control"
-        type="text"
-        list={name + "_options"}
-        autoComplete="off"
+          onInput={this.handleKey}
+          id={"id_" + name}
+          name={name}
+          className="form-control"
+          type="text"
+          list={name + "_options"}
+          autoComplete="off"
         />
         <datalist id={name + "_options"}>
           {user_list}
         </datalist>
-        <HiddenInput primary_key={this.state.pk} name={name} />
+        <HiddenInput primary_key={this.state.user_key} name={name} />
       </div>
     );
   }
@@ -284,7 +298,7 @@ class UsersComponent extends React.Component {
 class Users extends React.Component {
   render () {
     let user = this.props.dispatchUser[0].fields
-    let user_pk = this.props.dispatchUser.pk
+    let user_pk = this.props.dispatchUser[0].pk
     return (
       <div className="form-group">
         <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Authorized By"}/>
@@ -294,11 +308,10 @@ class Users extends React.Component {
         </label>
         <input 
         id="id_given_by"
-        name="id_given_by"
+        name="given_by"
         className="form-control"
         type="hidden"
         value={user_pk}
-        readOnly={true}
         />
       </div>
     );

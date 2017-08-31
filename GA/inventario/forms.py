@@ -6,6 +6,7 @@ from .models import ProductClass, MoveIn, MoveOut, User
 
 class ProductClassForm(ModelForm):
     redirect = forms.CharField(max_length=50, required=False)
+    is_liquid = forms.BooleanField(widget=CheckboxInput, required=False)
 
     class Meta:
         model = ProductClass
@@ -17,6 +18,7 @@ class ProductClassForm(ModelForm):
             'size',
             'min_amount',
             'description',
+            'is_liquid',
         ]
 
 
@@ -33,7 +35,7 @@ class MoveOutForm(forms.Form):
     received_by = forms.IntegerField()
     given_by = forms.IntegerField()
     reason = forms.CharField(max_length=15)
-    reason_description = forms.CharField(max_length=300)
+    reason_description = forms.CharField(max_length=300, required=False)
     destiny = forms.CharField(max_length=30)
     product_class = forms.IntegerField()
 

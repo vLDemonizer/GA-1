@@ -42,7 +42,6 @@ $(document).ready(function () {
     },
     dataType: 'json',
     success: function (data) {
-      console.log(data);
       ReactDOM.render(
         <ProductDetails products={data}/>,
         document.getElementById('root')

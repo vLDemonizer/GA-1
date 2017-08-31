@@ -7,6 +7,11 @@
   <div class="text-center">
     <h3 class="display-3">Make A Move Out</h3>
   </div>
+  {% if form.errors %}
+  <div class="text-center">
+    <p class="form-errors">{{form.errors|striptags}}.</p>
+  </div>
+  {% endif %}
   <div id="root"></div>
   <div class="text-center">
     <div class="btn-group">

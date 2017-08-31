@@ -139,7 +139,7 @@ class MoveInCreate(LoginRequiredMixin, FormView):
         return super(MoveInCreate, self).form_valid(form)
 
 class MoveOutView(LoginRequiredMixin, FormView):
-    form_class = MoveInForm
+    form_class = MoveOutForm
     template_name = 'inventario/move/move_out_form.html'
     success_url = reverse_lazy('home')
     login_url = reverse_lazy('login')
@@ -160,6 +160,26 @@ class MoveOutView(LoginRequiredMixin, FormView):
         context['reasons'] = json.dumps(settings.MOVEMENT_REASONS)
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
         return context
+
+    def form_valid(self, form):
+        amount = form.cleaned_data['amount']
+        product_class = form.cleaned_data['product_class']
+        destiny = form.cleaned_data['destiny']
+        reason = form.cleaned_data['reason']
+        reason_description = form.cleaned_data['reason_description']
+        authorized_by = form.cleaned_data['authorized_by']
+        received_by = form.cleaned_data['received_by']
+        dispatched_by = self.request.user
+        print('Amount: %d' % amount)
+        print(ProductClass.objects.get(pk=product_class))
+        print('Destiny: ' + destiny)
+        print('Reason: ' + reason)
+        print('Description ' + reason_description)
+        print('Authorized by: %d' % authorized_by)
+        print('Received by: %d' % received_by)
+        print(dispatched_by)
+
+        return super(MoveOutView, self).form_valid(form)
         
 
 @login_required
@@ -181,6 +201,24 @@ def get_product_class_details(request):
     }
     return HttpResponse(
         json.dumps(data),
+        content_type = 'application/javascript; charset=utf8'
+    )
+
+
+@login_required
+def get_product_stock(request):
+    pk = int(request.GET.get('product_class', None))
+    location = int(request.GET.get('location', None))
+    product_class = ProductClass.objects.get(pk=pk)
+    stock = Product.objects.filter(
+        product_class=product_class,
+        location=settings.LOCATIONS[location],
+        available=True,
+    ).count()
+    print(stock)
+    print(settings.LOCATIONS[location])
+    return HttpResponse(
+        json.dumps(stock),
         content_type = 'application/javascript; charset=utf8'
     )
 

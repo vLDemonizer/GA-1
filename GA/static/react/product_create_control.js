@@ -176,6 +176,15 @@ class Size extends React.Component {
           onChange={this.handleChange}
           required
         />
+        <br />
+          <label className="btn btn-info"><span style={{color: 'white'}}>Is Liquid? </span>
+          <input
+            id="id_is_liquid"
+            name="is_liquid"
+            type="checkbox"
+            autoComplete="off"
+          />
+        </label>
       </div>
     );
   }

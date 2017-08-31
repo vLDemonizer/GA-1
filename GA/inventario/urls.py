@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import (
     UserCreate, MoveInCreate, MoveOutView, ProductClassCreate,
     LandingPage, UserCreate, Login, log_out,
-    get_product_class_details, get_products
+    get_product_class_details, get_products, get_product_stock,
 )
 
 urlpatterns = [
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^product-in/$', MoveInCreate.as_view(), name='move-in'),
     url(r'^ajax/product_class_details/$', get_product_class_details, name='get_product_class'),
     url(r'^ajax/products/$', get_products, name='get_products'),
+    url(r'^ajax/get_product_stock', get_product_stock, name='get_product_stock'),
 
 
 

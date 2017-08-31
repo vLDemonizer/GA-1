@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'GA.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ga',
-        'USER': 'srvndo',
-        'PASSWORD': 'Ser241194',
+        'NAME': 'inventario',
+        'USER': 'admin',
+        'PASSWORD': 'GA2009Server',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -132,9 +132,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-COUNTRY = 'VZLA'
-CITY = 'PLC'
-ENTERPRISE = 'GA'
+COUNTRY = 'Venezuela'
+CITY = 'Puerto La Cruz'
+ENTERPRISE = 'Grupo Alcars'
 PRIMARY_LOCATION = 'Almacen'
 LOCATIONS = [
     'Almacen',

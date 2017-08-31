@@ -91,7 +91,6 @@ class ProductDetails extends React.Component {
   }
 
   handleAmountChange(event) {
-    console.log(event.target.value)
       if(event.target.value >= 0){
         this.setState({amount: parseInt(event.target.value.toString())});
         return true;
