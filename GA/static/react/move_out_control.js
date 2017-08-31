@@ -170,16 +170,32 @@ class Details extends React.Component {
 class LocationSelect extends React.Component {
   render () {
     let locations = this.props.locations;
+    let name = this.props.name
     var location_list = [];
     for (var i = 0; i < locations.length; i++) {
       location_list.push(<option value={i} key={'e' + i}>{locations[i]}</option>);
     }
     return (
       <div className="form-group">
-        <label>Location</label>
-        <select id="id_destiny" name="destiny" className="form-control">
+        <label>{this.props.tittle}</label>
+        <select id={"id_" + name} name={name} className="form-control">
           {location_list}
         </select>
+      </div>
+    );
+  }
+}
+
+class Locations extends React.Component {
+  render () {
+    var locations = [];
+    for (var i = 0; i < this.props.names.length; i++) {
+      locations.push(<LocationSelect locations={this.props.locations} name={this.props.names[i]} tittle={this.props.tittles[i]} />);
+    }
+
+    return (
+      <div>
+        {locations}
       </div>
     );
   }
@@ -332,7 +348,7 @@ class MoveOut extends React.Component{
   render () {
     return (
       <div className="container-fluid">
-        <LocationSelect locations={this.props.locations} />
+        <Locations locations={this.props.locations} names={["from_location", "destiny"]} tittles={["From", "To"]}/>
         <Details products={this.props.products} />
         <ReasonSelect reasons={this.props.reasons} />
         <Users

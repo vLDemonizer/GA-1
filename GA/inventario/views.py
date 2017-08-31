@@ -180,14 +180,21 @@ class MoveOutView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         amount = form.cleaned_data['amount']
         product_class = form.cleaned_data['product_class']
+        from_location = form.cleaned_data['form_location']
         destiny = form.cleaned_data['destiny']
         reason = form.cleaned_data['reason']
         reason_description = form.cleaned_data['reason_description']
         authorized_by = form.cleaned_data['authorized_by']
         received_by = form.cleaned_data['received_by']
         dispatched_by = self.request.user
+        products = Product.objects.filter(
+            product_class=products_class,
+            location=settings.LOCATIONS[location],
+        )[:amount]
+        
         print('Amount: %d' % amount)
         print(ProductClass.objects.get(pk=product_class))
+
         print('Destiny: ' + destiny)
         print('Reason: ' + reason)
         print('Description ' + reason_description)
