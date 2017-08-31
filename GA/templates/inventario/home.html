@@ -27,7 +27,17 @@
     <div class="card" style="width: 15rem;">
       <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
       <div class="card-body">
-        <h4 class="card-title">Move a Product</h4>
+        <h4 class="card-title">Move a Product In</h4>
+        <p class="card-text">Gotta move out a product? Check who's authorizing it and where it will go.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'move-in' %}">Products In</a>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card" style="width: 15rem;">
+      <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title">Move a Product Out</h4>
         <p class="card-text">Gotta move out a product? Check who's authorizing it and where it will go.</p>
         <a class="btn btn-primary btn-lg" href="{% url 'move-out' %}">Products Out</a>
       </div>

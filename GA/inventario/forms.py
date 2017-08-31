@@ -27,6 +27,7 @@ class MoveInForm(forms.Form):
     product_class = forms.IntegerField()
 
 class MoveOutForm(forms.Form):
+    redirect = forms.CharField(max_length=50, required=False)
     amount = forms.IntegerField()
     authorized_by = forms.IntegerField()
     received_by = forms.IntegerField()
@@ -41,8 +42,9 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-
+    
 class UserCreateForm(forms.Form):
+    redirect = forms.CharField(max_length=50, required=False)
     first_name = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(widget=EmailInput(attrs={'class': 'form-control'}))

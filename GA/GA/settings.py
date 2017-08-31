@@ -132,6 +132,20 @@ COUNTRY = 'VZLA'
 CITY = 'PLC'
 ENTERPRISE = 'GA'
 PRIMARY_LOCATION = 'Almacen'
+LOCATIONS = [
+    'Almacen',
+    'Oficina',
+    'Planta',
+    'Mantenimiento',
+    'Desincorporacion',
+]
+MOVEMENT_REASONS = [
+    'Dotacion',
+    'Deterioro',
+    'Perdida',
+    'Donacion',
+    'Otros',
+]
 
 COUNTRY_DIC = {
     'Venezuela': 'VZLA'
@@ -150,4 +164,5 @@ DEPARTMENTS_DIC = {
     'Papeleria': 'PAP',
     'Ferreteria': 'FERR',
     'Computacion': 'COMP',
+    'Maquinaria': 'MAQ',
 }
