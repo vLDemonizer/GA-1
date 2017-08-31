@@ -84,8 +84,7 @@ class Details extends React.Component {
     var i = 0;
     for(; i < options.length; i++) {
       if (options[i].innerText === productText) {
-        let product = this.props.products[i];
-        var product_stock = 0;
+        let product = this.props.products[i];0;
         $.ajax({
           url: '/ajax/get_product_stock/',
           data : {
@@ -101,7 +100,6 @@ class Details extends React.Component {
           brand: product.fields.brand,
           size: product.fields.size,
           department: product.fields.department,
-          stock: product_stock,
           date: new Date().toDateString(),
         });
       }
