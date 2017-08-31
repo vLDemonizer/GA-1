@@ -4,29 +4,51 @@
 {% block content %}
 <form method="post">
   {% csrf_token %}
-  <div class="text-center">
-    <h1 class="display-2">Make Move In</h1>
-    <p class="form-errors">{{ form.errors|striptags }}</p>
-  </div>
-  <div id="root"></div>
-  <div class="text-center">
-    <div class="btn-group">
-      <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
-      <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-      <a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+  {% if request.user.is_superuser %}
+    <div class="text-center">
+      <h1 class="display-2">Make Move In</h1>
+      <p class="form-errors">{{ form.errors|striptags }}</p>
     </div>
-  </div>
-  <br/>
-  <div class="row text-center">
-    <div class="col">
-      <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+    <div id="root"></div>
+    <div class="text-center">
+      <div class="btn-group">
+        <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
+        <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+        <a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+      </div>
     </div>
-  </div>
+    <br/>
+    <div class="row text-center">
+      <div class="col">
+        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+      </div>
+    </div>
+  {% else %}
+    <div class="text-center">
+      <h1 class="display-2">Entrada de Producto</h1>
+      <p class="form-errors">{{ form.errors|striptags }}</p>
+    </div>
+    <div id="root"></div>
+    <div class="text-center">
+      <div class="btn-group">
+        <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Cargar y Añadir Otro</button>
+        <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+        <a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
+      </div>
+    </div>
+    <br/>
+    <div class="row text-center">
+      <div class="col">
+        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+      </div>
+    </div>
+  {% endif %}
 </form>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
+let en = JSON.parse('{{is_superuser}}');
 function changeRedirect() {
   document.getElementById('id_redirect').value = "Save and Add another one";
   return;

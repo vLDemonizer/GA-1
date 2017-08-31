@@ -31,6 +31,7 @@
 
 {% block extra_scripts %}
 <script>
+  let en = JSON.parse('{{is_superuser}}');
   function changeRedirect() {
     document.getElementById('id_redirect').value = "Save and Add another one";
     return;
@@ -40,7 +41,6 @@
 <script type="text/babel">
   ReactDOM.render(
     <MoveOut
-      en={JSON.parse('{{is_superuser}}')}
       locations={JSON.parse('{{ locations | escapejs }}')}
       products={JSON.parse('{{ product_class | escapejs }}')}
       reasons={JSON.parse('{{ reasons | escapejs }}')}
