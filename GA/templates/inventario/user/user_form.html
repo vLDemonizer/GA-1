@@ -13,9 +13,28 @@
     <h3 class="display-3 text-center">Crear un Nuevo Usuario</h3>
   </div>
   <div id="root"></div>
+  <div class="text-center">
+    <div class="btn-group">
+      <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
+      <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+      <a href="{% url 'user-create' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+    </div>
+  </div>
+  <br/>
+  <div class="row text-center">
+    <div class="col">
+      <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+    </div>
+  </div>
 </form>
 {% endblock %}
 
 {% block extra_scripts %}
+<script>
+  function changeRedirect() {
+    document.getElementById('id_redirect').value = "Save and Add another one";
+    return;
+  }
+  </script>
 <script type="text/babel" src="{% static 'react/user_create_control.js' %}"></script>
 {% endblock %}

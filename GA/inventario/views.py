@@ -1,7 +1,8 @@
 import json
 
-from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
+from django.core import serializers
+from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +10,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, FormView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+
+from GA import settings
 
 from .forms import ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, LoginForm
 from .models import ProductClass, Product, MoveIn, MoveOut, User
@@ -72,6 +75,9 @@ class UserCreate(LoginRequiredMixin, FormView):
         user.admin = admin
         user.save()
 
+        if "Save and Add another one" in form.cleaned_data['redirect']:
+            self.success_url = reverse_lazy('move-in')
+
         return super(UserCreate, self).form_valid(form)
 
 
@@ -96,20 +102,23 @@ class MoveInCreate(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         destiny = form.cleaned_data['destiny']
         pk = form.cleaned_data['product_class']
+        amount = form.cleaned_data['amount']
+        user = self.request.user
+        products = []
+
         product_class = ProductClass.objects.get(pk=pk)
         move_in = MoveIn.objects.create(
             destiny=destiny,
             product_class=product_class,
         )
-        products = []
-        amount = form.cleaned_data['amount']
         amount_of_products = Product.objects.filter(
             product_class=product_class,
         ).count()
+
         for i in range(amount):
             product_number = amount_of_products + i + 1
             full_code = generate_full_code(
-                self.request.user,
+                user,
                 product_class,
                 product_number
             )
@@ -123,18 +132,35 @@ class MoveInCreate(LoginRequiredMixin, FormView):
             products.append(product)
 
         move_in.products.add(*products)
-
        
         if "Save and Add another one" in form.cleaned_data['redirect']:
             self.success_url = reverse_lazy('move-in')
 
         return super(MoveInCreate, self).form_valid(form)
 
-class MoveOut(LoginRequiredMixin, FormView):
+class MoveOutView(LoginRequiredMixin, FormView):
     form_class = MoveInForm
     template_name = 'inventario/move/move_out_form.html'
     success_url = reverse_lazy('home')
     login_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        if "Save and Add another one" in form.cleaned_data['redirect']:
+            self.success_url = reverse_lazy('create-product')
+
+        return super(ProductClassCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(MoveOutView, self).get_context_data(**kwargs)
+        context['product_class'] = serializers.serialize('json', ProductClass.objects.all())
+        context['admin_users'] = serializers.serialize('json', User.objects.filter(admin=True))
+        context['retrieving_users'] = serializers.serialize('json', User.objects.all())
+        context['current_user'] = serializers.serialize('json', [self.request.user])
+        context['locations'] = json.dumps(settings.LOCATIONS)
+        context['reasons'] = json.dumps(settings.MOVEMENT_REASONS)
+        context['is_superuser'] = json.dumps(self.request.user.is_superuser)
+        return context
+        
 
 @login_required
 def log_out(request):

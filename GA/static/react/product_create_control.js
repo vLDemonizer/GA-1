@@ -6,6 +6,7 @@ let departments = [
   'Ferreteria',
   'Papeleria',
   'Computacion',
+  'Maquinaria',
 ];
 
 class Name extends React.Component {

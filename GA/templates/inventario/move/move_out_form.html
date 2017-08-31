@@ -7,12 +7,43 @@
   <div class="text-center">
     <h3 class="display-3">Make A Move Out</h3>
   </div>
-  <div id="root">HI ROOT</div>
-  <div id="test"></div>
-
+  <div id="root"></div>
+  <div class="text-center">
+    <div class="btn-group">
+      <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
+      <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+      <a href="{% url 'move-out' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+    </div>
+  </div>
+  <br/>
+  <div class="row text-center">
+    <div class="col">
+      <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+    </div>
+  </div>
 </form>
 {% endblock %}
 
 {% block extra_scripts %}
+<script>
+  function changeRedirect() {
+    document.getElementById('id_redirect').value = "Save and Add another one";
+    return;
+  }
+  </script>
 <script type="text/babel" src="{% static 'react/move_out_control.js' %}"></script>
+<script type="text/babel">
+  ReactDOM.render(
+    <MoveOut
+      en={JSON.parse('{{is_superuser}}')}
+      locations={JSON.parse('{{ locations | escapejs }}')}
+      products={JSON.parse('{{ product_class | escapejs }}')}
+      reasons={JSON.parse('{{ reasons | escapejs }}')}
+      admin_users={JSON.parse('{{ admin_users | escapejs }}')}
+      retrieving_users={JSON.parse('{{ retrieving_users | escapejs }}')}
+      current_user={JSON.parse('{{ current_user | escapejs }}')}
+    />,
+    document.getElementById('root')
+  );
+</script>
 {% endblock %}

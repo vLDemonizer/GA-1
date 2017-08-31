@@ -77,7 +77,6 @@ class ProductDetails extends React.Component {
     for(; i < options.length; i++) {
       if (options[i].innerText === productText) {
         let product = this.props.products.products[i];
-        console.log(product);
         this.setState({
           key: product.pk,
           name: product.name,
@@ -128,7 +127,7 @@ class ProductDetails extends React.Component {
           />
         </div>
         <HiddenInput primary_key={this.state.key} />
-        <table className="table">
+        <table className="table table-responsive">
           <thead>
             <th>Name</th>
             <th>Type</th>
@@ -136,6 +135,7 @@ class ProductDetails extends React.Component {
             <th>Size</th>
             <th>Department</th>
             <th>Amount</th>
+            <th>Stock</th>
             <th>Date</th>
           </thead>
           <tbody>
@@ -145,6 +145,7 @@ class ProductDetails extends React.Component {
             <td>{this.state.size}</td>
             <td>{this.state.department}</td>
             <td>{this.handleAmountChange ? this.state.amount : ''}</td>
+            <td>Nothing Yet</td>
             <td>{this.state.date}</td>
           </tbody>
         </table>
