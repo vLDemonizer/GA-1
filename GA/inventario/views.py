@@ -80,6 +80,11 @@ class UserCreate(LoginRequiredMixin, FormView):
 
         return super(UserCreate, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super(UserCreate, self).get_context_data(**kwargs)
+        context['is_superuser'] = json.dumps(self.request.user.is_superuser)
+        return context
+
 
 class ProductClassCreate(LoginRequiredMixin, CreateView):
     form_class = ProductClassForm
@@ -92,6 +97,12 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
             self.success_url = reverse_lazy('create-product')
 
         return super(ProductClassCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductClassCreate, self).get_context_data(**kwargs)
+        context['is_superuser'] = json.dumps(self.request.user.is_superuser)
+        return context
+
 
 class MoveInCreate(LoginRequiredMixin, FormView):
     form_class = MoveInForm
@@ -132,11 +143,16 @@ class MoveInCreate(LoginRequiredMixin, FormView):
             products.append(product)
 
         move_in.products.add(*products)
-       
+
         if "Save and Add another one" in form.cleaned_data['redirect']:
             self.success_url = reverse_lazy('move-in')
 
         return super(MoveInCreate, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(MoveInCreate, self).get_context_data(**kwargs)
+        context['is_superuser'] = json.dumps(self.request.user.is_superuser)
+        return context
 
 class MoveOutView(LoginRequiredMixin, FormView):
     form_class = MoveInForm
@@ -160,7 +176,7 @@ class MoveOutView(LoginRequiredMixin, FormView):
         context['reasons'] = json.dumps(settings.MOVEMENT_REASONS)
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
         return context
-        
+
 
 @login_required
 def log_out(request):

@@ -26,23 +26,44 @@ class DataList extends React.Component {
     for (var i = 0; i < products.length; i++) {
       product_list.push(<Option product={products[i]}/>);
     }
-    return (
-        <div className="form-group">
-          <label>Search Product</label>
-          <input
-            onInput={this.handleSelection}
-            id="product_info"
-            className="form-control"
-            type="text"
-            list="options"
-            autoComplete="off"
-            required={true}
-          />
-          <datalist id="options">
-            {product_list}
-          </datalist>
-        </div>
-    );
+    if (en){
+      return (
+          <div className="form-group">
+            <label>Search Product</label>
+            <input
+              onInput={this.handleSelection}
+              id="product_info"
+              className="form-control"
+              type="text"
+              list="options"
+              autoComplete="off"
+              required={true}
+            />
+            <datalist id="options">
+              {product_list}
+            </datalist>
+          </div>
+      );
+    }
+    else {
+      return (
+          <div className="form-group">
+            <label>Buscar Producto</label>
+            <input
+              onInput={this.handleSelection}
+              id="product_info"
+              className="form-control"
+              type="text"
+              list="options"
+              autoComplete="off"
+              required={true}
+            />
+            <datalist id="options">
+              {product_list}
+            </datalist>
+          </div>
+      );
+    }
   }
 }
 
@@ -101,55 +122,109 @@ class ProductDetails extends React.Component {
 
 
   render () {
-    return (
-      <div className="container-fluid">
-        <div className="form-group">
-          <label>Destiny</label>
-          <input
-            className="form-control"
-            type="text" id="id_destiny"
-            name="destiny"
-            value="Almacen"
-            readOnly={true}
-          />
+    if (en){
+      return (
+        <div className="container-fluid">
+          <div className="form-group">
+            <label>Destiny</label>
+            <input
+              className="form-control"
+              type="text" id="id_destiny"
+              name="destiny"
+              value="Almacen"
+              readOnly={true}
+            />
+          </div>
+          <DataList products={this.props.products} handleKey={this.handleSubmitKey}/>
+          <div className="form-group">
+            <label>Amount</label>
+            <input
+              id="id_amount"
+              name="amount"
+              className="form-control"
+              type="number"
+              value={this.state.amount}
+              onChange={this.handleAmountChange}
+              required={this.state.amount < 1 ? true : false}
+            />
+          </div>
+          <HiddenInput primary_key={this.state.key} />
+          <table className="table table-responsive">
+            <thead>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Brand</th>
+              <th>Size</th>
+              <th>Department</th>
+              <th>Amount</th>
+              <th>Stock</th>
+              <th>Date</th>
+            </thead>
+            <tbody>
+              <td>{this.state.name}</td>
+              <td>{this.state.type}</td>
+              <td>{this.state.brand}</td>
+              <td>{this.state.size}</td>
+              <td>{this.state.department}</td>
+              <td>{this.handleAmountChange ? this.state.amount : ''}</td>
+              <td>Nothing Yet</td>
+              <td>{this.state.date}</td>
+            </tbody>
+          </table>
         </div>
-        <DataList products={this.props.products} handleKey={this.handleSubmitKey}/>
-        <div className="form-group">
-          <label>Amount</label>
-          <input
-            id="id_amount"
-            name="amount"
-            className="form-control"
-            type="number"
-            value={this.state.amount}
-            onChange={this.handleAmountChange}
-            required={this.state.amount < 1 ? true : false}
-          />
+      );
+    }
+    else {
+      return (
+        <div className="container-fluid">
+          <div className="form-group">
+            <label>Destino</label>
+            <input
+              className="form-control"
+              type="text" id="id_destiny"
+              name="destiny"
+              value="Almacen"
+              readOnly={true}
+            />
+          </div>
+          <DataList products={this.props.products} handleKey={this.handleSubmitKey}/>
+          <div className="form-group">
+            <label>Cantidad</label>
+            <input
+              id="id_amount"
+              name="amount"
+              className="form-control"
+              type="number"
+              value={this.state.amount}
+              onChange={this.handleAmountChange}
+              required={this.state.amount < 1 ? true : false}
+            />
+          </div>
+          <HiddenInput primary_key={this.state.key} />
+          <table className="table table-responsive">
+            <thead>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Marca</th>
+              <th>Tamaño o Talla</th>
+              <th>Departamento</th>
+              <th>Cantidad</th>
+              <th>Stock</th>
+              <th>Fecha</th>
+            </thead>
+            <tbody>
+              <td>{this.state.name}</td>
+              <td>{this.state.type}</td>
+              <td>{this.state.brand}</td>
+              <td>{this.state.size}</td>
+              <td>{this.state.department}</td>
+              <td>{this.handleAmountChange ? this.state.amount : ''}</td>
+              <td>Nothing Yet</td>
+              <td>{this.state.date}</td>
+            </tbody>
+          </table>
         </div>
-        <HiddenInput primary_key={this.state.key} />
-        <table className="table table-responsive">
-          <thead>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Brand</th>
-            <th>Size</th>
-            <th>Department</th>
-            <th>Amount</th>
-            <th>Stock</th>
-            <th>Date</th>
-          </thead>
-          <tbody>
-            <td>{this.state.name}</td>
-            <td>{this.state.type}</td>
-            <td>{this.state.brand}</td>
-            <td>{this.state.size}</td>
-            <td>{this.state.department}</td>
-            <td>{this.handleAmountChange ? this.state.amount : ''}</td>
-            <td>Nothing Yet</td>
-            <td>{this.state.date}</td>
-          </tbody>
-        </table>
-      </div>
-    );
+      );
+    }
   }
 }
