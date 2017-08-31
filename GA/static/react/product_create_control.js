@@ -30,7 +30,7 @@ class Name extends React.Component {
   }
 
   render () {
-    if (en){
+    if (en) {
       return (
         <div className="form-group">
           <label>Name <small className="text-form text-muted">Character limit {this.state.current} of 100.</small></label>

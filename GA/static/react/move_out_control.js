@@ -25,9 +25,6 @@ class ProductList extends React.Component {
   render () {
     let products = this.props.products;
     var product_list = [];
-    if (en){
-
-    }
     for (var i = 0; i < products.length; i++) {
       product_list.push(<Option product={products[i]} key={'a' + i}/>);
     }
@@ -78,6 +75,7 @@ class Details extends React.Component {
       amount: 0,
       stock: 0,
       date: '',
+      amountError: false,
     }
 
     this.handleSubmitKey = this.handleSubmitKey.bind(this);
@@ -85,8 +83,7 @@ class Details extends React.Component {
   }
 
   handleSubmitKey(options, productText) {
-    var i = 0;
-    for(; i < options.length; i++) {
+    for(var i = 0; i < options.length; i++) {
       if (options[i].innerText === productText) {
         let product = this.props.products[i];0;
         $.ajax({
@@ -96,6 +93,7 @@ class Details extends React.Component {
             'location': $("#id_destiny").val(),
           },
           success: (data) => this.setState({stock: data})
+          
         });
         this.setState({
           key: product.pk,
@@ -111,16 +109,26 @@ class Details extends React.Component {
   }
 
   handleAmountChange(event) {
-    this.setState({amount: event.target.value});
+    let value = parseInt(event.target.value);
+    if (value > this.state.stock) {
+      this.setState({amountError: true});
+    } else {
+      this.setState({
+        amount: value,
+        amountError: false,
+      });
+    }
   }
 
   render () {
+    let errorMessage = (<div className="form-errors">Amount Error: You are trying to move more than there is in stock!</div>);
     return (
       <div>
         <ProductList
           products={this.props.products}
           handleKey={this.handleSubmitKey}
         />
+        {this.state.amountError? errorMessage: ''}
         <div className="form-group">
           <label>Amount</label>
           <input
