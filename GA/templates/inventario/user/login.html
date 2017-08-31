@@ -13,7 +13,12 @@
       </div>
       <form class="form-signin" method="post" autocomplete="off">
         {% csrf_token %}
-        <h2 class="form-signin-heading text-center">Welcome!</h2>
+        <h2 class="form-signin-heading text-center">Sign In</h2>
+        {% if form.username.errors %}
+        <div class="text-center">
+          <p class="form-errors">{{form.username.errors|striptags}}.</p>
+        </div>
+        {% endif %}
         <label for="inputEmail" class="sr-only">Username</label>
         <input type="text" id="id_username" name="username" class="form-control text-center" placeholder="Username" required="" autofocus="" autoComplete="off">
         <label for="inputPassword" class="sr-only">Password</label>
@@ -22,11 +27,6 @@
         <div class="text-center">
           <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
         </div>
-        {% if form.username.errors %}
-        <div class="text-center">
-          <p class="form-errors">{{form.errors}}.</p>
-        </div>
-        {% endif %}
       </form>
     </div>
   </div>

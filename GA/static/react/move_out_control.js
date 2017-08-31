@@ -43,7 +43,7 @@ class ReasonSelect extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      selectedOption: 'dotacion',
+      selectedOption: 'Dotacion',
     }
 
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -64,8 +64,8 @@ class ReasonSelect extends React.Component{
       <div className="row form-group">
         <div className="radio col">
           <label>
-            <input type="radio" value="dotacion"
-              checked={this.state.selectedOption === 'dotacion'}
+            <input type="radio" value="Dotacion"
+              checked={this.state.selectedOption === 'Dotacion'}
               onChange={this.handleOptionChange}
             />
               Dotacion
@@ -73,8 +73,8 @@ class ReasonSelect extends React.Component{
         </div>
         <div className="radio col">
           <label>
-            <input type="radio" value="deterioro"
-              checked={this.state.selectedOption === 'deterioro'}
+            <input type="radio" value="Deterioro"
+              checked={this.state.selectedOption === 'Deterioro'}
               onChange={this.handleOptionChange}
             />
               Deterioro
@@ -92,7 +92,7 @@ class ReasonSelect extends React.Component{
         <div className="radio col">
           <label>
             <input type="radio" value="Donacion"
-              checked={this.state.selectedOption === 'donacion'}
+              checked={this.state.selectedOption === 'Donacion'}
               onChange={this.handleOptionChange}
             />
               Donacion
@@ -100,8 +100,8 @@ class ReasonSelect extends React.Component{
         </div>
         <div className="radio col">
           <label>
-            <input type="radio" value="otros"
-              checked={this.state.selectedOption === 'otros'}
+            <input type="radio" value="Otros"
+              checked={this.state.selectedOption === 'Otros'}
               onChange={this.handleOptionChange}
             />
               Otros
