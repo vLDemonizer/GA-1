@@ -4,33 +4,64 @@
 {% block content %}
 <form id="id_form" method="post">
   {% csrf_token %}
-  {% if request.user.staff %}
-  <div class="jumbotron">
-    <h3 class="display-3 text-center">Create an User</h3>
-  </div>
-  {% enif %}
-  <div class="jumbotron">
-    <h3 class="display-3 text-center">Crear un Nuevo Usuario</h3>
-  </div>
-  <div id="root"></div>
-  <div class="text-center">
-    <div class="btn-group">
-      <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
-      <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-      <a href="{% url 'user-create' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+  {% if request.user.is_superuser %}
+    <div class="jumbotron">
+      <h3 class="display-3 text-center">Create a New User</h3>
     </div>
-  </div>
-  <br/>
-  <div class="row text-center">
-    <div class="col">
-      <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+    <div id="root"></div>
+    <div class="text-center">
+      <div class="btn-group">
+        <button
+          id="id_redirect"
+          name="redirect"
+          class="btn btn-primary btn-lg"
+          value=""
+          onClick="changeRedirect()">
+            Submit and Add
+        </button>
+        <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+        <a href="{% url 'user-create' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+      </div>
     </div>
-  </div>
+    <br/>
+    <div class="row text-center">
+      <div class="col">
+        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+      </div>
+    </div>
+  {% else %}
+    <div class="jumbotron">
+      <h3 class="display-3 text-center">Crear un Usuario Nuevo</h3>
+    </div>
+    <div id="root"></div>
+    <div class="text-center">
+      <div class="btn-group">
+        <button
+          id="id_redirect"
+          name="redirect"
+          class="btn btn-primary btn-lg"
+          value=""
+          onClick="changeRedirect()">
+            Aceptar y Crear Otro
+        </button>
+        <input id="id_btn_sub" type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+        <a href="{% url 'user-create' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
+      </div>
+    </div>
+    <br/>
+    <div class="row text-center">
+      <div class="col">
+        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+      </div>
+    </div>
+  {% endif %}
 </form>
 {% endblock %}
 
 {% block extra_scripts %}
 <script>
+  let en = JSON.parse('{{is_superuser}}');
+  document.getElementById('id_btn').style.display="none";
   function changeRedirect() {
     document.getElementById('id_redirect').value = "Save and Add another one";
     return;

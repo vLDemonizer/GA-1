@@ -3,7 +3,7 @@ class Option extends React.Component {
     let product = this.props.product.fields;
     let product_pk = this.props.product.pk;
     return (
-      <option 
+      <option
         name={product_pk}
       >{product.name} - {product.product_type} - {product.size} - {product.brand} - {product.department}
       </option>
@@ -25,19 +25,22 @@ class ProductList extends React.Component {
   render () {
     let products = this.props.products;
     var product_list = [];
+    if (en){
+
+    }
     for (var i = 0; i < products.length; i++) {
       product_list.push(<Option product={products[i]} key={'a' + i}/>);
     }
     return (
         <div className="form-group">
           <label>Search Product</label>
-          <input 
-            onInput={this.handleSelection} 
-            id="product_info" 
-            className="form-control" 
-            type="text" 
-            list="product_options" 
-            autoComplete="off" 
+          <input
+            onInput={this.handleSelection}
+            id="product_info"
+            className="form-control"
+            type="text"
+            list="product_options"
+            autoComplete="off"
           />
           <datalist id="product_options">
             {product_list}
@@ -51,11 +54,12 @@ class HiddenInput extends React.Component {
   render () {
     let name = this.props.name;
     return (
-      <input 
-        type="hidden" 
-        id={"id_" + name} 
-        name={name} 
+      <input
+        type="hidden"
+        id={"id_" + name}
+        name={name}
         value={this.props.primary_key}
+        required
       />
     );
   }
@@ -113,17 +117,17 @@ class Details extends React.Component {
   render () {
     return (
       <div>
-        <ProductList 
-          products={this.props.products} 
+        <ProductList
+          products={this.props.products}
           handleKey={this.handleSubmitKey}
         />
         <div className="form-group">
           <label>Amount</label>
-          <input 
-            id="id_amount" 
-            name="amount" 
-            className="form-control" 
-            type="number" 
+          <input
+            id="id_amount"
+            name="amount"
+            className="form-control"
+            type="number"
             onChange={this.handleAmountChange}
           />
         </div>
@@ -190,7 +194,7 @@ class ReasonSelect extends React.Component {
       } else {
         this.setState({showTextArea: false});
       }
-  } 
+  }
 
   render () {
     let reasons = this.props.reasons;
@@ -198,9 +202,9 @@ class ReasonSelect extends React.Component {
     for (var i = 0; i < reasons.length; i++) {
       if (i == (reasons.length - 1)) {
         reason_list.push(
-          <option 
-            value={i} 
-            key={'c' + i} 
+          <option
+            value={i}
+            key={'c' + i}
             onClick={this.checkReason}
           >{reasons[i]}</option>
         );
@@ -213,10 +217,10 @@ class ReasonSelect extends React.Component {
       textArea.push(
         <div className="form-group">
           <label>Reason Description</label>
-          <textarea 
-            className="form-control" 
-            id="id_reason_description" 
-            name="reason_description" 
+          <textarea
+            className="form-control"
+            id="id_reason_description"
+            name="reason_description"
             rows="2"
           ></textarea>
         </div>
@@ -225,9 +229,9 @@ class ReasonSelect extends React.Component {
     return (
       <div className="form-group">
         <label>Reason</label>
-        <select id="id_reason" 
-          name="reason" 
-          onChange={this.checkReason} 
+        <select id="id_reason"
+          name="reason"
+          onChange={this.checkReason}
           className="form-control"
         >
           {reason_list}
@@ -304,7 +308,7 @@ class Users extends React.Component {
         <label>
           Dispatched by: {user.first_name} {user.last_name}
         </label>
-        <input 
+        <input
         id="id_given_by"
         name="given_by"
         className="form-control"
@@ -323,7 +327,7 @@ class MoveOut extends React.Component{
         <LocationSelect locations={this.props.locations} />
         <Details products={this.props.products} />
         <ReasonSelect reasons={this.props.reasons} />
-        <Users 
+        <Users
           authorizedUsers={this.props.admin_users}
           receivingUsers={this.props.retrieving_users}
           dispatchUser={this.props.current_user}

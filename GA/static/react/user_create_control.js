@@ -19,21 +19,41 @@ class First_Name extends React.Component{
   }
 
   render(){
-    return (
-      <div className="form-group">
-        <label>First Name: <small className="text-from text-muted">Character limit {this.state.current} of 30.</small></label>
-        <input
-          id="id_first_name"
-          name="first_name"
-          type="text"
-          className="form-control"
-          placeholder="Enter your First Name"
-          value={this.state.value}
-          onChange={this.handleChange}
-          required
-        />
-      </div>
-    );
+    if (en){
+      return (
+        <div className="form-group">
+          <label>First Name: <small className="text-from text-muted">Character limit {this.state.current} of 30.</small></label>
+          <input
+            id="id_first_name"
+            name="first_name"
+            type="text"
+            className="form-control"
+            placeholder="Enter your First Name"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
+    else{
+      return (
+        <div className="form-group">
+          <label>Nombre: <small className="text-from text-muted"> Limite de caracteres: {this.state.current} de 30.</small></label>
+          <input
+            id="id_first_name"
+            name="first_name"
+            type="text"
+            className="form-control"
+            placeholder="Ingrese su Primer Nombre"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
+
   }
 };
 
@@ -43,22 +63,42 @@ class Last_Name extends First_Name{
   }
 
   render(){
-    return (
-      <div className="form-group">
-        <label>Last Name:
-          <small className="text-from text-muted"> Character limit {this.state.current} of 30.</small></label>
-        <input
-          id="id_last_name"
-          name="last_name"
-          type="text"
-          className="form-control"
-          placeholder="Enter your Last Name"
-          value={this.state.value}
-          onChange={this.handleChange}
-          required
-        />
-      </div>
-    );
+    if(en){
+      return (
+        <div className="form-group">
+          <label>Last Name:
+            <small className="text-from text-muted"> Character limit {this.state.current} of 30.</small></label>
+          <input
+            id="id_last_name"
+            name="last_name"
+            type="text"
+            className="form-control"
+            placeholder="Enter your Last Name"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className="form-group">
+          <label>Apellido:
+            <small className="text-from text-muted"> Limite de caracteres: {this.state.current} de 30.</small></label>
+          <input
+            id="id_last_name"
+            name="last_name"
+            type="text"
+            className="form-control"
+            placeholder="Ingrese su Apellido"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
   }
 };
 
@@ -84,22 +124,42 @@ class Email_Address extends React.Component{
   }
 
   render(){
-    return (
-      <div className="form-group">
-        <label>Email Address:
-          <small className="text-from text-muted"> Character limit {this.state.current} of 254.</small></label>
-        <input
-          id="id_email"
-          name="email"
-          type="email"
-          className="form-control"
-          placeholder="Email here"
-          value={this.state.value}
-          onChange={this.handleChange}
-          required
-        />
-      </div>
-    );
+    if(en){
+      return (
+        <div className="form-group">
+          <label>Email Address:
+            <small className="text-from text-muted"> Character limit {this.state.current} of 254.</small></label>
+          <input
+            id="id_email"
+            name="email"
+            type="email"
+            className="form-control"
+            placeholder="Email here"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className="form-group">
+          <label>Direccion de Correo Electronico:
+            <small className="text-from text-muted"> Limite de caracteres: {this.state.current} de 254.</small></label>
+          <input
+            id="id_email"
+            name="email"
+            type="email"
+            className="form-control"
+            placeholder="Email"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
   }
 };
 
@@ -124,22 +184,42 @@ class UserName extends React.Component{
   }
 
   render(){
-    return (
-      <div className="form-group">
-        <label>Username:
-          <small className="text-from text-muted"> Character limit {this.state.current} of 150.</small></label>
-        <input
-          id="id_username"
-          name="username"
-          type="text"
-          className="form-control"
-          placeholder="Enter your Username"
-          value={this.state.value}
-          onChange={this.handleChange}
-          required
-        />
-      </div>
-    );
+    if (en){
+      return (
+        <div className="form-group">
+          <label>Username:
+            <small className="text-from text-muted"> Character limit {this.state.current} of 150.</small></label>
+          <input
+            id="id_username"
+            name="username"
+            type="text"
+            className="form-control"
+            placeholder="Enter your Username"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
+    else{
+      return (
+        <div className="form-group">
+          <label>Usuario:
+            <small className="text-from text-muted"> Limite de caracteres: {this.state.current} de 150.</small></label>
+          <input
+            id="id_username"
+            name="username"
+            type="text"
+            className="form-control"
+            placeholder="Usuario"
+            value={this.state.value}
+            onChange={this.handleChange}
+            required
+          />
+        </div>
+      );
+    }
   }
 };
 
@@ -160,82 +240,161 @@ class Password extends React.Component{
   }
 
   render(){
-    return (
-      <div className="form-group">
+    if (en){
+      return (
         <div className="form-group">
-          <label>Password:</label>
-          <input
-            id="id_password"
-            name="password"
-            type="password"
-            className="form-control"
-            value={this.props.value1}
-            onChange={this.handleOnChange1}
-            required
-          />
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              id="id_password"
+              name="password"
+              type="password"
+              className="form-control"
+              value={this.props.value1}
+              onChange={this.handleOnChange1}
+              required
+            />
+          </div>
+          <div className="form-group">
+          <label>Password (Confirm):</label>
+            <input
+              type="password"
+              className="form-control"
+              value={this.props.value2}
+              onChange={this.handleOnChange2}
+              required
+            />
+          </div>
         </div>
+      );
+    }
+    else {
+      return (
         <div className="form-group">
-        <label>Password (Confirm):</label>
-          <input
-            type="password"
-            className="form-control"
-            value={this.props.value2}
-            onChange={this.handleOnChange2}
-            required
-          />
+          <div className="form-group">
+            <label>Contraseña:</label>
+            <input
+              id="id_password"
+              name="password"
+              type="password"
+              className="form-control"
+              value={this.props.value1}
+              onChange={this.handleOnChange1}
+              required
+            />
+          </div>
+          <div className="form-group">
+          <label>Contraseña (Confirmar):</label>
+            <input
+              type="password"
+              className="form-control"
+              value={this.props.value2}
+              onChange={this.handleOnChange2}
+              required
+            />
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 };
 
 class Enterprise_Info extends React.Component{
     render(){
-      return (
-        <div className="form-group">
-          <label>Enterprise</label>
-          <input
-            id="id_enterprise"
-            name="enterprise"
-            type="text"
-            className="form-control"
-            readOnly="True"
-            value="Grupo Alcars"
-          />
-          <label>Country</label>
-          <input
-            id="id_country"
-            name="country"
-            type="text"
-            className="form-control"
-            readOnly="True"
-            value="Venezuela"
-          />
-          <label>City</label>
-          <input
-            id="id_city"
-            name="city"
-            type="text"
-            className="form-control"
-            readOnly="True"
-            value="Puerto La Cruz"
-          />
-          <label>Designation</label>
-          <input
-            id="id_designation"
-            name="designation"
-            type="text"
-            className="form-control"
-          />
-          <label>Admin Access</label>
-          <input
-            id="id_admin"
-            name="admin"
-            type="checkbox"
-            className="form-control"
-          />
-        </div>
-      );
+      if (en){
+        return (
+          <div className="form-group">
+            <label>Enterprise</label>
+            <input
+              id="id_enterprise"
+              name="enterprise"
+              type="text"
+              className="form-control"
+              readOnly="True"
+              value="Grupo Alcars"
+            />
+            <label>Country</label>
+            <input
+              id="id_country"
+              name="country"
+              type="text"
+              className="form-control"
+              readOnly="True"
+              value="Venezuela"
+            />
+            <label>City</label>
+            <input
+              id="id_city"
+              name="city"
+              type="text"
+              className="form-control"
+              readOnly="True"
+              value="Puerto La Cruz"
+            />
+            <label>Designation</label>
+            <input
+              id="id_designation"
+              name="designation"
+              type="text"
+              className="form-control"
+            />
+            <label>Admin Access</label>
+            <input
+              id="id_admin"
+              name="admin"
+              type="checkbox"
+              className="form-control"
+            />
+          </div>
+        );
+      }
+      else {
+        return (
+          <div className="form-group">
+            <label>Empresa</label>
+            <input
+              id="id_enterprise"
+              name="enterprise"
+              type="text"
+              className="form-control"
+              readOnly="True"
+              value="Grupo Alcars"
+            />
+            <label>Pais</label>
+            <input
+              id="id_country"
+              name="country"
+              type="text"
+              className="form-control"
+              readOnly="True"
+              value="Venezuela"
+            />
+            <label>Ciudad</label>
+            <input
+              id="id_city"
+              name="city"
+              type="text"
+              className="form-control"
+              readOnly="True"
+              value="Puerto La Cruz"
+            />
+            <label>Cargo</label>
+            <input
+              id="id_designation"
+              name="designation"
+              type="text"
+              className="form-control"
+            />
+            <input
+              id="id_admin"
+              name="admin"
+              type="checkbox"
+              className="form-control"
+            />
+            <label>Poder Administrativo en la Plataforma</label>
+          </div>
+        );
+      }
     }
 };
 
@@ -302,6 +461,7 @@ class CreateUserForm extends React.Component{
           </div>
           <div className="text-center">
             <input
+              id="id_btn"
               className="btn btn-primary btn-lg"
               type="submit"
               value="Submit"
