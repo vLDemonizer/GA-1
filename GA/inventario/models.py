@@ -50,7 +50,7 @@ class Product(models.Model):
     full_code = models.CharField(max_length=60, blank=True, unique=True)
     available = models.BooleanField(default=True)
     location = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
-    
+
     def __str__(self):
         return self.product_class.name + '-' + self.full_code
 
@@ -77,9 +77,9 @@ class MoveOut(MoveIn):
 
 
 class User(AbstractUser):
-    enterprise = models.CharField(max_length=5, default=settings.ENTERPRISE)
-    country = models.CharField(max_length=5, default=settings.COUNTRY)
-    city = models.CharField(max_length=10, default=settings.CITY)
+    enterprise = models.CharField(max_length=20, default=settings.ENTERPRISE)
+    country = models.CharField(max_length=20, default=settings.COUNTRY)
+    city = models.CharField(max_length=50, default=settings.CITY)
     designation =  models.CharField(max_length=50)
     admin = models.BooleanField(default=False)
     move_out = models.ForeignKey(MoveOut, blank=True, null=True)
