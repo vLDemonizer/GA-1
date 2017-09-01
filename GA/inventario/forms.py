@@ -28,6 +28,7 @@ class MoveInForm(forms.Form):
     destiny = forms.CharField(max_length=30)
     product_class = forms.IntegerField()
 
+
 class MoveOutForm(forms.Form):
     redirect = forms.CharField(max_length=50, required=False)
     amount = forms.IntegerField()

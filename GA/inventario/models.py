@@ -67,6 +67,7 @@ class MoveIn(models.Model):
 
 
 class MoveOut(MoveIn):
+    origin = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
     authorized_by = models.SmallIntegerField(blank=False)
     received_by = models.SmallIntegerField(blank=False)
     given_by = models.SmallIntegerField(blank=False)
@@ -74,7 +75,12 @@ class MoveOut(MoveIn):
     reason_description = models.TextField(max_length=300, blank=True, null=True)
 
     def __str__(self):
-        return self.product_class.name + ' Moved out on the ' + str(self.date) + ' ' + self.reason
+        return (
+            self.product_class.name + ' %d' % self.products.count()
+            + ' Moved out on the ' + str(self.date)
+            + ' ' + self.reason + ' From: ' + self.origin
+            + ' To: ' + self.destiny
+        )
 
 
 class User(AbstractUser):

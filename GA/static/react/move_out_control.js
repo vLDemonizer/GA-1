@@ -29,7 +29,7 @@ class ProductList extends React.Component {
       product_list.push(<Option product={products[i]} key={'a' + i}/>);
     }
     return (
-        <div className="form-group">
+        <div className="form-inline">
           <label>Search Product</label>
           <input
             onInput={this.handleSelection}
@@ -72,7 +72,7 @@ class Details extends React.Component {
       brand: '',
       size: '',
       department: '',
-      amount: 0,
+      amount: 1,
       stock: 0,
       date: '',
       amountError: false,
@@ -90,7 +90,7 @@ class Details extends React.Component {
           url: '/ajax/get_product_stock/',
           data : {
             'product_class': product.pk,
-            'location': $("#id_destiny").val(),
+            'location': $("#id_from_location").val(),
           },
           success: (data) => this.setState({stock: data})
           
@@ -109,13 +109,20 @@ class Details extends React.Component {
   }
 
   handleAmountChange(event) {
-    let value = parseInt(event.target.value);
-    if (value > this.state.stock) {
-      this.setState({amountError: true});
+    let rawValue = event.target.value;
+    if (rawValue !== '') {
+      let value = parseInt(rawValue);
+      if (value > this.state.stock) {
+        this.setState({amountError: true});
+      } else {
+        this.setState({
+          amount: value,
+          amountError: false,
+        });
+      }
     } else {
       this.setState({
-        amount: value,
-        amountError: false,
+        amount: 1
       });
     }
   }
@@ -172,11 +179,16 @@ class LocationSelect extends React.Component {
     let locations = this.props.locations;
     let name = this.props.name
     var location_list = [];
-    for (var i = 0; i < locations.length; i++) {
+    // From can't have Desincorporacion 
+    var x = 0;
+    if (this.props.from) {
+      x = 1;
+    }
+    for (var i = 0; i < locations.length - x; i++) {
       location_list.push(<option value={i} key={'e' + i}>{locations[i]}</option>);
     }
     return (
-      <div className="form-group">
+      <div className="col">
         <label>{this.props.tittle}</label>
         <select id={"id_" + name} name={name} className="form-control">
           {location_list}
@@ -190,11 +202,14 @@ class Locations extends React.Component {
   render () {
     var locations = [];
     for (var i = 0; i < this.props.names.length; i++) {
-      locations.push(<LocationSelect locations={this.props.locations} name={this.props.names[i]} tittle={this.props.tittles[i]} />);
+      if(i === 0) {
+        locations.push(<LocationSelect from={true} locations={this.props.locations} name={this.props.names[i]} tittle={this.props.tittles[i]} />);
+      } else {
+        locations.push(<LocationSelect locations={this.props.locations} name={this.props.names[i]} tittle={this.props.tittles[i]} />);
+      }
     }
-
     return (
-      <div>
+      <div className="row" style={{marginBottom: "1rem"}}>
         {locations}
       </div>
     );
@@ -345,10 +360,52 @@ class Users extends React.Component {
 }
 
 class MoveOut extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: ""
+    };
+    this.checkDirections = this.checkDirections.bind(this);
+    this.names = ["from_location", "destiny"];
+    this.tittles = ["From", "To"];
+  }
+
+  checkDirections(e) {
+    let from = $("#id_" + this.names[0]).val();
+    let to = $("#id_" + this.names[1]).val();
+    if (from === to) {
+      this.setState({
+        error: "You need to change the location, can't be the same."
+      });
+      e.preventDefault();
+      return;
+    }
+    if (from === '1' && to === '2') {
+      this.setState({
+        error: "Office can't go to Plant."
+      });
+      e.preventDefault();
+      return;
+    }
+    if (from === '2' && to === '1') {
+      this.setState({
+        error: "Plant can't go to Office."
+      });
+      e.preventDefault();
+      return;
+    }
+    this.setState({
+      error: ''
+    });
+  }
+
   render () {
     return (
       <div className="container-fluid">
-        <Locations locations={this.props.locations} names={["from_location", "destiny"]} tittles={["From", "To"]}/>
+        <div className="form-errors text-center">
+          {this.state.error}
+        </div>
+        <Locations locations={this.props.locations} names={this.names} tittles={this.tittles} className="row"/>
         <Details products={this.props.products} />
         <ReasonSelect reasons={this.props.reasons} />
         <Users
@@ -356,6 +413,13 @@ class MoveOut extends React.Component{
           receivingUsers={this.props.retrieving_users}
           dispatchUser={this.props.current_user}
         />
+        <div className="text-center">
+          <div className="btn-group">
+            <input type="submit" className="btn btn-primary btn-lg" value="Submit" onClick={this.checkDirections}/>
+            <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Submit and Add</button>
+          </div>
+        </div>
+        <br/>
       </div>
     );
   }
