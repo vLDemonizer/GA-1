@@ -29,7 +29,7 @@ class ProductList extends React.Component {
       product_list.push(<Option product={products[i]} key={'a' + i}/>);
     }
     return (
-        <div className="form-inline">
+        <div className="col" style={{marginBottom: "1rem"}}>
           <label>Search Product</label>
           <input
             onInput={this.handleSelection}
@@ -131,20 +131,22 @@ class Details extends React.Component {
     let errorMessage = (<div className="form-errors">Amount Error: You are trying to move more than there is in stock!</div>);
     return (
       <div>
-        <ProductList
-          products={this.props.products}
-          handleKey={this.handleSubmitKey}
-        />
-        {this.state.amountError? errorMessage: ''}
-        <div className="form-group">
-          <label>Amount</label>
-          <input
-            id="id_amount"
-            name="amount"
-            className="form-control"
-            type="number"
-            onChange={this.handleAmountChange}
+        <div className="row">
+          <ProductList
+            products={this.props.products}
+            handleKey={this.handleSubmitKey}
           />
+          {this.state.amountError? errorMessage: ''}
+          <div className="col-2" style={{marginBottom: "1rem"}}>
+            <label>Amount</label>
+            <input
+              id="id_amount"
+              name="amount"
+              className="form-control"
+              type="number"
+              onChange={this.handleAmountChange}
+            />
+          </div>
         </div>
         <HiddenInput primary_key={this.state.key} name={"product_class"}/>
         <table className="table table-responsive">
@@ -316,7 +318,7 @@ class UsersComponent extends React.Component {
       );
     }
     return (
-      <div className="form-group">
+      <div>
         <label>{this.props.tittle}</label>
         <input
           onInput={this.handleKey}
@@ -341,19 +343,31 @@ class Users extends React.Component {
     let user = this.props.dispatchUser[0].fields
     let user_pk = this.props.dispatchUser[0].pk
     return (
-      <div className="form-group">
-        <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Authorized By"}/>
-        <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Received By"}/>
-        <label>
-          Dispatched by: {user.first_name} {user.last_name}
-        </label>
-        <input
-        id="id_given_by"
-        name="given_by"
-        className="form-control"
-        type="hidden"
-        value={user_pk}
-        />
+      <div className="row">
+        <div className="col">
+          <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Authorized By"}/>
+        </div>
+        <div className="col">
+          <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Received By"}/>
+        </div>
+        <div className="col">
+          <div className="text-center">
+            <label>
+              Dispatched by:
+            </label>
+            <br />
+            <p>
+              {user.first_name} {user.last_name}
+            </p>
+            <input
+            id="id_given_by"
+            name="given_by"
+            className="form-control"
+            type="hidden"
+            value={user_pk}
+            />
+          </div>
+        </div>
       </div>
     );
   }
@@ -413,7 +427,7 @@ class MoveOut extends React.Component{
           receivingUsers={this.props.retrieving_users}
           dispatchUser={this.props.current_user}
         />
-        <div className="text-center">
+        <div className="text-center" style={{marginTop: "1rem"}}>
           <div className="btn-group">
             <input type="submit" className="btn btn-primary btn-lg" value="Submit" onClick={this.checkDirections}/>
             <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Submit and Add</button>
