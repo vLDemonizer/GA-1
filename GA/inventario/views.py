@@ -160,12 +160,6 @@ class MoveOutView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('home')
     login_url = reverse_lazy('login')
 
-    def form_valid(self, form):
-        if "Save and Add another one" in form.cleaned_data['redirect']:
-            self.success_url = reverse_lazy('create-product')
-
-        return super(ProductClassCreate, self).form_valid(form)
-
     def get_context_data(self, **kwargs):
         context = super(MoveOutView, self).get_context_data(**kwargs)
         context['product_class'] = serializers.serialize('json', ProductClass.objects.all())
@@ -179,24 +173,51 @@ class MoveOutView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         amount = form.cleaned_data['amount']
-        product_class = form.cleaned_data['product_class']
-        destiny = form.cleaned_data['destiny']
-        reason = form.cleaned_data['reason']
+        product_class_pk = form.cleaned_data['product_class']
+        origin = settings.LOCATIONS[int(form.cleaned_data['from_location'])]
+        destiny = settings.LOCATIONS[int(form.cleaned_data['destiny'])]
+        reason = settings.MOVEMENT_REASONS[int(form.cleaned_data['reason'])]
         reason_description = form.cleaned_data['reason_description']
         authorized_by = form.cleaned_data['authorized_by']
         received_by = form.cleaned_data['received_by']
-        dispatched_by = self.request.user
-        print('Amount: %d' % amount)
-        print(ProductClass.objects.get(pk=product_class))
-        print('Destiny: ' + destiny)
-        print('Reason: ' + reason)
-        print('Description ' + reason_description)
-        print('Authorized by: %d' % authorized_by)
-        print('Received by: %d' % received_by)
-        print(dispatched_by)
+        given_by = self.request.user.pk
 
+        product_class = ProductClass.objects.get(pk=product_class_pk)
+
+        products = Product.objects.filter(
+            product_class=product_class,
+            location=origin,
+        )[:amount]
+
+        if destiny == settings.LOCATIONS[4] or product_class.is_liquid: #If it's going to become unavailable
+            for product in products:
+                product.location = destiny
+                product.available = False
+                product.save()
+        else:
+            for product in products:
+                product.location = destiny
+                product.save()
+
+        move_out = MoveOut.objects.create(
+            origin=origin,
+            destiny=destiny,
+            product_class=product_class,
+            authorized_by=authorized_by,
+            received_by=received_by,
+            given_by=given_by,
+            reason=reason,
+            reason_description=reason_description,
+        )
+        move_out.products.add(*products)
+        move_out.save()
+        print(move_out)
+
+        if "Save and Add another one" in form.cleaned_data['redirect']:
+            self.success_url = reverse_lazy('move-out')
         return super(MoveOutView, self).form_valid(form)
         
+
 @login_required
 def log_out(request):
     logout(request)
@@ -230,8 +251,21 @@ def get_product_stock(request):
         location=settings.LOCATIONS[location],
         available=True,
     ).count()
-    print(stock)
     print(settings.LOCATIONS[location])
+    return HttpResponse(
+        json.dumps(stock),
+        content_type = 'application/javascript; charset=utf8'
+    )
+
+
+@login_required
+def get_product_global_stock(request):
+    pk = int(request.GET.get('product_class', None))
+    product_class = ProductClass.objects.get(pk=pk)
+    stock = Product.objects.filter(
+        product_class=product_class,
+        available=True,
+    ).count()
     return HttpResponse(
         json.dumps(stock),
         content_type = 'application/javascript; charset=utf8'

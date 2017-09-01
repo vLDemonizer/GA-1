@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import (
     UserCreate, MoveInCreate, MoveOutView, ProductClassCreate,
-    LandingPage, UserCreate, Login, log_out,
+    LandingPage, UserCreate, Login, log_out, get_product_global_stock,
     get_product_class_details, get_products, get_product_stock,
 )
 
@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^ajax/product_class_details/$', get_product_class_details, name='get_product_class'),
     url(r'^ajax/products/$', get_products, name='get_products'),
     url(r'^ajax/get_product_stock', get_product_stock, name='get_product_stock'),
-
+    url(r'^ajax/get_product_global_stock', get_product_global_stock, name='get_product_global_stock'),
 
 
 

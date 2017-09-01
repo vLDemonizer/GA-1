@@ -86,6 +86,7 @@ class ProductDetails extends React.Component {
       size: '',
       department: '',
       amount: 0,
+      stock: 0,
       date: '',
     }
 
@@ -94,10 +95,17 @@ class ProductDetails extends React.Component {
   }
 
   handleSubmitKey(options, productText) {
-    var i = 0;
-    for(; i < options.length; i++) {
+    for (var i = 0; i < options.length; i++) {
       if (options[i].innerText === productText) {
         let product = this.props.products.products[i];
+        $.ajax({
+          url: '/ajax/get_product_global_stock/',
+          data : {
+            'product_class': product.pk,
+          },
+          success: (data) => this.setState({stock: data})
+          
+        });
         this.setState({
           key: product.pk,
           name: product.name,
@@ -166,7 +174,7 @@ class ProductDetails extends React.Component {
               <td>{this.state.size}</td>
               <td>{this.state.department}</td>
               <td>{this.handleAmountChange ? this.state.amount : ''}</td>
-              <td>Nothing Yet</td>
+              <td>{this.state.stock}</td>
               <td>{this.state.date}</td>
             </tbody>
           </table>
