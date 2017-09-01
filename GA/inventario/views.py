@@ -27,6 +27,15 @@ class Login(FormView):
     form_class = LoginForm
     template_name = 'inventario/user/login.html'
     success_url = reverse_lazy('home')
+    redirect_field_name = 'redirect_to'
+    redirect_authenticated_user = True
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse_lazy('home'))
+
+        return super(Login, self).get(request, *args, **kwargs)
+        
 
     def form_valid(self, form):
         username = form.cleaned_data['username']

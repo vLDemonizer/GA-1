@@ -24,7 +24,7 @@ class ProductClass(models.Model):
     description = models.TextField(max_length=120, blank=True)
     code = models.CharField(max_length=5, unique=True, default=generate_product_code)
     min_amount = models.SmallIntegerField(blank=True, null=True)
-    is_liquid = models.BooleanField(default=False)
+    is_disposable = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

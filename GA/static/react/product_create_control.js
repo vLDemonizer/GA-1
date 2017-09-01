@@ -248,10 +248,10 @@ class Size extends React.Component {
             required
           />
           <br />
-          <label className="btn btn-info"><span style={{color: 'white'}}>Is Liquid? </span>
+          <label className="btn btn-info"><span style={{color: 'white'}}>Is Liquid or Disposable? </span>
           <input
-            id="id_is_liquid"
-            name="is_liquid"
+            id="id_is_disposable"
+            name="is_disposable"
             type="checkbox"
             autoComplete="off"
           />
@@ -274,10 +274,10 @@ class Size extends React.Component {
             required
           />
           <br />
-          <label className="btn btn-info"><span style={{color: 'white'}}>Es Liquido? </span>
+          <label className="btn btn-info"><span style={{color: 'white'}}>Es Liquido o Desechable? </span>
           <input
-            id="id_is_liquid"
-            name="is_liquid"
+            id="id_is_disposable"
+            name="is_disposable"
             type="checkbox"
             autoComplete="off"
           />
