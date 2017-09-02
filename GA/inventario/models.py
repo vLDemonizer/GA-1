@@ -30,7 +30,11 @@ class ProductClass(models.Model):
     their_value = models.FloatField(default=0)
 
     def __str__(self):
-        return self.name + self.product_type + self.size + self.brand + self.department
+        return (
+            self.name + ' ' + self.product_type + ' '
+            + self.size +  ' ' + self.brand + ' '
+            + self.department
+        )
 
     def clean_fields(self, exclude=None):
         super(ProductClass, self).clean_fields(exclude=exclude)

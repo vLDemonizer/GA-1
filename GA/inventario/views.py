@@ -128,6 +128,10 @@ class MoveInCreate(LoginRequiredMixin, FormView):
         products = []
 
         product_class = ProductClass.objects.get(pk=pk)
+        print(product_class)
+        print(product_class.cost_value)
+        print(product_class.our_value)
+        print(product_class.their_value)
         move_in = MoveIn.objects.create(
             destiny=destiny,
             product_class=product_class,
