@@ -110,6 +110,7 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ProductClassCreate, self).get_context_data(**kwargs)
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
+        context['is_staff'] = json.dumps(self.request.user.is_staff)
         return context
 
 
@@ -198,7 +199,7 @@ class MoveOutView(LoginRequiredMixin, FormView):
             location=origin,
         )[:amount]
 
-        if destiny == settings.LOCATIONS[4] or product_class.is_liquid: #If it's going to become unavailable
+        if destiny == settings.LOCATIONS[4] or product_class.is_disposable: #If it's going to become unavailable
             for product in products:
                 product.location = destiny
                 product.available = False
@@ -220,7 +221,6 @@ class MoveOutView(LoginRequiredMixin, FormView):
         )
         move_out.products.add(*products)
         move_out.save()
-        print(move_out)
 
         if "Save and Add another one" in form.cleaned_data['redirect']:
             self.success_url = reverse_lazy('move-out')

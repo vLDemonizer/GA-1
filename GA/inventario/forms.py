@@ -7,6 +7,9 @@ from .models import ProductClass, MoveIn, MoveOut, User
 class ProductClassForm(ModelForm):
     redirect = forms.CharField(max_length=50, required=False)
     is_disposable = forms.BooleanField(widget=CheckboxInput, required=False)
+    cost_value = forms.FloatField(required=False)
+    our_value = forms.FloatField(required=False)
+    their_value = forms.FloatField(required=False)
 
     class Meta:
         model = ProductClass
@@ -19,6 +22,9 @@ class ProductClassForm(ModelForm):
             'min_amount',
             'description',
             'is_disposable',
+            'cost_value',
+            'our_value',
+            'their_value',
         ]
 
 
