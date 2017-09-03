@@ -81,6 +81,14 @@
     <script src="{% static 'js/babel.js' %}"></script>
     <script src="{% static 'js/react.js' %}"></script>
     <script src="{% static 'js/react-dom.js' %}"></script>
-    {% block extra_scripts %}{% endblock %}
+    {% block extra_scripts %}
+    <script>
+      $(document).ready(function () {
+
+          $('#id_modal').modal('show');
+
+      });
+    </script>
+    {% endblock %}
   </body>
 </html>
