@@ -109,7 +109,13 @@
           </thead>
           <tbody>
             {% for product in products %}
-              <tr>
+              <tr
+                {% if product.stock <= product.min_amount and product.stock > 0 %}
+                  class="table-warning"
+                {% endif%}
+                {% if product.stock == 0 %}
+                  class="table-danger"
+                {% endif%}>
                 <td>{{product.name}}</td>
                 <td>{{product.product_type}}</td>
                 <td>{{product.size}}</td>
