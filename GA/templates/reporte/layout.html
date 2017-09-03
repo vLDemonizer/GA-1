@@ -10,6 +10,7 @@
   </head>
   <body>
     {% block raw_content %}
+
     {% if request.user.is_superuser %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand active" href="#">
@@ -71,6 +72,7 @@
       </div>
     </nav>
     {% endif %}
+
     {% endblock %}
     <div class="container">
       {% block content %}{% endblock %}
@@ -81,12 +83,6 @@
     <script src="{% static 'js/babel.js' %}"></script>
     <script src="{% static 'js/react.js' %}"></script>
     <script src="{% static 'js/react-dom.js' %}"></script>
-    {% block extra_scripts %}
-    <script>
-      $(document).ready(function () {
-          $('#id_modal').modal('show');
-      });
-    </script>
-    {% endblock %}
+    {% block extra_scripts %} {% endblock %}
   </body>
 </html>

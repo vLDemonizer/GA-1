@@ -25,10 +25,10 @@ class LandingPage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         products = []
-        for product in ProductClass.objects.all():
+        for product in ProductClass.objects.all().order_by('name'):
             if product.low_stock:
                 products.append(product)
-        context['products'] = []
+        context['products'] = products
         return context
 
 class Login(FormView):
@@ -43,7 +43,7 @@ class Login(FormView):
             return redirect(reverse_lazy('inventario:home'))
 
         return super(Login, self).get(request, *args, **kwargs)
-        
+
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
@@ -273,7 +273,7 @@ class MoveOutView(LoginRequiredMixin, FormView):
         if "Save and Add another one" in form.cleaned_data['redirect']:
             self.success_url = reverse_lazy('inventario:move-out')
         return super(MoveOutView, self).form_valid(form)
-        
+
 
 @login_required
 def log_out(request):

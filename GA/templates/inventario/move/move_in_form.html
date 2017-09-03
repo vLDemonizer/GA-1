@@ -20,7 +20,7 @@
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancel</a>
       </div>
     </div>
   {% else %}
@@ -32,7 +32,7 @@
     <div class="text-center">
       <div class="btn-group">
         <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Cargar y Añadir Otro</button>
-        <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
+        <input type="submit" class="btn btn-primary btn-lg" value="Cargar"/>
         <a href="{% url 'inventario:move-in' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
       </div>
     </div>

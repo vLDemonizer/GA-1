@@ -1,0 +1,101 @@
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+{% if request.user.is_superuser %}
+<h1 class="display-2 text-center">Reports Zone</h1>
+{% else %}
+<h1 class="display-2 text-center">Reportes</h1>
+{% endif %}
+{% if request.user.is_superuser %}
+<!-- Cards Items -->
+  <div class="row form-group text-center">
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/general_report.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">General Report</h4>
+          <a class="btn btn-primary btn-lg" href="">General</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Date Report</h4>
+          <a class="btn btn-primary btn-lg" data-toggle="modal" href="#id_modal_date">Date</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col form-item">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/product_report.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Product Report</h4>
+          <a class="btn btn-primary btn-lg" href="">Product</a>
+        </div>
+      </div>
+    </div>
+
+  <div class="col form-item">
+    <div class="card" style="width: 15rem;">
+      <img class="card-img-top" src="{% static 'img/location_report.png' %}" alt="Card image cap">
+      <div class="card-body">
+        <h4 class="card-title">Location Report</h4>
+        <a class="btn btn-primary btn-lg" href="">Location</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cards Items -->
+{% else %}
+<!-- Cards Items -->
+  <div class="row form-group text-center">
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/general_report.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Reporte General</h4>
+          <a class="btn btn-primary btn-lg" href="">General</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Reporte Por Rango de Fecha</h4>
+          <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#id_modal_date">Fecha</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col form-item">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/product_report.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Historico Del Producto</h4>
+          <a class="btn btn-primary btn-lg" href="">Producto</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col form-item">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/location_report.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Reporte Por Localidad</h4>
+          <a class="btn btn-primary btn-lg" href="">Lugar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Cards Items -->
+{% endif %}
+{% endblock %}
