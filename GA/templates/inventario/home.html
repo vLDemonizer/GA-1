@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
+{% if request.user.is_superuser %}
 {% if products %}
 <div id="id_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -45,7 +46,6 @@
   </div>
 </div>
 {% endif %}
-{% if request.user.is_superuser %}
   <div class="row form-group">
     <div class="col">
       <div class="card" style="width: 15rem;">
@@ -79,6 +79,49 @@
     </div>
   </div>
 {% else %}
+{% if products %}
+<div id="id_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLongTitle">Productos en Baja Cantidad</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-responsive">
+          <thead>
+            <th>Nombre</th>
+            <th>Tipo De Producto</th>
+            <th>Tamaño o Talla</th>
+            <th>Marca</th>
+            <th>Departamento</th>
+            <th>Cantidad Minima</th>
+            <th>Stock</th>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <td>{{product.name}}</td>
+                <td>{{product.product_type}}</td>
+                <td>{{product.size}}</td>
+                <td>{{product.brand}}</td>
+                <td>{{product.department}}</td>
+                <td>{{product.min_amount}}</td>
+                <td>{{product.stock}}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
   <div class="row form-group">
     <div class="col">
       <div class="card" style="width: 15rem;">
