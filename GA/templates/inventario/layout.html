@@ -24,6 +24,9 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Edit Product <span class="sr-only">(current)</span></a>
+          </li>
           {% if request.user.admin %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'inventario:user-create' %}">Create New User</a>
@@ -54,6 +57,11 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:home' %}">Inicio <span class="sr-only">(current)</span></a>
           </li>
+          {% if request.user.is_staff %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Editar Producto <span class="sr-only">(current)</span></a>
+          </li>
+          {% endif %}
           {% if request.user.admin %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'inventario:user-create' %}">Crear Nuevo Usuario</a>
