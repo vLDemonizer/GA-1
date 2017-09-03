@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -120,6 +120,25 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
         context['is_staff'] = json.dumps(self.request.user.is_staff)
         return context
+
+
+class ProductClassList(LoginRequiredMixin, ListView):
+    model = ProductClass
+    template_name = 'inventario/product/product_class_list.html'
+    success_url = reverse_lazy('inventario:home')
+    fields = [
+        'name',
+        'product_type',
+        'brand',
+        'department',
+        'size',
+        'description',
+        'min_amount',
+        'is_disposable',
+        'cost_value',
+        'our_value',
+        'their_value',
+    ]
 
 
 class MoveInCreate(LoginRequiredMixin, FormView):
