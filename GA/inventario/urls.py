@@ -5,6 +5,7 @@ from .views import (
     get_product_class_details, get_products, get_product_stock,
 )
 
+app_name = 'inventario'
 urlpatterns = [
     url(r'^$', Login.as_view(), name='login'),
     url(r'^log-out/$', log_out, name='log-out'),
@@ -17,7 +18,4 @@ urlpatterns = [
     url(r'^ajax/products/$', get_products, name='get_products'),
     url(r'^ajax/get_product_stock', get_product_stock, name='get_product_stock'),
     url(r'^ajax/get_product_global_stock', get_product_global_stock, name='get_product_global_stock'),
-
-
-
 ]
