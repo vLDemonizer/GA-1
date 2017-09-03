@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 AUTH_USER_MODEL = 'inventario.User'
-LOGIN_URL = reverse_lazy('login')
+LOGIN_URL = reverse_lazy('inventario:login')
+LOGIN_REDIRECT_URL = reverse_lazy('inventario:home')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

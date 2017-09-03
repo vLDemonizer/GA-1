@@ -20,13 +20,13 @@
             Submit and Add
         </button>
         <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-        <a href="{% url 'user-create' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+        <a href="{% url 'inventario:user-create' %}" class="btn btn-primary btn-lg">Clear Fields</a>
       </div>
     </div>
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancel</a>
       </div>
     </div>
   {% else %}
@@ -45,13 +45,13 @@
             Aceptar y Crear Otro
         </button>
         <input id="id_btn_sub" type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-        <a href="{% url 'user-create' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
+        <a href="{% url 'inventario:user-create' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
       </div>
     </div>
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancelar</a>
       </div>
     </div>
   {% endif %}

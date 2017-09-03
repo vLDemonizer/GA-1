@@ -14,13 +14,13 @@
       <div class="btn-group">
         <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
         <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-        <a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+        <a href="{% url 'inventario:move-in' %}" class="btn btn-primary btn-lg">Clear Fields</a>
       </div>
     </div>
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancel</a>
       </div>
     </div>
   {% else %}
@@ -32,14 +32,14 @@
     <div class="text-center">
       <div class="btn-group">
         <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Cargar y Añadir Otro</button>
-        <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-        <a href="{% url 'move-in' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
+        <input type="submit" class="btn btn-primary btn-lg" value="Cargar"/>
+        <a href="{% url 'inventario:move-in' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
       </div>
     </div>
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancelar</a>
       </div>
     </div>
   {% endif %}
@@ -58,7 +58,7 @@ function changeRedirect() {
 <script type="text/babel">
 $(document).ready(function () {
   $.ajax({
-    url: '/ajax/products/',
+    url: '/inventario/ajax/products/',
     data: {
       'products': true
     },

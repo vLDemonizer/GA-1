@@ -28,22 +28,43 @@ class ProductList extends React.Component {
     for (var i = 0; i < products.length; i++) {
       product_list.push(<Option product={products[i]} key={'a' + i}/>);
     }
-    return (
-        <div className="form-inline">
-          <label>Search Product</label>
-          <input
-            onInput={this.handleSelection}
-            id="product_info"
-            className="form-control"
-            type="text"
-            list="product_options"
-            autoComplete="off"
-          />
-          <datalist id="product_options">
-            {product_list}
-          </datalist>
-        </div>
-    );
+    if (en){
+      return (
+          <div className="col" style={{marginBottom: "1rem"}}>
+            <label>Search Product</label>
+            <input
+              onInput={this.handleSelection}
+              id="product_info"
+              className="form-control"
+              type="text"
+              list="product_options"
+              autoComplete="off"
+            />
+            <datalist id="product_options">
+              {product_list}
+            </datalist>
+          </div>
+      );
+    }
+    else {
+      return (
+          <div className="col" style={{marginBottom: "1rem"}}>
+            <label>Buscar un Producto</label>
+            <input
+              onInput={this.handleSelection}
+              id="product_info"
+              className="form-control"
+              type="text"
+              list="product_options"
+              autoComplete="off"
+              autoFocus=""
+            />
+            <datalist id="product_options">
+              {product_list}
+            </datalist>
+          </div>
+      );
+    }
   }
 }
 
@@ -93,7 +114,7 @@ class Details extends React.Component {
             'location': $("#id_from_location").val(),
           },
           success: (data) => this.setState({stock: data})
-          
+
         });
         this.setState({
           key: product.pk,
@@ -128,49 +149,100 @@ class Details extends React.Component {
   }
 
   render () {
-    let errorMessage = (<div className="form-errors">Amount Error: You are trying to move more than there is in stock!</div>);
-    return (
-      <div>
-        <ProductList
-          products={this.props.products}
-          handleKey={this.handleSubmitKey}
-        />
-        {this.state.amountError? errorMessage: ''}
-        <div className="form-group">
-          <label>Amount</label>
-          <input
-            id="id_amount"
-            name="amount"
-            className="form-control"
-            type="number"
-            onChange={this.handleAmountChange}
-          />
+    if (en){
+      let errorMessage = (<div className="form-errors">Amount Error: You are trying to move more than there is in stock!</div>);
+      return (
+        <div>
+          <div className="row">
+            <ProductList
+              products={this.props.products}
+              handleKey={this.handleSubmitKey}
+            />
+            {this.state.amountError? errorMessage: ''}
+            <div className="col-2" style={{marginBottom: "1rem"}}>
+              <label>Amount</label>
+              <input
+                id="id_amount"
+                name="amount"
+                className="form-control"
+                type="number"
+                onChange={this.handleAmountChange}
+              />
+            </div>
+          </div>
+          <HiddenInput primary_key={this.state.key} name={"product_class"}/>
+          <table className="table table-responsive">
+            <thead>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Brand</th>
+              <th>Size</th>
+              <th>Department</th>
+              <th>Amount</th>
+              <th>Stock</th>
+              <th>Date</th>
+            </thead>
+            <tbody>
+              <td>{this.state.name}</td>
+              <td>{this.state.type}</td>
+              <td>{this.state.brand}</td>
+              <td>{this.state.size}</td>
+              <td>{this.state.department}</td>
+              <td>{this.state.amount}</td>
+              <td>{this.state.stock}</td>
+              <td>{this.state.date}</td>
+            </tbody>
+          </table>
         </div>
-        <HiddenInput primary_key={this.state.key} name={"product_class"}/>
-        <table className="table table-responsive">
-          <thead>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Brand</th>
-            <th>Size</th>
-            <th>Department</th>
-            <th>Amount</th>
-            <th>Stock</th>
-            <th>Date</th>
-          </thead>
-          <tbody>
-            <td>{this.state.name}</td>
-            <td>{this.state.type}</td>
-            <td>{this.state.brand}</td>
-            <td>{this.state.size}</td>
-            <td>{this.state.department}</td>
-            <td>{this.state.amount}</td>
-            <td>{this.state.stock}</td>
-            <td>{this.state.date}</td>
-          </tbody>
-        </table>
-      </div>
-    );
+      );
+    }
+    else {
+      let errorMessage = (<div className="form-errors">Amount Error: No puede sacar una cantidad mayor de la que hay en stock!</div>);
+      return (
+        <div>
+          <div className="row">
+            <ProductList
+              products={this.props.products}
+              handleKey={this.handleSubmitKey}
+            />
+            {this.state.amountError? errorMessage: ''}
+            <div className="col-2" style={{marginBottom: "1rem"}}>
+              <label>Amount</label>
+              <input
+                id="id_amount"
+                name="amount"
+                className="form-control"
+                type="number"
+                onChange={this.handleAmountChange}
+              />
+            </div>
+          </div>
+          <HiddenInput primary_key={this.state.key} name={"product_class"}/>
+          <table className="table table-responsive">
+            <thead>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Marca</th>
+              <th>Tamaño o Talla</th>
+              <th>Departamento</th>
+              <th>Cantidad</th>
+              <th>Stock</th>
+              <th>Fecha</th>
+            </thead>
+            <tbody>
+              <td>{this.state.name}</td>
+              <td>{this.state.type}</td>
+              <td>{this.state.brand}</td>
+              <td>{this.state.size}</td>
+              <td>{this.state.department}</td>
+              <td>{this.state.amount}</td>
+              <td>{this.state.stock}</td>
+              <td>{this.state.date}</td>
+            </tbody>
+          </table>
+        </div>
+      );
+    }
   }
 }
 
@@ -179,7 +251,7 @@ class LocationSelect extends React.Component {
     let locations = this.props.locations;
     let name = this.props.name
     var location_list = [];
-    // From can't have Desincorporacion 
+    // From can't have Desincorporacion
     var x = 0;
     if (this.props.from) {
       x = 1;
@@ -316,7 +388,7 @@ class UsersComponent extends React.Component {
       );
     }
     return (
-      <div className="form-group">
+      <div>
         <label>{this.props.tittle}</label>
         <input
           onInput={this.handleKey}
@@ -340,22 +412,66 @@ class Users extends React.Component {
   render () {
     let user = this.props.dispatchUser[0].fields
     let user_pk = this.props.dispatchUser[0].pk
-    return (
-      <div className="form-group">
-        <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Authorized By"}/>
-        <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Received By"}/>
-        <label>
-          Dispatched by: {user.first_name} {user.last_name}
-        </label>
-        <input
-        id="id_given_by"
-        name="given_by"
-        className="form-control"
-        type="hidden"
-        value={user_pk}
-        />
-      </div>
-    );
+    if (en){
+      return (
+        <div className="row">
+          <div className="col">
+            <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Authorized By"}/>
+          </div>
+          <div className="col">
+            <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Received By"}/>
+          </div>
+          <div className="col">
+            <div className="text-center">
+              <label>
+                Dispatched by:
+              </label>
+              <br />
+              <p>
+                {user.first_name} {user.last_name}
+              </p>
+              <input
+              id="id_given_by"
+              name="given_by"
+              className="form-control"
+              type="hidden"
+              value={user_pk}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+    else {
+      return (
+        <div className="row">
+          <div className="col">
+            <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Autorizado Por"}/>
+          </div>
+          <div className="col">
+            <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Recibido Por"}/>
+          </div>
+          <div className="col">
+            <div className="text-center">
+              <label>
+                Dispachado Por:
+              </label>
+              <br />
+              <p>
+                {user.first_name} {user.last_name}
+              </p>
+              <input
+              id="id_given_by"
+              name="given_by"
+              className="form-control"
+              type="hidden"
+              value={user_pk}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 }
 
@@ -367,32 +483,62 @@ class MoveOut extends React.Component{
     };
     this.checkDirections = this.checkDirections.bind(this);
     this.names = ["from_location", "destiny"];
-    this.tittles = ["From", "To"];
+    if (en){
+      this.tittles = ["From", "To"];
+    }
+    else {
+      this.tittles = ["Desde", "Hacia"];
+    }
   }
 
   checkDirections(e) {
     let from = $("#id_" + this.names[0]).val();
     let to = $("#id_" + this.names[1]).val();
-    if (from === to) {
-      this.setState({
-        error: "You need to change the location, can't be the same."
-      });
-      e.preventDefault();
-      return;
+    if (en) {
+      if (from === to) {
+        this.setState({
+          error: "You need to change the location, can't be the same."
+        });
+        e.preventDefault();
+        return;
+      }
+      if (from === '1' && to === '2') {
+        this.setState({
+          error: "Office can't go to Plant."
+        });
+        e.preventDefault();
+        return;
+      }
+      if (from === '2' && to === '1') {
+        this.setState({
+          error: "Plant can't go to Office."
+        });
+        e.preventDefault();
+        return;
+      }
     }
-    if (from === '1' && to === '2') {
-      this.setState({
-        error: "Office can't go to Plant."
-      });
-      e.preventDefault();
-      return;
-    }
-    if (from === '2' && to === '1') {
-      this.setState({
-        error: "Plant can't go to Office."
-      });
-      e.preventDefault();
-      return;
+    else {
+      if (from === to) {
+        this.setState({
+          error: "Desde y Hacia No Pueden ser Iguales"
+        });
+        e.preventDefault();
+        return;
+      }
+      if (from === '1' && to === '2') {
+        this.setState({
+          error: "No Se Puede Hacer un Movimiento de Oficina a Planta"
+        });
+        e.preventDefault();
+        return;
+      }
+      if (from === '2' && to === '1') {
+        this.setState({
+          error: "No Se Puede Hacer un Movimiento de Planta a Oficina"
+        });
+        e.preventDefault();
+        return;
+      }
     }
     this.setState({
       error: ''
@@ -400,27 +546,53 @@ class MoveOut extends React.Component{
   }
 
   render () {
-    return (
-      <div className="container-fluid">
-        <div className="form-errors text-center">
-          {this.state.error}
-        </div>
-        <Locations locations={this.props.locations} names={this.names} tittles={this.tittles} className="row"/>
-        <Details products={this.props.products} />
-        <ReasonSelect reasons={this.props.reasons} />
-        <Users
-          authorizedUsers={this.props.admin_users}
-          receivingUsers={this.props.retrieving_users}
-          dispatchUser={this.props.current_user}
-        />
-        <div className="text-center">
-          <div className="btn-group">
-            <input type="submit" className="btn btn-primary btn-lg" value="Submit" onClick={this.checkDirections}/>
-            <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Submit and Add</button>
+    if (en) {
+      return (
+        <div className="container-fluid">
+          <div className="form-errors text-center">
+            {this.state.error}
           </div>
+          <Locations locations={this.props.locations} names={this.names} tittles={this.tittles} className="row"/>
+          <Details products={this.props.products} />
+          <ReasonSelect reasons={this.props.reasons} />
+          <Users
+            authorizedUsers={this.props.admin_users}
+            receivingUsers={this.props.retrieving_users}
+            dispatchUser={this.props.current_user}
+          />
+          <div className="text-center" style={{marginTop: "1rem"}}>
+            <div className="btn-group">
+              <input type="submit" className="btn btn-primary btn-lg" value="Submit" onClick={this.checkDirections}/>
+              <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Submit and Add</button>
+            </div>
+          </div>
+          <br/>
         </div>
-        <br/>
-      </div>
-    );
+      );
+    }
+    else {
+      return (
+        <div className="container-fluid">
+          <div className="form-errors text-center">
+            {this.state.error}
+          </div>
+          <Locations locations={this.props.locations} names={this.names} tittles={this.tittles} className="row"/>
+          <Details products={this.props.products} />
+          <ReasonSelect reasons={this.props.reasons} />
+          <Users
+            authorizedUsers={this.props.admin_users}
+            receivingUsers={this.props.retrieving_users}
+            dispatchUser={this.props.current_user}
+          />
+          <div className="text-center" style={{marginTop: "1rem"}}>
+            <div className="btn-group">
+              <input type="submit" className="btn btn-primary btn-lg" value="Cargar" onClick={this.checkDirections}/>
+              <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Cargar y Mover otro</button>
+            </div>
+          </div>
+          <br/>
+        </div>
+      );
+    }
   }
 }

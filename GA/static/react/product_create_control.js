@@ -32,7 +32,7 @@ class Name extends React.Component {
   render () {
     if (en) {
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Name <small className="text-form text-muted">Character limit {this.state.current} of 100.</small></label>
           <input
             id="id_name"
@@ -50,7 +50,7 @@ class Name extends React.Component {
     }
     else {
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Nombre <small className="text-form text-muted"> Limite de caracteres: {this.state.current} de 100.</small></label>
           <input
             id="id_name"
@@ -91,7 +91,7 @@ class ProductType extends React.Component {
   render () {
     if (en){
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Product Type <small className="text-form text-muted">Character limit {this.state.current} of 100.</small></label>
           <input
             id="id_product_type"
@@ -108,7 +108,7 @@ class ProductType extends React.Component {
     }
     else {
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Tipo de Producto <small className="text-form text-muted"> Limite de caracteres: {this.state.current} de 100.</small></label>
           <input
             id="id_product_type"
@@ -148,7 +148,7 @@ class Brand extends React.Component {
   render () {
     if (en){
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Brand <small className="text-form text-muted">Character limit {this.state.current} of 30.</small></label>
           <input
             id="id_brand"
@@ -165,7 +165,7 @@ class Brand extends React.Component {
     }
     else {
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Marca <small className="text-form text-muted"> Limite de caracteres {this.state.current} de 30.</small></label>
           <input
             id="id_brand"
@@ -191,7 +191,7 @@ class Departments extends React.Component {
     }
     if (en){
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Department</label>
           <select className="form-control" id="id_department" name="department" required>
             {options}
@@ -201,7 +201,7 @@ class Departments extends React.Component {
     }
     else {
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Departamento</label>
           <select className="form-control" id="id_department" name="department" required>
             {options}
@@ -235,7 +235,7 @@ class Size extends React.Component {
   render () {
     if (en){
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Size<small className="text-form text-muted"> Character Limit {this.state.current} de 15.</small></label>
           <input
             id="id_size"
@@ -247,53 +247,34 @@ class Size extends React.Component {
             onChange={this.handleChange}
             required
           />
-          <br />
-          <label className="btn btn-info"><span style={{color: 'white'}}>Is Liquid? </span>
-          <input
-            id="id_is_liquid"
-            name="is_liquid"
-            type="checkbox"
-            autoComplete="off"
-          />
-          </label>
         </div>
       );
     }
     else {
       return (
-        <div className="form-group">
+        <div className="col">
           <label>Tamaño o Talla<small className="text-form text-muted"> Limite de caracteres {this.state.current} de 15.</small></label>
           <input
             id="id_size"
             name="size"
             type="text"
             className="form-control"
-            placeholder="Ingrese el Tamaño o la Talla del Producto."
+            placeholder="Ingrese el Tamaño o la Talla del Producto"
             value={this.state.value}
             onChange={this.handleChange}
             required
           />
-          <br />
-          <label className="btn btn-info"><span style={{color: 'white'}}>Es Liquido? </span>
-          <input
-            id="id_is_liquid"
-            name="is_liquid"
-            type="checkbox"
-            autoComplete="off"
-          />
-          </label>
         </div>
       );
     }
   }
 };
 
-class MinimunAmount extends React.Component {
+class NumberInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: '',
-      limit:  6,
       current: 0,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -301,7 +282,7 @@ class MinimunAmount extends React.Component {
 
   handleChange(event) {
     var current = event.target.value.length;
-    if (!(current > this.state.limit) && event.target.value >= 0)
+    if (!(current > this.props.limit) && event.target.value >= 0)
       this.setState({
         value: event.target.value,
         current: current
@@ -309,43 +290,25 @@ class MinimunAmount extends React.Component {
   }
 
   render () {
-    if (en){
-      return (
-        <div className="form-group">
-          <label>Minimun amount for the product stock <small className="text-form text-muted">Character limit {this.state.current} of 6.</small></label>
-          <input
-            id="id_min_amount"
-            name="min_amount"
-            type="number"
-            className="form-control"
-            placeholder="Enter product's size name"
-            value={this.state.value}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-      );
-    }
-    else {
-      return (
-        <div className="form-group">
-          <label>Cantidad Minima Permitida en el Almacen<small className="text-form text-muted"> Limite de caracteres: {this.state.current} de 6.</small></label>
-          <input
-            id="id_min_amount"
-            name="min_amount"
-            type="number"
-            className="form-control"
-            placeholder="Cantidad Minima"
-            value={this.state.value}
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-      );
-    }
+    let name = this.props.name; 
+    return (
+      <div className="col">
+        <label>{this.props.tittle} <small className="text-form text-muted">Character limit {this.state.current} of {this.props.limit}.</small></label>
+        <input
+          id={"id_" + name}
+          name={name}
+          type="number"
+          step="0.01"
+          className="form-control"
+          placeholder={this.props.placeHolder}
+          value={this.state.value}
+          onChange={this.handleChange}
+          required
+        />
+      </div>
+    );
   }
 }
-
 class Description extends React.Component {
   constructor(props) {
     super(props);
@@ -406,16 +369,87 @@ class Description extends React.Component {
   }
 };
 
+class Prices extends React.Component {
+  render () {
+    let names = [
+      'cost_value', 'our_value', 'their_value',
+    ];
+    let tittles = [
+      'Cost', 'Our Price', 'Their Price',
+    ];
+    let es_tittles = [
+      'Costo', 'Nuestro Precio', 'Precio Afuera',
+    ];
+    let placeHolder = 'Insert Amount';
+    let es_placeHolder = 'Ingrese Cantidad';
+    var prices = [];
+    for (var i = 0; i < names.length; i++) {
+      if (en) {
+        prices.push(
+          <NumberInput 
+            name={names[i]} 
+            tittle={tittles[i]} 
+            placeHolder={placeHolder}
+            limit={12}
+          />
+        )
+      } else {
+        prices.push(
+          <NumberInput 
+            name={names[i]} 
+            tittle={es_tittles[i]} 
+            placeHolder={es_placeHolder}
+            limit={12}
+          />
+        )
+      }
+    }
+    return (
+      <div className="row" style={{marginTop: "1rem"}}>
+        {prices}
+      </div>
+    );
+  }
+}
+
 class ProductForm extends React.Component {
   render () {
+    var disposable_label = "Es Liquido o Desechable?";
+    var tittle = en ? "Minimum Amount" : "Cantidad Minima"
+    var placeHolder = en ? "Insert Minimum Amount" : "Ingrese Cantidad Minima"
+    if (en) {
+      disposable_label = "Is Liquid or Disposable?";
+    }
     return (
       <div className="container-fluid">
-        <Name />
-        <ProductType />
-        <Brand />
-        <Departments />
-        <Size />
-        <MinimunAmount />
+        <div className="row">
+          <Name />
+          <Brand />
+        </div>
+        <div className="row" style={{marginTop: "1rem"}}>
+          <ProductType />
+          <Departments />
+        </div>
+        <div className="row" style={{marginTop: "1rem"}}>
+          <Size />
+          <NumberInput 
+            name={"min_amount"}
+            tittle={tittle} 
+            placeHolder={placeHolder}
+            limit={8}
+          />
+        </div>
+        {en || staff ? <Prices />: ''}
+        <div className="form-group" style={{marginTop: "1rem"}}>
+          <label className="btn btn-info"><span style={{color: 'white'}}>{disposable_label} </span>
+          <input
+            id="id_is_disposable"
+            name="is_disposable"
+            type="checkbox"
+            autoComplete="off"
+          />
+          </label>
+        </div>
         <Description />
       </div>
     );

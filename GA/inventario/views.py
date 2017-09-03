@@ -7,7 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
@@ -20,13 +20,30 @@ from .code_generator import generate_full_code
 
 class LandingPage(LoginRequiredMixin, TemplateView):
     template_name = 'inventario/home.html'
-    login_url = reverse_lazy('login')
+    login_url = reverse_lazy('inventario:login')
 
+    def get_context_data(self, **kwargs):
+        context = super(LandingPage, self).get_context_data(**kwargs)
+        products = []
+        for product in ProductClass.objects.all().order_by('name'):
+            if product.low_stock:
+                products.append(product)
+        context['products'] = products
+        return context
 
 class Login(FormView):
     form_class = LoginForm
     template_name = 'inventario/user/login.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('inventario:home')
+    redirect_field_name = 'redirect_to'
+    redirect_authenticated_user = True
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect(reverse_lazy('inventario:home'))
+
+        return super(Login, self).get(request, *args, **kwargs)
+
 
     def form_valid(self, form):
         username = form.cleaned_data['username']
@@ -43,8 +60,8 @@ class Login(FormView):
 class UserCreate(LoginRequiredMixin, FormView):
     form_class = UserCreateForm
     template_name = 'inventario/user/user_form.html'
-    success_url = reverse_lazy('home')
-    login_url = reverse_lazy('login')
+    success_url = reverse_lazy('inventario:home')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         first_name = form.cleaned_data['first_name']
@@ -76,7 +93,7 @@ class UserCreate(LoginRequiredMixin, FormView):
         user.save()
 
         if "Save and Add another one" in form.cleaned_data['redirect']:
-            self.success_url = reverse_lazy('move-in')
+            self.success_url = reverse_lazy('inventario:move-in')
 
         return super(UserCreate, self).form_valid(form)
 
@@ -89,26 +106,63 @@ class UserCreate(LoginRequiredMixin, FormView):
 class ProductClassCreate(LoginRequiredMixin, CreateView):
     form_class = ProductClassForm
     template_name = 'inventario/product/product_class_form.html'
-    success_url = reverse_lazy('home')
-    login_url = reverse_lazy('login')
+    success_url = reverse_lazy('inventario:home')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         if "Save and Add another one" in form.cleaned_data['redirect']:
-            self.success_url = reverse_lazy('create-product')
+            self.success_url = reverse_lazy('inventario:create-product')
 
         return super(ProductClassCreate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super(ProductClassCreate, self).get_context_data(**kwargs)
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
+        context['is_staff'] = json.dumps(self.request.user.is_staff)
         return context
+
+
+class ProductClassList(LoginRequiredMixin, FormView):
+    form_class = ProductClassForm
+    template_name = 'inventario/product/product_class_list.html'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('inventario:home')
+
+    def form_valid(self, form):
+        pk = form.cleaned_data['product_class']
+        product_class = ProductClass.objects.get(pk=pk)
+        product_class.name = form.cleaned_data['name']
+        product_class.brand = form.cleaned_data['brand']
+        product_class.product_type = form.cleaned_data['product_type']
+        product_class.size = form.cleaned_data['size']
+        product_class.department = form.cleaned_data['department']
+        product_class.description = form.cleaned_data['description']
+        product_class.min_amount = form.cleaned_data['min_amount']
+        product_class.is_disposable = form.cleaned_data['is_disposable']
+        product_class.cost_value = form.cleaned_data['cost_value']
+        product_class.our_value = form.cleaned_data['our_value']
+        product_class.their_value = form.cleaned_data['their_value']
+        product_class.save()
+
+        return super(ProductClassList, self).form_valid(form)
+
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductClassList, self).get_context_data(**kwargs)
+        context['products'] = serializers.serialize(
+            'json',
+            ProductClass.objects.all().order_by('name')
+        )
+        return context
+    
 
 
 class MoveInCreate(LoginRequiredMixin, FormView):
     form_class = MoveInForm
     template_name = 'inventario/move/move_in_form.html'
-    success_url = reverse_lazy('home')
-    login_url = reverse_lazy('login')
+    success_url = reverse_lazy('inventario:home')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         destiny = form.cleaned_data['destiny']
@@ -118,6 +172,10 @@ class MoveInCreate(LoginRequiredMixin, FormView):
         products = []
 
         product_class = ProductClass.objects.get(pk=pk)
+        print(product_class)
+        print(product_class.cost_value)
+        print(product_class.our_value)
+        print(product_class.their_value)
         move_in = MoveIn.objects.create(
             destiny=destiny,
             product_class=product_class,
@@ -145,7 +203,7 @@ class MoveInCreate(LoginRequiredMixin, FormView):
         move_in.products.add(*products)
 
         if "Save and Add another one" in form.cleaned_data['redirect']:
-            self.success_url = reverse_lazy('move-in')
+            self.success_url = reverse_lazy('inventario:move-in')
 
         return super(MoveInCreate, self).form_valid(form)
 
@@ -157,8 +215,8 @@ class MoveInCreate(LoginRequiredMixin, FormView):
 class MoveOutView(LoginRequiredMixin, FormView):
     form_class = MoveOutForm
     template_name = 'inventario/move/move_out_form.html'
-    success_url = reverse_lazy('home')
-    login_url = reverse_lazy('login')
+    success_url = reverse_lazy('inventario:home')
+    login_url = reverse_lazy('inventario:login')
 
     def get_context_data(self, **kwargs):
         context = super(MoveOutView, self).get_context_data(**kwargs)
@@ -189,7 +247,7 @@ class MoveOutView(LoginRequiredMixin, FormView):
             location=origin,
         )[:amount]
 
-        if destiny == settings.LOCATIONS[4] or product_class.is_liquid: #If it's going to become unavailable
+        if destiny == settings.LOCATIONS[4] or product_class.is_disposable: #If it's going to become unavailable
             for product in products:
                 product.location = destiny
                 product.available = False
@@ -211,17 +269,16 @@ class MoveOutView(LoginRequiredMixin, FormView):
         )
         move_out.products.add(*products)
         move_out.save()
-        print(move_out)
 
         if "Save and Add another one" in form.cleaned_data['redirect']:
-            self.success_url = reverse_lazy('move-out')
+            self.success_url = reverse_lazy('inventario:move-out')
         return super(MoveOutView, self).form_valid(form)
-        
+
 
 @login_required
 def log_out(request):
     logout(request)
-    return redirect(reverse_lazy('login'))
+    return redirect(reverse_lazy('inventario:login'))
 
 
 @login_required

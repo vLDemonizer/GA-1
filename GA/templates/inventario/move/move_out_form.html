@@ -2,23 +2,41 @@
 {% load staticfiles %}
 
 {% block content %}
-<form method="post">
+<form method="post" autocomplete="off">
   {% csrf_token %}
-  <div class="text-center">
-    <h3 class="display-3">Make A Move Out</h3>
-  </div>
-  {% if form.errors %}
-  <div class="text-center">
-    <p class="form-errors">{{form.errors|striptags}}.</p>
-  </div>
-  {% endif %}
-  <div id="root"></div>
-  <div class="text-center">
-    <div class="btn-group">
-      <a href="{% url 'move-out' %}" class="btn btn-warning btn-lg"><span style="color: white;">Clear Fields</span></a>
-      <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+  {% if request.user.is_superuser %}
+    <div class="text-center">
+      <h3 class="display-3">Make A Move Out</h3>
     </div>
-  </div>
+    {% if form.errors %}
+    <div class="text-center">
+      <p class="form-errors">{{form.errors|striptags}}.</p>
+    </div>
+    {% endif %}
+    <div id="root"></div>
+    <div class="text-center">
+      <div class="btn-group">
+        <a href="{% url 'inventario:move-out' %}" class="btn btn-warning btn-lg"><span style="color: white;">Clear Fields</span></a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancel</a>
+      </div>
+    </div>
+  {% else %}
+    <div class="text-center">
+      <h3 class="display-3">Movimiento de Productos o Desincorporacion</h3>
+    </div>
+    {% if form.errors %}
+    <div class="text-center">
+      <p class="form-errors">{{form.errors|striptags}}.</p>
+    </div>
+    {% endif %}
+    <div id="root"></div>
+    <div class="text-center">
+      <div class="btn-group">
+        <a href="{% url 'inventario:move-out' %}" class="btn btn-warning btn-lg"><span style="color: white;">Limpiar Campos</span></a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+      </div>
+    </div>
+  {% endif %}
 </form>
 {% endblock %}
 
@@ -35,7 +53,7 @@
 <script type="text/babel">
   ReactDOM.render(
     <MoveOut
-      move_out_url={'{% url "move-out" %}'}
+      move_out_url={'{% url "inventario:move-out" %}'}
       locations={JSON.parse('{{ locations | escapejs }}')}
       products={JSON.parse('{{ product_class | escapejs }}')}
       reasons={JSON.parse('{{ reasons | escapejs }}')}

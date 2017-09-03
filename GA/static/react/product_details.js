@@ -226,7 +226,7 @@ class ProductDetails extends React.Component {
               <td>{this.state.size}</td>
               <td>{this.state.department}</td>
               <td>{this.handleAmountChange ? this.state.amount : ''}</td>
-              <td>Nothing Yet</td>
+              <td>{this.state.stock}</td>
               <td>{this.state.date}</td>
             </tbody>
           </table>

@@ -24,10 +24,27 @@ class ProductClass(models.Model):
     description = models.TextField(max_length=120, blank=True)
     code = models.CharField(max_length=5, unique=True, default=generate_product_code)
     min_amount = models.SmallIntegerField(blank=True, null=True)
-    is_liquid = models.BooleanField(default=False)
+    is_disposable = models.BooleanField(default=False)
+    cost_value = models.FloatField(default=0)
+    our_value = models.FloatField(default=0)
+    their_value = models.FloatField(default=0)
 
     def __str__(self):
-        return self.name
+        return (
+            self.name + ' ' + self.product_type + ' '
+            + self.size +  ' ' + self.brand + ' '
+            + self.department
+        )
+        
+    @property
+    def low_stock(self):
+        if self.product_set.filter(available=True).count() <= self.min_amount:
+            return True
+        return False
+
+    @property
+    def stock(self):
+        return self.product_set.filter(available=True).count() 
 
     def clean_fields(self, exclude=None):
         super(ProductClass, self).clean_fields(exclude=exclude)

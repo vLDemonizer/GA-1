@@ -18,13 +18,13 @@
       <div class="btn-group">
         <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Submit and Add</button>
         <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-        <a href="{% url 'create-product' %}" class="btn btn-primary btn-lg">Clear Fields</a>
+        <a href="{% url 'inventario:create-product' %}" class="btn btn-primary btn-lg">Clear Fields</a>
       </div>
     </div>
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancel</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancel</a>
       </div>
     </div>
   {% else %}
@@ -32,20 +32,21 @@
     <div class="text-center">
       <div class="btn-group">
         <button id="id_redirect" name="redirect" class="btn btn-primary btn-lg" value="" onClick="changeRedirect()">Cargar y Crear Otro</button>
-        <input type="submit" class="btn btn-primary btn-lg" value="Submit"/>
-        <a href="{% url 'create-product' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
+        <input type="submit" class="btn btn-primary btn-lg" value="Cargar"/>
+        <a href="{% url 'inventario:create-product' %}" class="btn btn-primary btn-lg">Limpiar Campos</a>
       </div>
     </div>
     <br/>
     <div class="row text-center">
       <div class="col">
-        <a href="{% url 'home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+        <a href="{% url 'inventario:home' %}" class="btn btn-danger btn-lg">Cancelar</a>
       </div>
     </div>
   {% endif %}
 </form>
 <script>
-let en = JSON.parse('{{is_superuser}}');
+let en = JSON.parse('{{ is_superuser }}');
+let staff = JSON.parse('{{ is_staff }}');
 function changeRedirect() {
   document.getElementById('id_redirect').value = "Save and Add another one";
   return;
