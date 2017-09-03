@@ -10,6 +10,7 @@ class ProductClassForm(ModelForm):
     cost_value = forms.FloatField(required=False)
     our_value = forms.FloatField(required=False)
     their_value = forms.FloatField(required=False)
+    product_class = forms.IntegerField(required=False)
 
     class Meta:
         model = ProductClass

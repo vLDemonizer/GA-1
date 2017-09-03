@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<form method="post">
+<form method="post" autocomplete="off">
   {% csrf_token %}
   <div class="text-center">
     <h3 class="display-3">Make A Move Out</h3>

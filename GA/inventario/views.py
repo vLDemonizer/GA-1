@@ -122,23 +122,40 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
         return context
 
 
-class ProductClassList(LoginRequiredMixin, ListView):
-    model = ProductClass
+class ProductClassList(LoginRequiredMixin, FormView):
+    form_class = ProductClassForm
     template_name = 'inventario/product/product_class_list.html'
+    login_url = reverse_lazy('inventario:login')
     success_url = reverse_lazy('inventario:home')
-    fields = [
-        'name',
-        'product_type',
-        'brand',
-        'department',
-        'size',
-        'description',
-        'min_amount',
-        'is_disposable',
-        'cost_value',
-        'our_value',
-        'their_value',
-    ]
+
+    def form_valid(self, form):
+        pk = form.cleaned_data['product_class']
+        product_class = ProductClass.objects.get(pk=pk)
+        product_class.name = form.cleaned_data['name']
+        product_class.brand = form.cleaned_data['brand']
+        product_class.product_type = form.cleaned_data['product_type']
+        product_class.size = form.cleaned_data['size']
+        product_class.department = form.cleaned_data['department']
+        product_class.description = form.cleaned_data['description']
+        product_class.min_amount = form.cleaned_data['min_amount']
+        product_class.is_disposable = form.cleaned_data['is_disposable']
+        product_class.cost_value = form.cleaned_data['cost_value']
+        product_class.our_value = form.cleaned_data['our_value']
+        product_class.their_value = form.cleaned_data['their_value']
+        product_class.save()
+
+        return super(ProductClassList, self).form_valid(form)
+
+
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductClassList, self).get_context_data(**kwargs)
+        context['products'] = serializers.serialize(
+            'json',
+            ProductClass.objects.all().order_by('name')
+        )
+        return context
+    
 
 
 class MoveInCreate(LoginRequiredMixin, FormView):
