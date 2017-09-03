@@ -22,6 +22,14 @@ class LandingPage(LoginRequiredMixin, TemplateView):
     template_name = 'inventario/home.html'
     login_url = reverse_lazy('login')
 
+    def get_context_data(self, **kwargs):
+        context = super(LandingPage, self).get_context_data(**kwargs)
+        products = []
+        for product in ProductClass.objects.all():
+            if product.low_stock:
+                products.append(product)
+        context['products'] = []
+        return context
 
 class Login(FormView):
     form_class = LoginForm
