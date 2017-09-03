@@ -3,6 +3,7 @@
 
 {% block content %}
 {% if request.user.is_superuser %}
+<!-- Modal Low Stock Notification -->
 {% if products %}
 <div id="id_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -53,28 +54,33 @@
   </div>
 </div>
 {% endif %}
+<!-- Modal Low Stock Notification -->
+<!-- Cards Items -->
   <div class="row form-group">
     <div class="col">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/create_product.jpg' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/create.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Create a New Product</h4>
-          <p class="card-text">Add a Name, Brand, Department and some description to the new product.</p>
+          <p class="card-text">Add a Product that Dosent Exist.</p>
           <a class="btn btn-primary btn-lg" href="{% url 'inventario:create-product' %}">Create Product</a>
         </div>
       </div>
     </div>
     <div class="col">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/product_in.jpg' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/productIn.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Add a New Product</h4>
-          <p class="card-text">Select an existing product on the database and add a new set of them. Remember to double check the info that you'll enter.</p>
+          <p class="card-text">Select an existing product on the database and add a new set of them.</p>
           <a class="btn btn-primary btn-lg" href="{% url 'inventario:move-in' %}">Products In</a>
         </div>
       </div>
     </div>
-    <div class="col">
+  </div>
+
+  <div class="row">
+    <div class="col form-item">
       <div class="card" style="width: 15rem;">
         <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
         <div class="card-body">
@@ -84,8 +90,20 @@
         </div>
       </div>
     </div>
+    <div class="col form-item">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/reportes.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Reports</h4>
+          <p class="card-text">Analyze All the Products you have</p>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:home' %}">Go to Reports!</a>
+        </div>
+      </div>
+    </div>
   </div>
+<!-- Cards Items -->
 {% else %}
+<!-- Modal Low Stock Notification -->
 {% if products %}
 <div id="id_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -135,10 +153,12 @@
   </div>
 </div>
 {% endif %}
+<!-- Modal Low Stock Notification -->
+<!-- Cards Items -->
   <div class="row form-group">
     <div class="col">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/create_product.jpg' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/create.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Crear Un Producto Nuevo</h4>
           <p class="card-text">Crea un nuevo producto inexistente en la base de datos.</p>
@@ -146,9 +166,9 @@
         </div>
       </div>
     </div>
-    <div class="col">
+    <div class="col form-item">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/product_in.jpg' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/productIn.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Entrada de Productos Nuevos (ENTRADA)</h4>
           <p class="card-text">Seleccione un producto existente y dele entrada al mismo. Recuerde verificar la informacion.</p>
@@ -156,16 +176,29 @@
         </div>
       </div>
     </div>
-    <div class="col">
-      <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
-        <div class="card-body">
-          <h4 class="card-title">Mover o Desincorporar algun Producto (SALIDA)</h4>
-          <p class="card-text">Especifique la razon por la cual se saldra un producto.</p>
-          <a class="btn btn-primary btn-lg" href="{% url 'inventario:move-out' %}">Salida</a>
+  </div>
+    <div class="row form-group">
+      <div class="col">
+        <div class="card" style="width: 15rem;">
+          <img class="card-img-top" src="{% static 'img/product_out.jpg' %}" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">Mover o Desincorporar algun Producto (SALIDA)</h4>
+            <p class="card-text">Especifique la razon por la cual se saldra un producto.</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'inventario:move-out' %}">Salida</a>
+          </div>
         </div>
       </div>
-    </div>
+      <div class="col form-item">
+        <div class="card" style="width: 15rem;">
+          <img class="card-img-top" src="{% static 'img/reportes.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">Reports</h4>
+            <p class="card-text">Resum Detallado de los Productos</p>
+            <a class="btn btn-primary btn-lg" href="{% url 'reporte:home' %}">Reportes!</a>
+          </div>
+        </div>
+      </div>
   </div>
+<!-- Cards Items -->
 {% endif %}
 {% endblock %}
