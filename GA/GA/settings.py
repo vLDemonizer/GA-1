@@ -26,7 +26,7 @@ SECRET_KEY = '$xihd$bdejw=w5dhx%&z#(gi%^1c-^khc+3f&s*v%1@^l%s(%l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.123']
+ALLOWED_HOSTS = []
 
 
 # Application definition
