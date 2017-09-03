@@ -14,8 +14,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <table class="table table-responsive">
-          <thead>
+        <table class="table table-responsive table-striped">
+          <thead class="thead-inverse">
             <th>Name</th>
             <th>Product Type</th>
             <th>Size</th>
@@ -26,7 +26,14 @@
           </thead>
           <tbody>
             {% for product in products %}
-              <tr>
+              <tr
+              {% if product.stock <= product.min_amount and product.stock > 0 %}
+                class="table-warning"
+              {% endif%}
+              {% if product.stock == 0 %}
+                class="table-danger"
+              {% endif%}
+              >
                 <td>{{product.name}}</td>
                 <td>{{product.product_type}}</td>
                 <td>{{product.size}}</td>
@@ -90,8 +97,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <table class="table table-responsive">
-          <thead>
+        <table class="table table-responsive table-striped">
+          <thead class="thead-inverse">
             <th>Nombre</th>
             <th>Tipo De Producto</th>
             <th>Tamaño o Talla</th>

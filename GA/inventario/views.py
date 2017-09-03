@@ -25,7 +25,7 @@ class LandingPage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         products = []
-        for product in ProductClass.objects.all():
+        for product in ProductClass.objects.all().order_by('name'):
             if product.low_stock:
                 products.append(product)
         context['products'] = products

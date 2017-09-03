@@ -28,22 +28,43 @@ class ProductList extends React.Component {
     for (var i = 0; i < products.length; i++) {
       product_list.push(<Option product={products[i]} key={'a' + i}/>);
     }
-    return (
-        <div className="col" style={{marginBottom: "1rem"}}>
-          <label>Search Product</label>
-          <input
-            onInput={this.handleSelection}
-            id="product_info"
-            className="form-control"
-            type="text"
-            list="product_options"
-            autoComplete="off"
-          />
-          <datalist id="product_options">
-            {product_list}
-          </datalist>
-        </div>
-    );
+    if (en){
+      return (
+          <div className="col" style={{marginBottom: "1rem"}}>
+            <label>Search Product</label>
+            <input
+              onInput={this.handleSelection}
+              id="product_info"
+              className="form-control"
+              type="text"
+              list="product_options"
+              autoComplete="off"
+            />
+            <datalist id="product_options">
+              {product_list}
+            </datalist>
+          </div>
+      );
+    }
+    else {
+      return (
+          <div className="col" style={{marginBottom: "1rem"}}>
+            <label>Buscar un Producto</label>
+            <input
+              onInput={this.handleSelection}
+              id="product_info"
+              className="form-control"
+              type="text"
+              list="product_options"
+              autoComplete="off"
+              autoFocus=""
+            />
+            <datalist id="product_options">
+              {product_list}
+            </datalist>
+          </div>
+      );
+    }
   }
 }
 
@@ -93,7 +114,7 @@ class Details extends React.Component {
             'location': $("#id_from_location").val(),
           },
           success: (data) => this.setState({stock: data})
-          
+
         });
         this.setState({
           key: product.pk,
@@ -181,7 +202,7 @@ class LocationSelect extends React.Component {
     let locations = this.props.locations;
     let name = this.props.name
     var location_list = [];
-    // From can't have Desincorporacion 
+    // From can't have Desincorporacion
     var x = 0;
     if (this.props.from) {
       x = 1;
