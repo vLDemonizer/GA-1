@@ -596,5 +596,3 @@ class MoveOut extends React.Component{
     }
   }
 }
-let t=2
-export {ProductList, Option , t};
