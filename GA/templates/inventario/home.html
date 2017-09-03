@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
+{% if products %}
 <div id="id_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -23,8 +24,7 @@
             <th>Stock</th>
           </thead>
           <tbody>
-            <!--
-            {% for porduct in porducts %}
+            {% for product in products %}
               <tr>
                 <td>{{product.name}}</td>
                 <td>{{product.product_type}}</td>
@@ -32,10 +32,9 @@
                 <td>{{product.brand}}</td>
                 <td>{{product.department}}</td>
                 <td>{{product.min_amount}}</td>
-                <td>{{product.}}</td>
+                <td>{{product.stock}}</td>
               </tr>
             {% endfor %}
-          -->
           </tbody>
         </table>
       </div>
@@ -45,6 +44,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% if request.user.is_superuser %}
   <div class="row form-group">
     <div class="col">
