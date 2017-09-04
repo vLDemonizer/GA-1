@@ -108,7 +108,7 @@ class Details extends React.Component {
       if (options[i].innerText === productText) {
         let product = this.props.products[i];0;
         $.ajax({
-          url: '/ajax/get_product_stock/',
+          url: '/inventario/ajax/get_product_stock/',
           data : {
             'product_class': product.pk,
             'location': $("#id_from_location").val(),
