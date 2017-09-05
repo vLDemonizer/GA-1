@@ -99,7 +99,7 @@ class ProductDetails extends React.Component {
       if (options[i].innerText === productText) {
         let product = this.props.products.products[i];
         $.ajax({
-          url: '/ajax/get_product_global_stock/',
+          url: '/inventario/ajax/get_product_global_stock/',
           data : {
             'product_class': product.pk,
           },
