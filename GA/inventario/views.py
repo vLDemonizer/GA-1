@@ -60,6 +60,27 @@ class Login(FormView):
             return super(Login, self).form_invalid(form)
 
 
+class DisposableProductView(LoginRequiredMixin, TemplateView):
+    template_name = 'inventario/product/disposable_product.html'
+    login_url = reverse_lazy('inventario:login')
+
+    def get_context_data(self, **kwargs):
+        context = super(DisposableProductView, self).get_context_data(**kwargs)
+        move_pks = []
+        movements = []
+        for products in Product.objects.filter(available=False):
+            for move in MoveOut.objects.all():
+                if(move.product_class == products.product_class):
+                    if(move.pk in move_pks):
+                        continue
+                    else:
+                        move_pks.append(move.pk)
+                        movements.append(move)
+                        
+        context['movements'] = movements
+        return context
+
+
 class UserCreate(LoginRequiredMixin, FormView):
     form_class = UserCreateForm
     template_name = 'inventario/user/user_form.html'
@@ -158,7 +179,7 @@ class ProductClassList(LoginRequiredMixin, FormView):
             ProductClass.objects.all().order_by('name')
         )
         return context
-    
+
 
 
 class MoveInCreate(LoginRequiredMixin, FormView):
@@ -175,10 +196,6 @@ class MoveInCreate(LoginRequiredMixin, FormView):
         products = []
 
         product_class = ProductClass.objects.get(pk=pk)
-        print(product_class)
-        print(product_class.cost_value)
-        print(product_class.our_value)
-        print(product_class.their_value)
         move_in = MoveIn.objects.create(
             destiny=destiny,
             product_class=product_class,

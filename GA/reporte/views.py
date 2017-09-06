@@ -11,7 +11,9 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from GA import settings
+from .forms import DateReportForm, ProductReportForm, LocationReportForm
 # Create your views here.
+
 class LandingPage(LoginRequiredMixin, TemplateView):
     template_name = 'reporte/home.html'
     login_url = reverse_lazy('inventario:login')
@@ -19,3 +21,21 @@ class LandingPage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         return context
+
+class DateReportView(LoginRequiredMixin, FormView):
+    form_class = DateReportForm
+    template_name = 'reporte/date/date_form.html'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('reporte:home')
+
+class ProductReportView(LoginRequiredMixin, FormView):
+    form_class = ProductReportForm
+    template_name = 'reporte/product/product_form.html'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('reporte:home')
+
+class LocationReportView(LoginRequiredMixin, FormView):
+    form_class = LocationReportForm
+    template_name = 'reporte/location/location_form.html'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('reporte:home')

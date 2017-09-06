@@ -26,7 +26,7 @@
         <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Date Report</h4>
-          <a class="btn btn-primary btn-lg" data-toggle="modal" href="#id_modal_date">Date</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:date' %}">Date</a>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
         <img class="card-img-top" src="{% static 'img/product_report.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Product Report</h4>
-          <a class="btn btn-primary btn-lg" href="">Product</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:product' %}">Product</a>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
       <img class="card-img-top" src="{% static 'img/location_report.png' %}" alt="Card image cap">
       <div class="card-body">
         <h4 class="card-title">Location Report</h4>
-        <a class="btn btn-primary btn-lg" href="">Location</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'reporte:location' %}">Location</a>
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@
         <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Reporte Por Rango de Fecha</h4>
-          <a class="btn btn-primary btn-lg" href="">Fecha</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:date' %}">Fecha</a>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
         <img class="card-img-top" src="{% static 'img/product_report.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Historico Del Producto</h4>
-          <a class="btn btn-primary btn-lg" href="">Producto</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:product' %}">Producto</a>
         </div>
       </div>
     </div>
@@ -91,7 +91,7 @@
         <img class="card-img-top" src="{% static 'img/location_report.png' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Reporte Por Localidad</h4>
-          <a class="btn btn-primary btn-lg" href="">Lugar</a>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:location' %}">Lugar</a>
         </div>
       </div>
     </div>
