@@ -13,7 +13,10 @@ from django.urls import reverse_lazy
 
 from GA import settings
 
-from .forms import ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, LoginForm
+from .forms import (
+    ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, 
+    LoginForm, CodesForm,
+)
 from .models import ProductClass, Product, MoveIn, MoveOut, User
 from .code_generator import generate_full_code
 
@@ -275,6 +278,20 @@ class MoveOutView(LoginRequiredMixin, FormView):
         return super(MoveOutView, self).form_valid(form)
 
 
+class PrintCodes(FormView):
+    form_class = CodesForm
+    template_name = 'inventario/product/print_product_codes.html'
+    success_url = reverse_lazy('inventario:home')
+
+    def get_context_data(self, **kwargs):
+        context = super(PrintCodes, self).get_context_data(**kwargs)
+        context['products'] = serializers.serialize(
+            'json', ProductClass.objects.all()
+        )
+        return context
+        
+
+
 @login_required
 def log_out(request):
     logout(request)
@@ -308,7 +325,6 @@ def get_product_stock(request):
         location=settings.LOCATIONS[location],
         available=True,
     ).count()
-    print(settings.LOCATIONS[location])
     return HttpResponse(
         json.dumps(stock),
         content_type = 'application/javascript; charset=utf8'

@@ -58,7 +58,7 @@
             <a class="nav-link" href="{% url 'inventario:home' %}">Inicio <span class="sr-only">(current)</span></a>
           </li>
           {% if request.user.is_staff %}
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Editar Producto <span class="sr-only">(current)</span></a>
           </li>
           {% endif %}

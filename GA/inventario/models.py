@@ -55,6 +55,11 @@ class ProductClass(models.Model):
                 brand=self.brand,
                 department=self.department,
                 size=self.size,
+                min_amount=self.min_amount,
+                is_disposable=self.is_disposable,
+                cost_value=self.cost_value,
+                our_value=self.our_value,
+                their_value=self.their_value,
             )
         except:
             return
