@@ -27,14 +27,17 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Edit Product <span class="sr-only">(current)</span></a>
           </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'inventario:disposable-product' %}">Disposable Product <span class="sr-only">(current) </span></a>
+          </li>
           {% if request.user.admin %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'inventario:user-create' %}">Create New User</a>
+            <a class="nav-link" href="{% url 'inventario:user-create' %}">Create New User </a>
           </li>
           {% endif %}
           {% if request.user %}
             <li class="nav-item">
-              <a class="nav-link" href="#">{{request.user.first_name}} {{request.user.last_name}}</a>
+              <a class="nav-link" href="#">{{request.user.first_name}} {{request.user.last_name}} </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'inventario:log-out' %}">Log Out</a>
@@ -62,14 +65,17 @@
             <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Editar Producto <span class="sr-only">(current)</span></a>
           </li>
           {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'inventario:disposable-product' %}">Productos Desechables <span class="sr-only">(current)</span></a>
+          </li>
           {% if request.user.admin %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'inventario:user-create' %}">Crear Nuevo Usuario</a>
+            <a class="nav-link" href="{% url 'inventario:user-create' %}">Crear Nuevo Usuario </a>
           </li>
           {% endif %}
           {% if request.user %}
             <li class="nav-item">
-              <a class="nav-link" href="#">{{request.user.first_name}} {{request.user.last_name}}</a>
+              <a class="nav-link" href="#">{{request.user.first_name}} {{request.user.last_name}} </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'inventario:log-out' %}">Salir</a>
