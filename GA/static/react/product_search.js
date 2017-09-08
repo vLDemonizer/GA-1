@@ -368,11 +368,12 @@ class ProductList extends React.Component {
           
         };
         this.handleSelection = this.handleSelection.bind(this);
-        this.changeStae = this.changeState.bind(this);
+        this.changeState = this.changeState.bind(this);
     }
     
     changeState(e) {
-      this.setState({is_disposable: !prevState.is_disposable})
+      console.log(this.state.is_disposable)
+      this.setState({is_disposable: !this.state.is_disposable})
     }
 
     handleSelection(e) {

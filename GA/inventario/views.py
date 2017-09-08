@@ -1,4 +1,5 @@
 import json
+import os
 
 from django.http import JsonResponse
 from django.core import serializers
@@ -10,15 +11,17 @@ from django.contrib.auth.views import LoginView
 from django.views.generic import TemplateView, FormView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.utils.encoding import smart_bytes
 
 from GA import settings
+
 
 from .forms import (
     ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, 
     LoginForm, CodesForm,
 )
 from .models import ProductClass, Product, MoveIn, MoveOut, User
-from .code_generator import generate_full_code
+from .code_generator import generate_full_code, create_codes_file
 
 
 class LandingPage(LoginRequiredMixin, TemplateView):
@@ -216,6 +219,7 @@ class MoveInCreate(LoginRequiredMixin, FormView):
                 full_code=full_code,
                 available=True,
                 location=destiny,
+                number=product_number,
             )
             product.save()
             products.append(product)
@@ -306,7 +310,23 @@ class PrintCodes(FormView):
             'json', ProductClass.objects.all()
         )
         return context
-        
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        product_class = ProductClass.objects.get(pk=data['product_class'])
+        products = Product.objects.filter(
+            product_class=product_class,
+            number__gte=data['start'],
+            number__lte=data['end']
+        ).order_by('number')
+        create_codes_file(
+            product_class,
+            products,
+            int(data['start']),
+            int(data['end']),
+            int(data['code_range'])
+        )
+        return super(PrintCodes, self).form_valid(form)     
 
 
 @login_required
@@ -386,3 +406,29 @@ def get_products(request):
         json.dumps(data),
         content_type = 'application/javascript; charset=utf8'
     )
+
+@login_required
+def generate_file(request):
+    data = request.GET
+    pk = data.get('product_class', None)
+    start = data.get('start', None)
+    end = data.get('end', None)
+    code_range = data.get('code_range', None)
+    product_class = ProductClass.objects.get(pk=data['product_class'])
+    products = Product.objects.filter(
+        product_class=product_class,
+        number__gte=data['start'],
+        number__lte=data['end']
+    ).order_by('number')
+    document = create_codes_file(
+        product_class,
+        products,
+        int(data['start']),
+        int(data['end']),
+        int(data['code_range'])
+    )
+    print('yes')
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = "attachment; filename=code.docx"
+    document.save(response)
+    return response
