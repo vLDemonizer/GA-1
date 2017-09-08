@@ -309,6 +309,9 @@ class PrintCodes(FormView):
         context['products'] = serializers.serialize(
             'json', ProductClass.objects.all()
         )
+        for product in Product.objects.all():
+            product.number = int(product.full_code[-8])
+            product.save()
         return context
 
     def form_valid(self, form):
