@@ -309,9 +309,6 @@ class PrintCodes(FormView):
         context['products'] = serializers.serialize(
             'json', ProductClass.objects.all()
         )
-        for product in Product.objects.all():
-            product.number = int(product.full_code[-8])
-            product.save()
         return context
 
     def form_valid(self, form):
@@ -430,7 +427,6 @@ def generate_file(request):
         int(data['end']),
         int(data['code_range'])
     )
-    print('yes')
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     response['Content-Disposition'] = "attachment; filename=code.docx"
     document.save(response)
