@@ -11,7 +11,10 @@ class DateReportForm(forms.Form):
     product_class = forms.IntegerField()
 
 class LocationReportForm(forms.Form):
-    product_class = forms.IntegerField()
+    location = forms.CharField(max_length=30)
+    choice = forms.CharField(max_length=30)
+
+
 
 class ProductReportForm(forms.Form):
     product_class = forms.IntegerField()

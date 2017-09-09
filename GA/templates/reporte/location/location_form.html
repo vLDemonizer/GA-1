@@ -2,5 +2,26 @@
 {% load staticfiles %}
 
 {% block content %}
-Location Form
+{% if location_report %}
+reporte
+{% else %}
+<form action="" method="POST" class="form-control">
+  {% csrf_token %}
+  <div class="btn-group form-group" data-toggle="buttons">
+    <label class="btn btn-primary active">
+      <input type="radio" name="options" value="_in" autocomplete="off" checked> In
+    </label>
+    <label class="btn btn-primary">
+      <input type="radio" name="options" value="_out" autocomplete="off"> Out
+    </label>
+  </div>
+  <select class="custom-select" id="location" >
+    {% for location in locations %}
+      <option value="{{location}}"> {{ location }} </option>
+    {% endfor %}
+  </select>
+
+  <button type="submit" class="btn btn-primary" value="Load">Submit</button>
+</form>
+{% endif %}
 {% endblock %}

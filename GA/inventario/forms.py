@@ -53,7 +53,7 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-    
+
 class UserCreateForm(forms.Form):
     redirect = forms.CharField(max_length=50, required=False)
     first_name = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
