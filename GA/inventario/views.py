@@ -17,7 +17,7 @@ from GA import settings
 
 
 from .forms import (
-    ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, 
+    ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm,
     LoginForm, CodesForm,
 )
 from .models import ProductClass, Product, MoveIn, MoveOut, User
@@ -79,7 +79,7 @@ class DisposableProductView(LoginRequiredMixin, TemplateView):
                     else:
                         move_pks.append(move.pk)
                         movements.append(move)
-                        
+
         context['movements'] = movements
         return context
 
@@ -326,7 +326,7 @@ class PrintCodes(FormView):
             int(data['end']),
             int(data['code_range'])
         )
-        return super(PrintCodes, self).form_valid(form)     
+        return super(PrintCodes, self).form_valid(form)
 
 
 @login_required
