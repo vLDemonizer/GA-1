@@ -368,8 +368,14 @@ class ProductList extends React.Component {
           
         };
         this.handleSelection = this.handleSelection.bind(this);
+        this.changeState = this.changeState.bind(this);
     }
-  
+    
+    changeState(e) {
+      console.log(this.state.is_disposable)
+      this.setState({is_disposable: !this.state.is_disposable})
+    }
+
     handleSelection(e) {
         let options = e.target.list.options
         let productText = $("#product_info").val();
@@ -447,6 +453,7 @@ class ProductList extends React.Component {
                     type="checkbox"
                     autoComplete="off"
                     checked={this.state.is_disposable ? "checked" : null}
+                    onClick={this.changeState}
                   />
                   </label>
                 </div>

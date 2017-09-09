@@ -66,3 +66,10 @@ class UserCreateForm(forms.Form):
     city = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}), initial=settings.CITY)
     designation = forms.CharField(widget=TextInput(attrs={'class': 'form-control'}))
     admin = forms.BooleanField(widget=CheckboxInput(attrs={'class': 'form-control'}), required=False)
+
+
+class CodesForm(forms.Form):
+    product_class = forms.IntegerField()
+    start = forms.IntegerField()
+    end = forms.IntegerField()
+    code_range = forms.IntegerField()

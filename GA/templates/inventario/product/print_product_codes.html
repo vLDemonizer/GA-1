@@ -1,0 +1,27 @@
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<form method="post" autocomplete="off">
+    {% csrf_token %}
+    {{form.errors}}
+    <div id='download'></div>
+    <div id="root"></div>
+</form>
+<br />
+<div class="text-center">
+    <a class="btn btn-danger" href="{% url 'inventario:home' %}">Cancel</a>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel" src="{% static 'react/print_codes_handler.jsx' %}"></script>
+<script type="text/babel">
+    ReactDOM.render(
+        <CodeRanges 
+            products={JSON.parse('{{ products | escapejs }}')}
+        />,
+        document.getElementById('root')
+    );
+</script>
+{% endblock %}

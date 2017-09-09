@@ -35,7 +35,11 @@ class ProductClass(models.Model):
             + self.size +  ' ' + self.brand + ' '
             + self.department
         )
-        
+    
+    @property
+    def product_limit(self):
+        return self.product_set.count()
+
     @property
     def low_stock(self):
         if self.product_set.filter(available=True).count() <= self.min_amount:
@@ -55,6 +59,11 @@ class ProductClass(models.Model):
                 brand=self.brand,
                 department=self.department,
                 size=self.size,
+                min_amount=self.min_amount,
+                is_disposable=self.is_disposable,
+                cost_value=self.cost_value,
+                our_value=self.our_value,
+                their_value=self.their_value,
             )
         except:
             return
@@ -68,6 +77,7 @@ class Product(models.Model):
     full_code = models.CharField(max_length=60, blank=True, unique=True)
     available = models.BooleanField(default=True)
     location = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
+    number = models.IntegerField(default=0)
 
     def __str__(self):
         return self.product_class.name + '-' + self.full_code
