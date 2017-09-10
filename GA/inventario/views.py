@@ -17,7 +17,7 @@ from GA import settings
 
 
 from .forms import (
-    ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm, 
+    ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm,
     LoginForm, CodesForm,
 )
 from .models import ProductClass, Product, MoveIn, MoveOut, User
@@ -37,6 +37,7 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         context['products'] = products
         return context
 
+
 class Login(FormView):
     form_class = LoginForm
     template_name = 'inventario/user/login.html'
@@ -50,7 +51,6 @@ class Login(FormView):
 
         return super(Login, self).get(request, *args, **kwargs)
 
-
     def form_valid(self, form):
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
@@ -59,7 +59,7 @@ class Login(FormView):
             login(self.request, user)
             return super(Login, self).form_valid(form)
         else:
-            form.add_error('username','No user found')
+            form.add_error('username', 'No user found')
             return super(Login, self).form_invalid(form)
 
 
@@ -79,7 +79,7 @@ class DisposableProductView(LoginRequiredMixin, TemplateView):
                     else:
                         move_pks.append(move.pk)
                         movements.append(move)
-                        
+
         context['movements'] = movements
         return context
 
@@ -173,8 +173,6 @@ class ProductClassList(LoginRequiredMixin, FormView):
 
         return super(ProductClassList, self).form_valid(form)
 
-
-
     def get_context_data(self, **kwargs):
         context = super(ProductClassList, self).get_context_data(**kwargs)
         context['products'] = serializers.serialize(
@@ -182,7 +180,6 @@ class ProductClassList(LoginRequiredMixin, FormView):
             ProductClass.objects.all().order_by('name')
         )
         return context
-
 
 
 class MoveInCreate(LoginRequiredMixin, FormView):
@@ -236,6 +233,7 @@ class MoveInCreate(LoginRequiredMixin, FormView):
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
         return context
 
+
 class MoveOutView(LoginRequiredMixin, FormView):
     form_class = MoveOutForm
     template_name = 'inventario/move/move_out_form.html'
@@ -244,10 +242,14 @@ class MoveOutView(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super(MoveOutView, self).get_context_data(**kwargs)
-        context['product_class'] = serializers.serialize('json', ProductClass.objects.all())
-        context['admin_users'] = serializers.serialize('json', User.objects.filter(admin=True))
-        context['retrieving_users'] = serializers.serialize('json', User.objects.all())
-        context['current_user'] = serializers.serialize('json', [self.request.user])
+        context['product_class'] = serializers.serialize(
+            'json', ProductClass.objects.all())
+        context['admin_users'] = serializers.serialize(
+            'json', User.objects.filter(admin=True))
+        context['retrieving_users'] = serializers.serialize(
+            'json', User.objects.all())
+        context['current_user'] = serializers.serialize(
+            'json', [self.request.user])
         context['locations'] = json.dumps(settings.LOCATIONS)
         context['reasons'] = json.dumps(settings.MOVEMENT_REASONS)
         context['is_superuser'] = json.dumps(self.request.user.is_superuser)
@@ -271,7 +273,8 @@ class MoveOutView(LoginRequiredMixin, FormView):
             location=origin,
         )[:amount]
 
-        if destiny == settings.LOCATIONS[4] or product_class.is_disposable: #If it's going to become unavailable
+        # If it's going to become unavailable
+        if destiny == settings.LOCATIONS[4] or product_class.is_disposable:
             for product in products:
                 product.location = destiny
                 product.available = False
@@ -316,6 +319,7 @@ class PrintCodes(FormView):
         product_class = ProductClass.objects.get(pk=data['product_class'])
         products = Product.objects.filter(
             product_class=product_class,
+            available=True,
             number__gte=data['start'],
             number__lte=data['end']
         ).order_by('number')
@@ -326,7 +330,7 @@ class PrintCodes(FormView):
             int(data['end']),
             int(data['code_range'])
         )
-        return super(PrintCodes, self).form_valid(form)     
+        return super(PrintCodes, self).form_valid(form)
 
 
 @login_required
@@ -348,7 +352,7 @@ def get_product_class_details(request):
     }
     return HttpResponse(
         json.dumps(data),
-        content_type = 'application/javascript; charset=utf8'
+        content_type='application/javascript; charset=utf8'
     )
 
 
@@ -362,9 +366,21 @@ def get_product_stock(request):
         location=settings.LOCATIONS[location],
         available=True,
     ).count()
+    product = Product.objects.filter(
+        product_class=product_class,
+    ).order_by('-number')[0]
+    code = product.full_code[:-15]
+    series_limit = product.full_code[22:-9]
+    unit_limit = product.full_code[28:]
+    data = {
+        'stock': stock,
+        'code': code,
+        'seriesLimit': series_limit,
+        'unitLimit': unit_limit,
+    }
     return HttpResponse(
-        json.dumps(stock),
-        content_type = 'application/javascript; charset=utf8'
+        json.dumps(data),
+        content_type='application/javascript; charset=utf8'
     )
 
 
@@ -378,7 +394,7 @@ def get_product_global_stock(request):
     ).count()
     return HttpResponse(
         json.dumps(stock),
-        content_type = 'application/javascript; charset=utf8'
+        content_type='application/javascript; charset=utf8'
     )
 
 
@@ -404,8 +420,9 @@ def get_products(request):
 
     return HttpResponse(
         json.dumps(data),
-        content_type = 'application/javascript; charset=utf8'
+        content_type='application/javascript; charset=utf8'
     )
+
 
 @login_required
 def generate_file(request):
@@ -427,7 +444,70 @@ def generate_file(request):
         int(data['end']),
         int(data['code_range'])
     )
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     response['Content-Disposition'] = "attachment; filename=code.docx"
     document.save(response)
     return response
+
+
+@login_required
+def make_single_move_out(request):
+    data = request.GET
+    product_class_pk = data['product_class']
+    origin = int(data['from_location'])
+    destiny = int(data['destiny'])
+    reason = int(data['reason'])
+    reason_description = data.get('reason_description', None)
+    authorized_by = data['authorized_by']
+    received_by = data['received_by']
+    series = data['series']
+    unit = data['unit']
+    given_by = request.user.pk
+    data = True
+    print(series)
+    print(unit)
+    number = int(series + format(int(unit), '08d'))
+    print(number)
+    product_class = ProductClass.objects.get(pk=product_class_pk)
+    print(product_class.code)
+    try:
+        product = Product.objects.get(
+            product_class=product_class,
+            available=True,
+            location=settings.LOCATIONS[origin],
+            number=number,
+        )
+        
+    except:
+        data = False
+        return HttpResponse(
+            json.dumps(data),
+            content_type='application/javascript; charset=utf8'
+        )
+    print(data)
+    # If it's going to become unavailable
+    if destiny == settings.LOCATIONS[4] or product_class.is_disposable:
+        product.location = destiny
+        product.available = False
+        product.save()
+    else:
+        product.location = destiny
+        product.save()
+
+    move_out = MoveOut.objects.create(
+        origin=origin,
+        destiny=destiny,
+        product_class=product_class,
+        authorized_by=authorized_by,
+        received_by=received_by,
+        given_by=given_by,
+        reason=reason,
+        reason_description=reason_description,
+    )
+    move_out.products.add(product)
+    move_out.save()
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/javascript; charset=utf8'
+    )

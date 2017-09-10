@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import (
     UserCreate, MoveInCreate, MoveOutView, ProductClassCreate,
     ProductClassList, LandingPage, UserCreate, PrintCodes, 
-    DisposableProductView, Login, log_out,
+    DisposableProductView, Login, log_out, make_single_move_out,
     get_product_global_stock, get_product_class_details,
     get_products, get_product_stock, generate_file
 )
@@ -21,7 +21,8 @@ urlpatterns = [
     url(r'^product-in/$', MoveInCreate.as_view(), name='move-in'),
     url(r'^print-product-codes/$', PrintCodes.as_view(), name='print-codes'),
     url(r'^ajax/product_class_details/$', get_product_class_details, name='get_product_class'),
-    url(r'^ajax/products/$', get_products, name='get_products'),
+    url(r'^ajax/products/$', get_products, name='get-products'),
+    url(r'^ajax/single-product-out/',make_single_move_out , name='single-move-out'),
     url(r'^ajax/get_product_stock', get_product_stock, name='get_product_stock'),
     url(r'^ajax/get_product_global_stock', get_product_global_stock, name='get_product_global_stock'),
     url(r'^ajax/generate_file', generate_file, name='generate-file'),

@@ -1,5 +1,5 @@
 class Option extends React.Component {
-  render () {
+  render() {
     let product = this.props.product.fields;
     let product_pk = this.props.product.pk;
     return (
@@ -22,54 +22,54 @@ class ProductList extends React.Component {
     this.props.handleKey(e.target.list.options, $("#product_info").val());
   }
 
-  render () {
+  render() {
     let products = this.props.products;
     var product_list = [];
     for (var i = 0; i < products.length; i++) {
-      product_list.push(<Option product={products[i]} key={'a' + i}/>);
+      product_list.push(<Option product={products[i]} key={'a' + i} />);
     }
-    if (en){
+    if (en) {
       return (
-          <div className="col" style={{marginBottom: "1rem"}}>
-            <label>Search Product</label>
-            <input
-              onInput={this.handleSelection}
-              id="product_info"
-              className="form-control"
-              type="text"
-              list="product_options"
-              autoComplete="off"
-            />
-            <datalist id="product_options">
-              {product_list}
-            </datalist>
-          </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <label>Search Product</label>
+          <input
+            onInput={this.handleSelection}
+            id="product_info"
+            className="form-control"
+            type="text"
+            list="product_options"
+            autoComplete="off"
+          />
+          <datalist id="product_options">
+            {product_list}
+          </datalist>
+        </div>
       );
     }
     else {
       return (
-          <div className="col" style={{marginBottom: "1rem"}}>
-            <label>Buscar un Producto</label>
-            <input
-              onInput={this.handleSelection}
-              id="product_info"
-              className="form-control"
-              type="text"
-              list="product_options"
-              autoComplete="off"
-              autoFocus=""
-            />
-            <datalist id="product_options">
-              {product_list}
-            </datalist>
-          </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <label>Buscar un Producto</label>
+          <input
+            onInput={this.handleSelection}
+            id="product_info"
+            className="form-control"
+            type="text"
+            list="product_options"
+            autoComplete="off"
+            autoFocus=""
+          />
+          <datalist id="product_options">
+            {product_list}
+          </datalist>
+        </div>
       );
     }
   }
 }
 
 class HiddenInput extends React.Component {
-  render () {
+  render() {
     let name = this.props.name;
     return (
       <input
@@ -80,6 +80,209 @@ class HiddenInput extends React.Component {
         required
       />
     );
+  }
+}
+
+class ProductTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      amount: '',
+      amountError: false,
+      series: '',
+      unit: '',
+      next: false,
+      submitError: false,
+    }
+    this.handleAmountChange = this.handleAmountChange.bind(this);
+    this.handleSeries = this.handleSeries.bind(this);
+    this.handleUnit = this.handleUnit.bind(this);
+    this.submitSingleMoveOut = this.submitSingleMoveOut.bind(this);
+  }
+
+  submitSingleMoveOut(e) {
+    e.preventDefault()
+    let product_class = $('#id_product_class').val();
+    let from = $('#id_from_location').val();
+    let to = $('#id_destiny').val();
+    let reason = $('#id_reason').val();
+    let reason_description = $('#id_reason_description').val();
+    let authorized_by = $('#id_authorized_by').val();
+    let received_by = $('#id_received_by').val();
+    $.ajax({
+      url: '/inventario/ajax/single-product-out/',
+      data: {
+        'product_class': product_class,
+        'from_location': from,
+        'destiny': to,
+        'reason': reason,
+        'reason_description': reason_description,
+        'authorized_by': authorized_by,
+        'received_by': received_by,
+        'series': this.state.series,
+        'unit': this.state.unit,
+      },
+      dataType: 'json',
+      success: (data) => {
+        if (data) {
+          this.setState({
+            series:'',
+            unit: '',
+            next: true,
+            submitError: false,
+          });
+          console.log('Chiabe bibeh')
+        } else {
+          console.log('Chiabe no bibeh')
+          this.setState({
+            submitError: true,
+          });
+        }
+      }
+    });
+  }
+
+  handleUnit(e) {
+    var value = e.target.value;
+    let limit = parseInt(this.props.unitLimit)
+    if (value != '') {
+      value = parseInt(value);
+      if (value <= limit) {
+        this.setState({
+          unit: value 
+        });
+      }
+    }
+    else {
+      this.setState({unit: ''});
+    }
+  }
+
+  handleSeries(e) {
+    var value = e.target.value;
+    let limit = parseInt(this.props.seriesLimit)
+    if (value != '') {
+      value = parseInt(value);
+      if (value <= limit) {
+        this.setState({
+          series: value 
+        });
+      }
+    }
+    else {
+      this.setState({series: ''});
+    }
+  }
+
+
+  handleAmountChange(event) {
+    let rawValue = event.target.value;
+    if (rawValue !== '') {
+      let value = parseInt(rawValue);
+      if (value > this.props.stock) {
+        return;
+      } else {
+        this.setState({
+          amount: value,
+        });
+      }
+    } else {
+      this.setState({
+        amount: ''
+      });
+    }
+  }
+
+  render() {
+    var table = '';
+    let bulkTable = (
+      <table className="table table-responsive">
+        <thead>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Department</th>
+          <th>Amount</th>
+          <th>Stock</th>
+          <th>Date</th>
+        </thead>
+        <tbody>
+          <td>{this.props.name}</td>
+          <td>{this.props.type}</td>
+          <td>{this.props.brand}</td>
+          <td>{this.props.size}</td>
+          <td>{this.props.department}</td>
+          <td style={{ width: "130px" }}>
+            <input
+              id="id_amount"
+              name="amount"
+              className="form-control"
+              type="number"
+              value={this.state.amount}
+              onChange={this.handleAmountChange}
+            />
+          </td>
+          <td>{this.props.stock}</td>
+          <td>{this.props.date}</td>
+        </tbody>
+      </table>
+    );
+    let singleTable = (
+      <div>
+        <table className="table table-responsive">
+          <thead>
+            <th>Product Type Code</th>
+            <th>Series</th>
+            <th>Unit</th>
+            <th>Date</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <td>
+              <input
+                type="text"
+                className="form-control"
+                value={this.props.code}
+                readOnly
+              />
+            </td>
+            <td className="form-group">
+              <label>S</label>
+              <input
+                type="number"
+                className="td-input"
+                id="series"
+                value={this.state.series}
+                onInput={this.handleSeries}
+              />
+            </td>
+            <td className="form-group">
+              <label>-</label>
+              <input
+                type="number"
+                className="td-input"
+                id="unit"
+                value={this.state.unit}
+                onInput={this.handleUnit}
+              />
+            </td>
+            <td>{this.props.date}</td>
+            <td>
+              <button 
+                className="btn btn-info"
+                onClick={this.submitSingleMoveOut}
+              >Load</button>
+            </td>
+          </tbody>
+        </table>
+      </div>
+    );
+    return (
+      <div>
+        {this.props.single ? singleTable : bulkTable}
+      </div>
+    )
   }
 }
 
@@ -96,25 +299,39 @@ class Details extends React.Component {
       amount: 1,
       stock: 0,
       date: '',
-      amountError: false,
+      code: '',
+      selective: false,
+      seriesLimit: 0,
+      unitLimit: 0,
     }
 
     this.handleSubmitKey = this.handleSubmitKey.bind(this);
-    this.handleAmountChange = this.handleAmountChange.bind(this);
+    this.handleSingleProduct = this.handleSingleProduct.bind(this);
+  }
+
+  handleSingleProduct(e) {
+    this.setState({
+      selective: !this.state.selective
+    })
   }
 
   handleSubmitKey(options, productText) {
-    for(var i = 0; i < options.length; i++) {
+    for (var i = 0; i < options.length; i++) {
       if (options[i].innerText === productText) {
-        let product = this.props.products[i];0;
+        let product = this.props.products[i]; 0;
         $.ajax({
           url: '/inventario/ajax/get_product_stock/',
-          data : {
+          data: {
             'product_class': product.pk,
             'location': $("#id_from_location").val(),
           },
-          success: (data) => this.setState({stock: data})
-
+          dataType: 'json',
+          success: (data) => this.setState({
+            stock: data.stock,
+            code: data.code,
+            seriesLimit: data.seriesLimit,
+            unitLimit: data.unitLimit,
+          })
         });
         this.setState({
           key: product.pk,
@@ -129,125 +346,51 @@ class Details extends React.Component {
     }
   }
 
-  handleAmountChange(event) {
-    let rawValue = event.target.value;
-    if (rawValue !== '') {
-      let value = parseInt(rawValue);
-      if (value > this.state.stock) {
-        this.setState({amountError: true});
-      } else {
-        this.setState({
-          amount: value,
-          amountError: false,
-        });
-      }
-    } else {
-      this.setState({
-        amount: 1
-      });
-    }
-  }
 
-  render () {
-    if (en){
-      let errorMessage = (<div className="form-errors">Amount Error: You are trying to move more than there is in stock!</div>);
-      return (
-        <div>
-          <div className="row">
-            <ProductList
-              products={this.props.products}
-              handleKey={this.handleSubmitKey}
-            />
-            {this.state.amountError? errorMessage: ''}
-            <div className="col-2" style={{marginBottom: "1rem"}}>
-              <label>Amount</label>
+  render() {
+    let errorMessage = (<div className="form-errors">Amount Error: No puede sacar una cantidad mayor de la que hay en stock!</div>);
+    return (
+      <div>
+        <ProductList
+          products={this.props.products}
+          handleKey={this.handleSubmitKey}
+        />
+        <div className="row" style={{ marginBottom: "1rem" }}>
+          <div className="col">
+            <label className="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
               <input
-                id="id_amount"
-                name="amount"
-                className="form-control"
-                type="number"
-                onChange={this.handleAmountChange}
+                type="checkbox"
+                className="custom-control-input"
+                checked={this.state.selective}
+                onClick={this.handleSingleProduct}
               />
-            </div>
+              <span className="custom-control-indicator"></span>
+              <span className="custom-control-description">Single Product</span>
+            </label>
           </div>
-          <HiddenInput primary_key={this.state.key} name={"product_class"}/>
-          <table className="table table-responsive">
-            <thead>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Brand</th>
-              <th>Size</th>
-              <th>Department</th>
-              <th>Amount</th>
-              <th>Stock</th>
-              <th>Date</th>
-            </thead>
-            <tbody>
-              <td>{this.state.name}</td>
-              <td>{this.state.type}</td>
-              <td>{this.state.brand}</td>
-              <td>{this.state.size}</td>
-              <td>{this.state.department}</td>
-              <td>{this.state.amount}</td>
-              <td>{this.state.stock}</td>
-              <td>{this.state.date}</td>
-            </tbody>
-          </table>
         </div>
-      );
-    }
-    else {
-      let errorMessage = (<div className="form-errors">Amount Error: No puede sacar una cantidad mayor de la que hay en stock!</div>);
-      return (
-        <div>
-          <div className="row">
-            <ProductList
-              products={this.props.products}
-              handleKey={this.handleSubmitKey}
-            />
-            {this.state.amountError? errorMessage: ''}
-            <div className="col-2" style={{marginBottom: "1rem"}}>
-              <label>Amount</label>
-              <input
-                id="id_amount"
-                name="amount"
-                className="form-control"
-                type="number"
-                onChange={this.handleAmountChange}
-              />
-            </div>
-          </div>
-          <HiddenInput primary_key={this.state.key} name={"product_class"}/>
-          <table className="table table-responsive">
-            <thead>
-              <th>Nombre</th>
-              <th>Tipo</th>
-              <th>Marca</th>
-              <th>Tamaño o Talla</th>
-              <th>Departamento</th>
-              <th>Cantidad</th>
-              <th>Stock</th>
-              <th>Fecha</th>
-            </thead>
-            <tbody>
-              <td>{this.state.name}</td>
-              <td>{this.state.type}</td>
-              <td>{this.state.brand}</td>
-              <td>{this.state.size}</td>
-              <td>{this.state.department}</td>
-              <td>{this.state.amount}</td>
-              <td>{this.state.stock}</td>
-              <td>{this.state.date}</td>
-            </tbody>
-          </table>
-        </div>
-      );
-    }
+        <HiddenInput primary_key={this.state.key} name={"product_class"} />
+        <ProductTable
+          single={this.state.selective}
+          seriesLimit={this.state.seriesLimit}
+          unitLimit={this.state.unitLimit}
+          name={this.state.name}
+          type={this.state.type}
+          brand={this.state.brand}
+          size={this.state.size}
+          department={this.state.department}
+          stock={this.state.stock}
+          date={this.state.date}
+          code={this.state.code}
+        />
+      </div>
+    );
+
   }
 }
 
 class LocationSelect extends React.Component {
-  render () {
+  render() {
     let locations = this.props.locations;
     let name = this.props.name
     var location_list = [];
@@ -271,17 +414,30 @@ class LocationSelect extends React.Component {
 }
 
 class Locations extends React.Component {
-  render () {
+  render() {
     var locations = [];
     for (var i = 0; i < this.props.names.length; i++) {
-      if(i === 0) {
-        locations.push(<LocationSelect from={true} locations={this.props.locations} name={this.props.names[i]} tittle={this.props.tittles[i]} />);
+      if (i === 0) {
+        locations.push(
+          <LocationSelect
+            from={true}
+            locations={this.props.locations}
+            name={this.props.names[i]}
+            tittle={this.props.tittles[i]}
+          />
+        );
       } else {
-        locations.push(<LocationSelect locations={this.props.locations} name={this.props.names[i]} tittle={this.props.tittles[i]} />);
+        locations.push(
+          <LocationSelect
+            locations={this.props.locations}
+            name={this.props.names[i]}
+            tittle={this.props.tittles[i]}
+          />
+        );
       }
     }
     return (
-      <div className="row" style={{marginBottom: "1rem"}}>
+      <div className="row" style={{ marginBottom: "1rem" }}>
         {locations}
       </div>
     );
@@ -299,15 +455,15 @@ class ReasonSelect extends React.Component {
   }
 
   checkReason(e) {
-      let value = e.target.value;
-      if (value == (this.props.reasons.length - 1)) {
-        this.setState({showTextArea: true});
-      } else {
-        this.setState({showTextArea: false});
-      }
+    let value = e.target.value;
+    if (value == (this.props.reasons.length - 1)) {
+      this.setState({ showTextArea: true });
+    } else {
+      this.setState({ showTextArea: false });
+    }
   }
 
-  render () {
+  render() {
     let reasons = this.props.reasons;
     var reason_list = [];
     for (var i = 0; i < reasons.length; i++) {
@@ -347,7 +503,7 @@ class ReasonSelect extends React.Component {
         >
           {reason_list}
         </select>
-        <br/>
+        <br />
         {textArea}
       </div>
     );
@@ -365,7 +521,7 @@ class UsersComponent extends React.Component {
 
   handleKey(e) {
     let options = e.target.list.options;
-    let input_text = $("#id_" + this.props.name).val();
+    let input_text = $("#" + this.props.name).val();
     for (var i = 0; i < options.length; i++) {
       if (options[i].innerText === input_text) {
         let key = this.props.users[i].pk;
@@ -376,7 +532,7 @@ class UsersComponent extends React.Component {
     }
   }
 
-  render () {
+  render() {
     let users = this.props.users;
     var user_list = [];
     let name = this.props.name;
@@ -392,7 +548,7 @@ class UsersComponent extends React.Component {
         <label>{this.props.tittle}</label>
         <input
           onInput={this.handleKey}
-          id={"id_" + name}
+          id={name}
           name={name}
           className="form-control"
           type="text"
@@ -409,17 +565,25 @@ class UsersComponent extends React.Component {
 }
 
 class Users extends React.Component {
-  render () {
+  render() {
     let user = this.props.dispatchUser[0].fields
     let user_pk = this.props.dispatchUser[0].pk
-    if (en){
+    if (en) {
       return (
         <div className="row">
           <div className="col">
-            <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Authorized By"}/>
+            <UsersComponent
+              users={this.props.authorizedUsers}
+              name={"authorized_by"}
+              tittle={"Authorized By"}
+            />
           </div>
           <div className="col">
-            <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Received By"}/>
+            <UsersComponent
+              users={this.props.receivingUsers}
+              name={"received_by"}
+              tittle={"Received By"}
+            />
           </div>
           <div className="col">
             <div className="text-center">
@@ -431,11 +595,11 @@ class Users extends React.Component {
                 {user.first_name} {user.last_name}
               </p>
               <input
-              id="id_given_by"
-              name="given_by"
-              className="form-control"
-              type="hidden"
-              value={user_pk}
+                id="id_given_by"
+                name="given_by"
+                className="form-control"
+                type="hidden"
+                value={user_pk}
               />
             </div>
           </div>
@@ -446,10 +610,18 @@ class Users extends React.Component {
       return (
         <div className="row">
           <div className="col">
-            <UsersComponent users={this.props.authorizedUsers} name={"authorized_by"} tittle={"Autorizado Por"}/>
+            <UsersComponent
+              users={this.props.authorizedUsers}
+              name={"authorized_by"}
+              tittle={"Autorizado Por"}
+            />
           </div>
           <div className="col">
-            <UsersComponent users={this.props.receivingUsers} name={"received_by"} tittle={"Recibido Por"}/>
+            <UsersComponent
+              users={this.props.receivingUsers}
+              name={"received_by"}
+              tittle={"Recibido Por"}
+            />
           </div>
           <div className="col">
             <div className="text-center">
@@ -461,11 +633,11 @@ class Users extends React.Component {
                 {user.first_name} {user.last_name}
               </p>
               <input
-              id="id_given_by"
-              name="given_by"
-              className="form-control"
-              type="hidden"
-              value={user_pk}
+                id="id_given_by"
+                name="given_by"
+                className="form-control"
+                type="hidden"
+                value={user_pk}
               />
             </div>
           </div>
@@ -475,7 +647,7 @@ class Users extends React.Component {
   }
 }
 
-class MoveOut extends React.Component{
+class MoveOut extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -483,7 +655,7 @@ class MoveOut extends React.Component{
     };
     this.checkDirections = this.checkDirections.bind(this);
     this.names = ["from_location", "destiny"];
-    if (en){
+    if (en) {
       this.tittles = ["From", "To"];
     }
     else {
@@ -545,14 +717,18 @@ class MoveOut extends React.Component{
     });
   }
 
-  render () {
+  render() {
     if (en) {
       return (
         <div className="container-fluid">
           <div className="form-errors text-center">
             {this.state.error}
           </div>
-          <Locations locations={this.props.locations} names={this.names} tittles={this.tittles} className="row"/>
+          <Locations locations={this.props.locations}
+            names={this.names}
+            tittles={this.tittles}
+            className="row"
+          />
           <Details products={this.props.products} />
           <ReasonSelect reasons={this.props.reasons} />
           <Users
@@ -560,13 +736,22 @@ class MoveOut extends React.Component{
             receivingUsers={this.props.retrieving_users}
             dispatchUser={this.props.current_user}
           />
-          <div className="text-center" style={{marginTop: "1rem"}}>
+          <div className="text-center" style={{ marginTop: "1rem" }}>
             <div className="btn-group">
-              <input type="submit" className="btn btn-primary btn-lg" value="Submit" onClick={this.checkDirections}/>
-              <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Submit and Add</button>
+              <input
+                type="submit"
+                className="btn btn-primary btn-lg"
+                value="Submit"
+                onClick={this.checkDirections} />
+              <button
+                id="id_redirect"
+                name="redirect"
+                className="btn btn-primary btn-lg"
+                value=""
+                onClick={() => { this.checkDirections; changeRedirect(); }}>Submit and Add</button>
             </div>
           </div>
-          <br/>
+          <br />
         </div>
       );
     }
@@ -576,7 +761,11 @@ class MoveOut extends React.Component{
           <div className="form-errors text-center">
             {this.state.error}
           </div>
-          <Locations locations={this.props.locations} names={this.names} tittles={this.tittles} className="row"/>
+          <Locations locations={this.props.locations}
+            names={this.names}
+            tittles={this.tittles}
+            className="row"
+          />
           <Details products={this.props.products} />
           <ReasonSelect reasons={this.props.reasons} />
           <Users
@@ -584,16 +773,28 @@ class MoveOut extends React.Component{
             receivingUsers={this.props.retrieving_users}
             dispatchUser={this.props.current_user}
           />
-          <div className="text-center" style={{marginTop: "1rem"}}>
+          <div className="text-center" style={{ marginTop: "1rem" }}>
             <div className="btn-group">
-              <input type="submit" className="btn btn-primary btn-lg" value="Cargar" onClick={this.checkDirections}/>
-              <button id="id_redirect" name="redirect" className="btn btn-primary btn-lg" value="" onClick={() => {this.checkDirections; changeRedirect();}}>Cargar y Mover otro</button>
+              <input
+                type="submit"
+                className="btn btn-primary btn-lg"
+                value="Cargar"
+                onClick={this.checkDirections}
+              />
+              <button
+                id="id_redirect"
+                name="redirect"
+                className="btn btn-primary btn-lg"
+                value=""
+                onClick={() => { this.checkDirections; changeRedirect(); }}
+              >Cargar y Mover otro</button>
             </div>
           </div>
-          <br/>
+          <br />
         </div>
       );
     }
   }
 }
+
 

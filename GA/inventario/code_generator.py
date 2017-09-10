@@ -25,14 +25,6 @@ def generate_full_code(user, product, number):
         format(number, '08d')
     )
 
-def available_products(products):
-    filtered_products = []
-    for product in products:
-        if product.available:
-            filtered_products.append(product)
-
-    return filtered_products
-
 def create_codes_file(product_class, products, start, end, code_range):
     document = Document()
     style = document.styles['Normal']
@@ -42,19 +34,15 @@ def create_codes_file(product_class, products, start, end, code_range):
     table = document.add_table(rows=1, cols=2)
     table.rows[0].cells[0].text = 'Code Row 1'
     table.rows[0].cells[1].text = 'Code Row 2'
-    check_range = start
     cell_index = 0
     cell = table.add_row().cells
-    products = available_products(products)
     for product in products:
         if cell_index <= 1:
             if product.number == start or product.number == end:
                 cell[cell_index].text = product.full_code
-                check_range += code_range
                 cell_index += 1
 
-            elif check_range == product.number:
-                check_range += code_range
+            elif (product.number - start) % code_range == 0:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
         else:
@@ -62,11 +50,9 @@ def create_codes_file(product_class, products, start, end, code_range):
             cell = table.add_row().cells
             if product.number == start or product.number == end:
                 cell[cell_index].text = product.full_code
-                check_range += code_range
                 cell_index += 1
 
-            elif check_range == product.number:
-                check_range += code_range
+            elif (product.number - start) % code_range == 0:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
     for row in table.rows:
