@@ -17,6 +17,7 @@ from GA import settings
 from .forms import DateReportForm, ProductReportForm, LocationReportForm, GeneralReportForm
 from inventario.models import MoveIn, MoveOut, ProductClass, Product
 
+from itertools import chain
 # Create your views here.
 
 class LandingPage(LoginRequiredMixin, TemplateView):
@@ -39,7 +40,39 @@ class ProductReportView(LoginRequiredMixin, FormView):
     form_class = ProductReportForm
     template_name = 'reporte/product/product_form.html'
     login_url = reverse_lazy('inventario:login')
-    success_url = reverse_lazy('reporte:home')
+    success_url = reverse_lazy('reporte:product')
+
+    def form_valid(self, form):
+        product_class = form.cleaned_data['product_class']
+
+        self.request.session['product_class'] = product_class
+        return super(ProductReportView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductReportView, self).get_context_data(**kwargs)
+        context['products'] = serializers.serialize(
+            'json',
+            ProductClass.objects.all().order_by('name')
+        )
+
+        if 'product_class' in self.request.session:
+            product_class = self.request.session['product_class']
+
+            product = ProductClass.objects.get(pk=product_class)
+
+            entrance = MoveIn.objects.filter(product_class=product_class).order_by('-date')
+            movement = MoveOut.objects.filter(product_class=product_class).order_by('-date')
+
+            product_report = list(chain(entrance, movement))
+
+            context['entrance'] = entrance
+            context['movement'] = movement
+            context['product_report'] = product_report
+
+            del self.request.session['product_class']
+        else:
+            print("no hay data")
+        return context
 
 
 class DateReportView(LoginRequiredMixin, FormView):
