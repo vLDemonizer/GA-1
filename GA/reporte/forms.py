@@ -8,13 +8,14 @@ class GeneralReportForm(forms.Form):
     product_class = forms.IntegerField()
 
 class DateReportForm(forms.Form):
-    product_class = forms.IntegerField()
+    init_date = forms.CharField(widget=DateInput(attrs={'class': 'form-control'}), required=True)
+    end_date = forms.CharField(widget=DateInput(attrs={'class': 'form-control'}), required=True)
+    location = forms.CharField(max_length=30)
+    in_out = forms.BooleanField(widget=CheckboxInput(attrs={'class': 'form-control'}), required=False)
 
 class LocationReportForm(forms.Form):
     location = forms.CharField(max_length=30)
-    choice = forms.CharField(max_length=30)
-
-
+    in_out = forms.BooleanField(widget=CheckboxInput(attrs={'class': 'form-control'}), required=False)
 
 class ProductReportForm(forms.Form):
     product_class = forms.IntegerField()

@@ -3,25 +3,115 @@
 
 {% block content %}
 {% if location_report %}
-reporte
-{% else %}
-<form action="" method="POST" class="form-control">
-  {% csrf_token %}
-  <div class="btn-group form-group" data-toggle="buttons">
-    <label class="btn btn-primary active">
-      <input type="radio" name="options" value="_in" autocomplete="off" checked> In
+  <form id="id_form" method="POST" class="form-control">
+    {% csrf_token %}
+    <div class="container-fluid text-center">
+      <label class="btn btn-info"><span style="color: white;">IN / OUT </span>
+      <input
+        id="id_in_out"
+        name="in_out"
+        type="checkbox"
+        checked
+        autoComplete="off"
+      />
+      <select class="custom-select" id="id_location" name="location">
+        {% for location in locations %}
+          <option value="{{location}}"> {{ location }} </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary btn-lg" value="Load">Submit</button>
+      <a href="{% url 'reporte:home' %}" class="btn btn-danger btn-lg">Cancelar</a>
     </label>
-    <label class="btn btn-primary">
-      <input type="radio" name="options" value="_out" autocomplete="off"> Out
-    </label>
-  </div>
-  <select class="custom-select" id="location" >
-    {% for location in locations %}
-      <option value="{{location}}"> {{ location }} </option>
-    {% endfor %}
-  </select>
+    </div>
+    <div class="container-fluid text-center">
+      <small>Checked = IN --------- Unchecked = OUT </small>
+    </div>
+  </form>
+  <div class="row container-fluid form-control">
+    <!--If it is an IN-->
+    {% if status %}
+    <table class="table table-reponsive table-striped">
+      <thead class="table-inverse">
+        <th>Name</th>
+        <th>Type</th>
+        <th>Size</th>
+        <th>Brand</th>
+        <th>Department</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </thead>
+      <tbody>
+        {% for moves in location_report %}
+          <tr>
+            <td>{{ moves.product_class.name }}</td>
+            <td>{{ moves.product_class.product_type }}</td>
+            <td>{{ moves.product_class.size }}</td>
+            <td>{{ moves.product_class.brand }}</td>
+            <td>{{ moves.product_class.department }}</td>
+            <td>{{ moves.products.count }}</td>
+            <td>{{ moves.date}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-  <button type="submit" class="btn btn-primary" value="Load">Submit</button>
+    {% else %}
+    <!--If it is an Out-->
+    <table class="table table-reponsive table-striped">
+      <thead class="table-inverse">
+        <th>Name</th>
+        <th>Type</th>
+        <th>Size</th>
+        <th>Brand</th>
+        <th>Department</th>
+        <th>Amount</th>
+        <th>To</th>
+        <th>Date</th>
+      </thead>
+      <tbody>
+        {% for moves in location_report %}
+          <tr>
+            <td>{{ moves.product_class.name }}</td>
+            <td>{{ moves.product_class.product_type }}</td>
+            <td>{{ moves.product_class.size }}</td>
+            <td>{{ moves.product_class.brand }}</td>
+            <td>{{ moves.product_class.department }}</td>
+            <td>{{ moves.products.count }}</td>
+            <td>{{ moves.destiny }}</td>
+            <td>{{ moves.date}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+
+{% else %}
+
+<form id="id_form" method="POST" class="form-control">
+  {% csrf_token %}
+  <div class="container-fluid text-center">
+    <label class="btn btn-info"><span style="color: white;">IN / OUT </span>
+    <input
+      id="id_in_out"
+      name="in_out"
+      type="checkbox"
+      checked
+      autoComplete="off"
+    />
+    <select class="custom-select" id="id_location" name="location">
+      {% for location in locations %}
+        <option value="{{location}}"> {{ location }} </option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary btn-lg" value="Load">Submit</button>
+    <a href="{% url 'reporte:home' %}" class="btn btn-danger btn-lg">Cancelar</a>
+  </label>
+  </div>
+  <div class="container-fluid text-center">
+    <small>Checked = IN --------- Unchecked = OUT </small>
+  </div>
 </form>
+
 {% endif %}
 {% endblock %}
