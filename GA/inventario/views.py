@@ -71,7 +71,7 @@ class DisposableProductView(LoginRequiredMixin, TemplateView):
         context = super(DisposableProductView, self).get_context_data(**kwargs)
         move_pks = []
         movements = []
-        for products in Product.objects.filter(available=False):
+        for products in Product.objects.all().order_by('product_class_id').filter(available=False):
             for move in MoveOut.objects.all():
                 if(move.product_class == products.product_class):
                     if(move.pk in move_pks):
@@ -449,7 +449,6 @@ def generate_file(request):
     response['Content-Disposition'] = "attachment; filename=code.docx"
     document.save(response)
     return response
-
 
 @login_required
 def make_single_move_out(request):

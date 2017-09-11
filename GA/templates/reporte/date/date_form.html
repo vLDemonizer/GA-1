@@ -2,10 +2,120 @@
 {% load staticfiles %}
 
 {% block content %}
-<div id="root" class="container-reponsive">
+  {% if date_report %}
+  <form id="id_form" method="POST" class="form-control">
+    {% csrf_token %}
+    <div class="container-fluid text-center">
+      <label class="btn btn-info"><span style="color: white;">IN / OUT </span>
+      <input
+        id="id_in_out"
+        name="in_out"
+        type="checkbox"
+        checked
+        autoComplete="off">
+        Initial Date
+        <input id="id_init_date" type="date" name="init_date" min="2017-09-01">
+        End Date
+        <input id="id_end_date" type="date" name="end_date">
+        <select class="custom-select" id="id_location" name="location">
+          {% for location in locations %}
+            <option value="{{location}}"> {{ location }} </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary btn-lg" value="Load">Submit</button>
+        <a href="{% url 'reporte:home' %}" class="btn btn-danger btn-lg">Cancel</a>
+      </label>
+    </div>
+    <div class="container-fluid text-center">
+      <small>Checked = IN --------- Unchecked = OUT </small>
+    </div>
+  </form>
 
-</div>
-{% endblock %}
-{% block extra_scripts %}
-<script type="text/babel" src="{% static 'react/reporte/date_control.js' %}"></script>
+  <div class="row container-fluid form-control">
+    <!--If it is an IN-->
+    {% if status %}
+    <table class="table table-reponsive table-striped">
+      <thead class="table-inverse">
+        <th>Name</th>
+        <th>Type</th>
+        <th>Size</th>
+        <th>Brand</th>
+        <th>Department</th>
+        <th>Amount</th>
+        <th>Date</th>
+      </thead>
+      <tbody>
+        {% for moves in date_report %}
+          <tr>
+            <td>{{ moves.product_class.name }}</td>
+            <td>{{ moves.product_class.product_type }}</td>
+            <td>{{ moves.product_class.size }}</td>
+            <td>{{ moves.product_class.brand }}</td>
+            <td>{{ moves.product_class.department }}</td>
+            <td>{{ moves.products.count }}</td>
+            <td>{{ moves.date}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% else %}
+    <!--If it is an Out-->
+    <table class="table table-reponsive table-striped">
+      <thead class="table-inverse">
+        <th>Name</th>
+        <th>Type</th>
+        <th>Size</th>
+        <th>Brand</th>
+        <th>Department</th>
+        <th>Amount</th>
+        <th>To</th>
+        <th>Date</th>
+      </thead>
+      <tbody>
+        {% for moves in date_report %}
+          <tr>
+            <td>{{ moves.product_class.name }}</td>
+            <td>{{ moves.product_class.product_type }}</td>
+            <td>{{ moves.product_class.size }}</td>
+            <td>{{ moves.product_class.brand }}</td>
+            <td>{{ moves.product_class.department }}</td>
+            <td>{{ moves.products.count }}</td>
+            <td>{{ moves.destiny }}</td>
+            <td>{{ moves.date}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+  {% else %}
+  <form id="id_form" method="POST" class="form-control">
+    {% csrf_token %}
+    <div class="container-fluid text-center">
+      <label class="btn btn-info"><span style="color: white;">IN / OUT </span>
+      <input
+        id="id_in_out"
+        name="in_out"
+        type="checkbox"
+        checked
+        autoComplete="off">
+        Initial Date
+        <input id="id_init_date" type="date" name="init_date" min="2017-09-01">
+        End Date
+        <input id="id_end_date" type="date" name="end_date">
+        <select class="custom-select" id="id_location" name="location">
+          {% for location in locations %}
+            <option value="{{location}}"> {{ location }} </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary btn-lg" value="Load">Submit</button>
+        <a href="{% url 'reporte:home' %}" class="btn btn-danger btn-lg">Cancel</a>
+      </label>
+    </div>
+    <div class="container-fluid text-center">
+      <small>Checked = IN --------- Unchecked = OUT </small>
+    </div>
+  </form>
+  {% endif %}
 {% endblock %}
