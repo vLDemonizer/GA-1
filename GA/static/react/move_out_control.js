@@ -93,6 +93,7 @@ class ProductTable extends React.Component {
       unit: '',
       next: false,
       submitError: false,
+      error: '',
     }
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleSeries = this.handleSeries.bind(this);
@@ -102,44 +103,56 @@ class ProductTable extends React.Component {
 
   submitSingleMoveOut(e) {
     e.preventDefault()
-    let product_class = $('#id_product_class').val();
-    let from = $('#id_from_location').val();
-    let to = $('#id_destiny').val();
-    let reason = $('#id_reason').val();
-    let reason_description = $('#id_reason_description').val();
-    let authorized_by = $('#id_authorized_by').val();
-    let received_by = $('#id_received_by').val();
-    $.ajax({
-      url: '/inventario/ajax/single-product-out/',
-      data: {
-        'product_class': product_class,
-        'from_location': from,
-        'destiny': to,
-        'reason': reason,
-        'reason_description': reason_description,
-        'authorized_by': authorized_by,
-        'received_by': received_by,
-        'series': this.state.series,
-        'unit': this.state.unit,
-      },
-      dataType: 'json',
-      success: (data) => {
-        if (data) {
-          this.setState({
-            series:'',
-            unit: '',
-            next: true,
-            submitError: false,
-          });
-          console.log('Chiabe bibeh')
-        } else {
-          console.log('Chiabe no bibeh')
-          this.setState({
-            submitError: true,
+    let product = parseInt($('#id_product_class').val());
+    if (this.props.checkDirections(e) && product > 0) {
+      console.log('Directions and Product class Key READY')
+      if (this.props.usersReady) {
+        console.log('Users Ready')
+        if (this.state.series !== '' && this.state.unit !== '') {
+          console.log('Series and Unit READY')
+          let product_class = $('#id_product_class').val();
+          let from = $('#id_from_location').val();
+          let to = $('#id_destiny').val();
+          let reason = $('#id_reason').val();
+          let reason_description = $('#id_reason_description').val();
+          let authorized_by = $('#id_authorized_by').val();
+          let received_by = $('#id_received_by').val();
+          $.ajax({
+            url: '/inventario/ajax/single-product-out/',
+            data: {
+              'product_class': product_class,
+              'from_location': from,
+              'destiny': to,
+              'reason': reason,
+              'reason_description': reason_description,
+              'authorized_by': authorized_by,
+              'received_by': received_by,
+              'series': this.state.series,
+              'unit': this.state.unit,
+            },
+            dataType: 'json',
+            success: (data) => {
+              console.log(data)
+              if (data) {
+                this.setState({
+                  series:'',
+                  unit: '',
+                  next: true,
+                  submitError: false,
+                  error: false,
+                });
+              } else {
+                this.setState({
+                  submitError: true,
+                });
+              }
+            }
           });
         }
+      } else {
+        this.setState({error: 'Please select ALL Users.'})
       }
-    });
+    }
   }
 
   handleUnit(e) {
@@ -173,7 +186,6 @@ class ProductTable extends React.Component {
       this.setState({series: ''});
     }
   }
-
 
   handleAmountChange(event) {
     let rawValue = event.target.value;
@@ -270,12 +282,15 @@ class ProductTable extends React.Component {
             <td>{this.props.date}</td>
             <td>
               <button 
-                className="btn btn-info"
+                className="btn btn-lg btn-primary"
                 onClick={this.submitSingleMoveOut}
-              >Load</button>
+              >Submit</button>
             </td>
           </tbody>
         </table>
+        {this.state.next ? <div className="text-center">Product Moved Successfully</div> : ''}
+        {this.state.submitError ? <div className="text-center">Product Not Found</div> : ''}
+        {this.state.error ? <div className="text-center">{this.state.error}</div> : ''}
       </div>
     );
     return (
@@ -300,7 +315,6 @@ class Details extends React.Component {
       stock: 0,
       date: '',
       code: '',
-      selective: false,
       seriesLimit: 0,
       unitLimit: 0,
     }
@@ -310,9 +324,7 @@ class Details extends React.Component {
   }
 
   handleSingleProduct(e) {
-    this.setState({
-      selective: !this.state.selective
-    })
+    this.props.handleSelection(e);
   }
 
   handleSubmitKey(options, productText) {
@@ -361,7 +373,7 @@ class Details extends React.Component {
               <input
                 type="checkbox"
                 className="custom-control-input"
-                checked={this.state.selective}
+                checked={this.props.selective}
                 onClick={this.handleSingleProduct}
               />
               <span className="custom-control-indicator"></span>
@@ -371,7 +383,9 @@ class Details extends React.Component {
         </div>
         <HiddenInput primary_key={this.state.key} name={"product_class"} />
         <ProductTable
-          single={this.state.selective}
+          checkDirections={this.props.handleDirections}
+          usersReady={this.props.usersReady}
+          single={this.props.selective}
           seriesLimit={this.state.seriesLimit}
           unitLimit={this.state.unitLimit}
           name={this.state.name}
@@ -525,6 +539,11 @@ class UsersComponent extends React.Component {
     for (var i = 0; i < options.length; i++) {
       if (options[i].innerText === input_text) {
         let key = this.props.users[i].pk;
+        if (this.props.name === 'authorized_by') {
+          this.props.check(true);
+        } else if(this.props.name === 'received_by'){
+          this.props.check(false);
+        }
         this.setState({
           user_key: key,
         });
@@ -565,14 +584,43 @@ class UsersComponent extends React.Component {
 }
 
 class Users extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      authUser: false,
+      recUser: false,
+    }
+    this.checkUsers = this.checkUsers.bind(this);
+  }
+  // True for auth, false for Receiving
+  checkUsers(user) {
+    if (user === true) {
+      this.setState({
+        authUser: true
+      })
+    } else if (user === false) {
+      this.setState({
+        recUser: true
+      })
+    }
+  }
+
   render() {
     let user = this.props.dispatchUser[0].fields
     let user_pk = this.props.dispatchUser[0].pk
+    if (this.state.authUser && this.state.recUser) {
+      this.props.handleUsersCheck(true);
+      this.setState({
+        authUser: false,
+        recUser: false,
+      })
+    }
     if (en) {
       return (
         <div className="row">
           <div className="col">
             <UsersComponent
+              check={this.checkUsers}
               users={this.props.authorizedUsers}
               name={"authorized_by"}
               tittle={"Authorized By"}
@@ -580,6 +628,7 @@ class Users extends React.Component {
           </div>
           <div className="col">
             <UsersComponent
+              check={this.checkUsers}
               users={this.props.receivingUsers}
               name={"received_by"}
               tittle={"Received By"}
@@ -651,9 +700,13 @@ class MoveOut extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: ""
+      error: "",
+      selective: false,
+      usersReady: false,
     };
     this.checkDirections = this.checkDirections.bind(this);
+    this.handleSelective = this.handleSelective.bind(this);
+    this.checkUsers = this.checkUsers.bind(this);
     this.names = ["from_location", "destiny"];
     if (en) {
       this.tittles = ["From", "To"];
@@ -672,21 +725,21 @@ class MoveOut extends React.Component {
           error: "You need to change the location, can't be the same."
         });
         e.preventDefault();
-        return;
+        return false;
       }
       if (from === '1' && to === '2') {
         this.setState({
           error: "Office can't go to Plant."
         });
         e.preventDefault();
-        return;
+        return false;
       }
       if (from === '2' && to === '1') {
         this.setState({
           error: "Plant can't go to Office."
         });
         e.preventDefault();
-        return;
+        return false;
       }
     }
     else {
@@ -695,28 +748,36 @@ class MoveOut extends React.Component {
           error: "Desde y Hacia No Pueden ser Iguales"
         });
         e.preventDefault();
-        return;
+        return false;
       }
       if (from === '1' && to === '2') {
         this.setState({
           error: "No Se Puede Hacer un Movimiento de Oficina a Planta"
         });
         e.preventDefault();
-        return;
+        return false;
       }
       if (from === '2' && to === '1') {
         this.setState({
           error: "No Se Puede Hacer un Movimiento de Planta a Oficina"
         });
         e.preventDefault();
-        return;
+        return false;
       }
     }
     this.setState({
       error: ''
     });
+    return true;
   }
 
+  checkUsers(e) {
+    this.setState({usersReady: true})
+  }
+
+  handleSelective(e) {
+    this.setState({selective: !this.state.selective})
+  }
   render() {
     if (en) {
       return (
@@ -729,28 +790,37 @@ class MoveOut extends React.Component {
             tittles={this.tittles}
             className="row"
           />
-          <Details products={this.props.products} />
+          <Details 
+            handleSelection={this.handleSelective}
+            selective={this.state.selective}
+            usersReady={this.state.usersReady}
+            products={this.props.products}
+            handleDirections={this.checkDirections}
+          />
           <ReasonSelect reasons={this.props.reasons} />
           <Users
+            handleUsersCheck={this.checkUsers}
             authorizedUsers={this.props.admin_users}
             receivingUsers={this.props.retrieving_users}
             dispatchUser={this.props.current_user}
           />
-          <div className="text-center" style={{ marginTop: "1rem" }}>
-            <div className="btn-group">
-              <input
-                type="submit"
-                className="btn btn-primary btn-lg"
-                value="Submit"
-                onClick={this.checkDirections} />
-              <button
-                id="id_redirect"
-                name="redirect"
-                className="btn btn-primary btn-lg"
-                value=""
-                onClick={() => { this.checkDirections; changeRedirect(); }}>Submit and Add</button>
+          {this.state.selective ? '' :
+            <div className="text-center" style={{ marginTop: "1rem" }}>
+              <div className="btn-group">
+                <input
+                  type="submit"
+                  className="btn btn-primary btn-lg"
+                  value="Submit"
+                  onClick={this.checkDirections} />
+                <button
+                  id="id_redirect"
+                  name="redirect"
+                  className="btn btn-primary btn-lg"
+                  value=""
+                  onClick={() => { this.checkDirections; changeRedirect(); }}>Submit and Add</button>
+              </div>
             </div>
-          </div>
+          }
           <br />
         </div>
       );
@@ -766,30 +836,36 @@ class MoveOut extends React.Component {
             tittles={this.tittles}
             className="row"
           />
-          <Details products={this.props.products} />
+          <Details 
+            handleSelection={this.handleSelective}
+            selective={this.state.selective}
+            products={this.props.products}
+          />
           <ReasonSelect reasons={this.props.reasons} />
           <Users
             authorizedUsers={this.props.admin_users}
             receivingUsers={this.props.retrieving_users}
             dispatchUser={this.props.current_user}
           />
-          <div className="text-center" style={{ marginTop: "1rem" }}>
-            <div className="btn-group">
-              <input
-                type="submit"
-                className="btn btn-primary btn-lg"
-                value="Cargar"
-                onClick={this.checkDirections}
-              />
-              <button
-                id="id_redirect"
-                name="redirect"
-                className="btn btn-primary btn-lg"
-                value=""
-                onClick={() => { this.checkDirections; changeRedirect(); }}
-              >Cargar y Mover otro</button>
+          {this.state.selective ? '' :
+            <div className="text-center" style={{ marginTop: "1rem" }}>
+              <div className="btn-group">
+                <input
+                  type="submit"
+                  className="btn btn-primary btn-lg"
+                  value="Cargar"
+                  onClick={this.checkDirections}
+                />
+                <button
+                  id="id_redirect"
+                  name="redirect"
+                  className="btn btn-primary btn-lg"
+                  value=""
+                  onClick={() => { this.checkDirections; changeRedirect(); }}
+                >Cargar y Mover otro</button>
+              </div>
             </div>
-          </div>
+          }
           <br />
         </div>
       );

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core import serializers
@@ -87,6 +89,10 @@ class DateReportView(LoginRequiredMixin, FormView):
         location = form.cleaned_data['location']
         in_out = form.cleaned_data['in_out']
 
+        end_date = datetime.strftime(
+                    (datetime.strptime(end_date, "%Y-%m-%d") 
+                    + timedelta(days=1)), "%Y-%m-%d")
+
         self.request.session['location'] = location
         self.request.session['init_date'] = init_date
         self.request.session['end_date'] = end_date
@@ -107,18 +113,31 @@ class DateReportView(LoginRequiredMixin, FormView):
             location = self.request.session['location']
 
             context['status'] = status
-
+            print(init)
+            print(end)
+            print(datetime.now())
             if status:
-                print(init, end, status, location)
                 if location == "Almacen":
-                    movements = MoveIn.objects.filter(date__range=[init, end]).order_by('-date')
+                    movements = MoveIn.objects.filter(
+                        date__gte=init,
+                        date__lte=end
+                    ).order_by('-date')
                     context['date_report'] = movements
+                    print(movements[0].date)
                 else:
-                    movements = MoveOut.objects.filter(date__range=[init, end], destiny=location).order_by('-date')
-                    print(movements)
+                    movements = MoveOut.objects.filter(
+                        date__gte=init,
+                        date__lte=end,
+                        destiny=location
+                    ).order_by('-date')
                     context['date_report'] = movements
             else:
-                movements = MoveOut.objects.filter(date__range=[init, end], origin=location).order_by('-date')
+                movements = MoveOut.objects.filter(
+                    date__gte=init,
+                    date__lte=end,
+                    destiny=location,
+                    origin=location
+                ).order_by('-date')
                 context['date_report'] = movements
 
             del self.request.session['init_date']
@@ -126,11 +145,8 @@ class DateReportView(LoginRequiredMixin, FormView):
             del self.request.session['in_out']
             del self.request.session['location']
 
-        #if there is not, wait for it
-        else:
-            print("no hay data")
-
         return context
+
 
 
 class LocationReportView(LoginRequiredMixin, FormView):
@@ -161,26 +177,22 @@ class LocationReportView(LoginRequiredMixin, FormView):
             if status:
                 if location == "Almacen":
                     print(status, "Entrada", location)
-                    movements = MoveIn.objects.all().order_by('date')
+                    movements = MoveIn.objects.all().order_by('-date')
                     context['location_report'] = movements
 
                 else:
-                    movements = MoveOut.objects.filter(destiny=location).order_by('date')
+                    movements = MoveOut.objects.filter(destiny=location).order_by('-date')
                     context['location_report'] = movements
 
             #if status is OUT:
             else:
                 print(status,"Salida")
-                movements = MoveOut.objects.filter(origin=location).order_by('date')
+                movements = MoveOut.objects.filter(origin=location).order_by('-date')
                 context['location_report'] = movements
 
             context['status'] = status
             #Delete all session data
             del self.request.session['location']
             del self.request.session['in_out']
-
-        #if not wait for it:
-        else:
-            print("no abemuh data")
 
         return context

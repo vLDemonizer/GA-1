@@ -464,12 +464,8 @@ def make_single_move_out(request):
     unit = data['unit']
     given_by = request.user.pk
     data = True
-    print(series)
-    print(unit)
     number = int(series + format(int(unit), '08d'))
-    print(number)
     product_class = ProductClass.objects.get(pk=product_class_pk)
-    print(product_class.code)
     try:
         product = Product.objects.get(
             product_class=product_class,
@@ -484,7 +480,6 @@ def make_single_move_out(request):
             json.dumps(data),
             content_type='application/javascript; charset=utf8'
         )
-    print(data)
     # If it's going to become unavailable
     if destiny == settings.LOCATIONS[4] or product_class.is_disposable:
         product.location = destiny
