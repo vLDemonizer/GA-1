@@ -35,14 +35,16 @@ def create_codes_file(product_class, products, start, end, code_range):
     table.rows[0].cells[0].text = 'Code Row 1'
     table.rows[0].cells[1].text = 'Code Row 2'
     cell_index = 0
+    counter = 0
     cell = table.add_row().cells
     for product in products:
+        counter += 1
         if cell_index <= 1:
             if product.number == start or product.number == end:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
 
-            elif (product.number - start) % code_range == 0:
+            elif (counter % code_range) == 0:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
         else:
@@ -52,7 +54,7 @@ def create_codes_file(product_class, products, start, end, code_range):
                 cell[cell_index].text = product.full_code
                 cell_index += 1
 
-            elif (product.number - start) % code_range == 0:
+            elif (counter % code_range) == 0:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
     for row in table.rows:

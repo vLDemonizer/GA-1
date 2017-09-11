@@ -34,10 +34,6 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         for product in ProductClass.objects.all().order_by('name'):
             if product.low_stock:
                 products.append(product)
-        productsp = Product.objects.all()
-        for product in productsp:
-            product.number = int(product.full_code[-8:])
-            product.save()
         context['products'] = products
         return context
 
