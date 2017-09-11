@@ -454,9 +454,9 @@ def generate_file(request):
 def make_single_move_out(request):
     data = request.GET
     product_class_pk = data['product_class']
-    origin = int(data['from_location'])
-    destiny = int(data['destiny'])
-    reason = int(data['reason'])
+    origin = settings.LOCATIONS[int(data['from_location'])]
+    destiny = settings.LOCATIONS[int(data['destiny'])]
+    reason = settings.MOVEMENT_REASONS[int(data['reason'])]
     reason_description = data.get('reason_description', None)
     authorized_by = data['authorized_by']
     received_by = data['received_by']
@@ -473,7 +473,7 @@ def make_single_move_out(request):
             location=settings.LOCATIONS[origin],
             number=number,
         )
-        
+
     except:
         data = False
         return HttpResponse(
