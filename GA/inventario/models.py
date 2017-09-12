@@ -35,7 +35,7 @@ class ProductClass(models.Model):
             + self.size +  ' ' + self.brand + ' '
             + self.department
         )
-    
+
     @property
     def product_limit(self):
         return self.product_set.count()
@@ -48,7 +48,7 @@ class ProductClass(models.Model):
 
     @property
     def stock(self):
-        return self.product_set.filter(available=True).count() 
+        return self.product_set.filter(available=True).count()
 
     def clean_fields(self, exclude=None):
         super(ProductClass, self).clean_fields(exclude=exclude)

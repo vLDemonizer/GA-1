@@ -37,6 +37,36 @@ class GeneralReportView(LoginRequiredMixin, FormView):
     login_url = reverse_lazy('inventario:login')
     success_url = reverse_lazy('reporte:home')
 
+    def get_context_data(self, **kwargs):
+        context = super(GeneralReportView, self).get_context_data(**kwargs)
+
+        product_class = ProductClass.objects.all().order_by('name')
+
+        global_report = []
+        whareHouse_value = 0;
+        for product in product_class:
+            stock_almacen = Product.objects.filter(product_class=product, available=True, location="Almacen").count()
+            stock_oficina = Product.objects.filter(product_class=product, available=True, location="Oficina").count()
+            stock_planta = Product.objects.filter(product_class=product, available=True, location="Planta").count()
+            stock_mante = Product.objects.filter(product_class=product, available=True, location="Mantenimiento").count()
+            stock_desin = Product.objects.filter(product_class=product, available=False).count()
+
+            setattr(product, 'stock_almacen', stock_almacen)
+            setattr(product, 'stock_oficina', stock_oficina)
+            setattr(product, 'stock_planta', stock_planta)
+            setattr(product, 'stock_mante', stock_mante)
+            setattr(product, 'stock_desin', stock_desin)
+            setattr(product, 'product_value', (product.their_value * product.stock))
+
+            global_report.append(product)
+
+            whareHouse_value += product.their_value * product.stock
+
+        context['global_report'] = global_report
+        context['whareHouse_value'] = format(whareHouse_value, ',')
+        context['whareHouse_value_dol'] = format(whareHouse_value/20000, ',')
+        return context
+
 
 class ProductReportView(LoginRequiredMixin, FormView):
     form_class = ProductReportForm
@@ -90,7 +120,7 @@ class DateReportView(LoginRequiredMixin, FormView):
         in_out = form.cleaned_data['in_out']
 
         end_date = datetime.strftime(
-                    (datetime.strptime(end_date, "%Y-%m-%d") 
+                    (datetime.strptime(end_date, "%Y-%m-%d")
                     + timedelta(days=1)), "%Y-%m-%d")
 
         self.request.session['location'] = location
