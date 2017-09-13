@@ -432,6 +432,7 @@ def generate_file(request):
     end = data.get('end', None)
     code_range = data.get('code_range', None)
     product_class = ProductClass.objects.get(pk=data['product_class'])
+    name = "%s-codes.docx" % product_class
     products = Product.objects.filter(
         product_class=product_class,
         number__gte=data['start'],
@@ -446,12 +447,12 @@ def generate_file(request):
     )
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
-    response['Content-Disposition'] = "attachment; filename=code.docx"
+    response['Content-Disposition'] = "attachment; filename=%s" % name
     document.save(response)
     return response
 
 @login_required
-def make_single_move_out(request):
+def make_single_move_out(request): 
     data = request.GET
     product_class_pk = data['product_class']
     origin = settings.LOCATIONS[int(data['from_location'])]

@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from .views import (
     LandingPage, DateReportView, ProductReportView,
-    LocationReportView, GeneralReportView
+    LocationReportView, GeneralReportView, 
 )
 
 app_name = 'reporte'

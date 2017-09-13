@@ -1,7 +1,9 @@
 from GA import settings
 
 from docx import Document
-from docx.shared import Pt
+from docx.enum.section import WD_ORIENT
+from docx.shared import Pt, Inches
+
 
 
 def generate_full_code(user, product, number):
@@ -38,11 +40,14 @@ def create_codes_file(product_class, products, start, end, code_range):
     counter = 0
     cell = table.add_row().cells
     flag = False
+    single = False
+    if code_range == 1:
+        single = True
     for product in products:
         counter += 1
             
         if cell_index <= 1:
-            if flag:
+            if flag and not single:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
                 flag = False
@@ -58,7 +63,7 @@ def create_codes_file(product_class, products, start, end, code_range):
         else:
             cell_index = 0
             cell = table.add_row().cells
-            if flag:
+            if flag and not single:
                 cell[cell_index].text = product.full_code
                 cell_index += 1
                 flag = False

@@ -18,9 +18,7 @@ from GA import settings
 from GA import settings
 from .forms import DateReportForm, ProductReportForm, LocationReportForm, GeneralReportForm
 from inventario.models import MoveIn, MoveOut, ProductClass, Product
-
-from itertools import chain
-# Create your views here.
+from inventario.code_generator import *
 
 class LandingPage(LoginRequiredMixin, TemplateView):
     template_name = 'reporte/home.html'
@@ -43,7 +41,7 @@ class GeneralReportView(LoginRequiredMixin, FormView):
         product_class = ProductClass.objects.all().order_by('name')
 
         global_report = []
-        whareHouse_value = 0;
+        wareHouse_value = 0;
         for product in product_class:
             stock_almacen = Product.objects.filter(product_class=product, available=True, location="Almacen").count()
             stock_oficina = Product.objects.filter(product_class=product, available=True, location="Oficina").count()
@@ -60,11 +58,11 @@ class GeneralReportView(LoginRequiredMixin, FormView):
 
             global_report.append(product)
 
-            whareHouse_value += product.their_value * product.stock
+            wareHouse_value += product.their_value * product.stock
 
         context['global_report'] = global_report
-        context['whareHouse_value'] = format(whareHouse_value, ',')
-        context['whareHouse_value_dol'] = format(whareHouse_value/20000, ',')
+        context['wareHouse_value'] = format(wareHouse_value, ',')
+        context['wareHouse_value_dol'] = format(wareHouse_value/20000, ',')
         return context
 
 
@@ -226,3 +224,5 @@ class LocationReportView(LoginRequiredMixin, FormView):
             del self.request.session['in_out']
 
         return context
+
+
