@@ -17,10 +17,7 @@
           <br />
           <table class="table table-reponsive table-striped">
             <thead class="table-inverse">
-              <th>Name</th>
-              <th>Type</th>
-              <th>Size</th>
-              <th>Brand</th>
+              <th>Product</th>
               <th>Department</th>
               <th>Almacen</th>
               <th>Oficina</th>
@@ -36,10 +33,7 @@
             <tbody>
               {% for moves in global_report %}
                 <tr>
-                  <td>{{ moves.name }}</td>
-                  <td>{{ moves.product_type }}</td>
-                  <td>{{ moves.size }}</td>
-                  <td>{{ moves.brand }}</td>
+                  <td>{{ moves.name }} {{ moves.product_type }} {{ moves.size }} {{ moves.brand }}</td>
                   <td>{{ moves.department }}</td>
                   <td>{{ moves.stock_almacen }}</td>
                   <td>{{ moves.stock_oficina }}</td>
