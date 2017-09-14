@@ -4,52 +4,73 @@
 {% block content %}
     <div class="text-center">
       {% if request.user.is_staff %}
-        <h1>Stock Value: {{ wareHouse_value }} Bs</h1>
-      {% endif %}
+        <div class="text-center" style="margin-top: 1rem;">
+          <a class="btn btn-danger btn-lg" href="{% url 'reporte:home' %}">Cancel</a>
+          <button class="btn btn-info btn-lg" onclick="printReport()">Print</button>
+        </div>
 
-      <div class="text-center" style="margin-top: 1rem;">
-        <a class="btn btn-danger btn-lg" href="{% url 'reporte:home' %}">Cancel</a>
-      </div>
-      <br />
-      <table class="table table-reponsive table-striped">
-        <thead class="table-inverse">
-          <th>Name</th>
-          <th>Type</th>
-          <th>Size</th>
-          <th>Brand</th>
-          <th>Department</th>
-          <th>Almacen</th>
-          <th>Oficina</th>
-          <th>Planta</th>
-          <th>Mant</th>
-          <th>Disi</th>
-          <th>Global Stock</th>
-          {% if request.user.is_staff %}
-          <th>Product Value</th>
-          <th>Global Value</th>
-          {% endif %}
-        </thead>
-        <tbody>
-          {% for moves in global_report %}
-            <tr>
-              <td>{{ moves.name }}</td>
-              <td>{{ moves.product_type }}</td>
-              <td>{{ moves.size }}</td>
-              <td>{{ moves.brand }}</td>
-              <td>{{ moves.department }}</td>
-              <td>{{ moves.stock_almacen }}</td>
-              <td>{{ moves.stock_oficina }}</td>
-              <td>{{ moves.stock_planta }}</td>
-              <td>{{ moves.stock_mante }}</td>
-              <td>{{ moves.stock_desin }}</td>
-              <td>{{ moves.stock }}</td>
+        <div id="print_div">
+          <div class="text-center">
+             <img  class="img-responsive" src="{% static 'img/logo2.png' %}" width="75%"  height="35%">
+             <h2>Reporte General</h2> 
+            <h4>Stock Value: {{ wareHouse_value }} Bs</h4>
+          </div>
+          <br />
+          <table class="table table-reponsive table-striped">
+            <thead class="table-inverse">
+              <th>Name</th>
+              <th>Type</th>
+              <th>Size</th>
+              <th>Brand</th>
+              <th>Department</th>
+              <th>Almacen</th>
+              <th>Oficina</th>
+              <th>Planta</th>
+              <th>Mant</th>
+              <th>Disi</th>
+              <th>Global Stock</th>
               {% if request.user.is_staff %}
-              <td>{{ moves.their_value }} Bs</td>
-              <td>{{ moves.product_value }} Bs</td>
+              <th>Product Value</th>
+              <th>Global Value</th>
               {% endif %}
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {% for moves in global_report %}
+                <tr>
+                  <td>{{ moves.name }}</td>
+                  <td>{{ moves.product_type }}</td>
+                  <td>{{ moves.size }}</td>
+                  <td>{{ moves.brand }}</td>
+                  <td>{{ moves.department }}</td>
+                  <td>{{ moves.stock_almacen }}</td>
+                  <td>{{ moves.stock_oficina }}</td>
+                  <td>{{ moves.stock_planta }}</td>
+                  <td>{{ moves.stock_mante }}</td>
+                  <td>{{ moves.stock_desin }}</td>
+                  <td>{{ moves.stock }}</td>
+                  {% if request.user.is_staff %}
+                  <td>{{ moves.their_value }} Bs</td>
+                  <td>{{ moves.product_value }} Bs</td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
     </div>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+  function printReport(){
+    var prtContent = document.getElementById("print_div");
+    var winPrint = window.open();
+    winPrint.document.write(prtContent.innerHTML);
+    winPrint.document.write('<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">');
+    winPrint.document.close();
+    winPrint.focus();
+    winPrint.print();
+    winPrint.close();
+  }
+</script>
 {% endblock %}
