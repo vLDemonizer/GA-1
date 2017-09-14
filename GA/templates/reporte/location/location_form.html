@@ -37,10 +37,7 @@
     <div id="print_div">
     <table class="table table-reponsive table-striped">
       <thead class="table-inverse">
-        <th>Name</th>
-        <th>Type</th>
-        <th>Size</th>
-        <th>Brand</th>
+        <th>Product</th>
         <th>Department</th>
         <th>Amount</th>
         <th>Date</th>
@@ -48,10 +45,7 @@
       <tbody>
         {% for moves in location_report %}
           <tr>
-            <td>{{ moves.product_class.name }}</td>
-            <td>{{ moves.product_class.product_type }}</td>
-            <td>{{ moves.product_class.size }}</td>
-            <td>{{ moves.product_class.brand }}</td>
+            <td>{{ moves.product_class.name }} {{ moves.product_class.product_type }} {{ moves.product_class.size }} {{ moves.product_class.brand }}</td>
             <td>{{ moves.product_class.department }}</td>
             <td>{{ moves.products.count }}</td>
             <td>{{ moves.date}}</td>
@@ -66,10 +60,7 @@
     <div id="print_div">
     <table class="table table-reponsive table-striped">
       <thead class="table-inverse">
-        <th>Name</th>
-        <th>Type</th>
-        <th>Size</th>
-        <th>Brand</th>
+        <th>Product</th>
         <th>Department</th>
         <th>Amount</th>
         <th>To</th>
@@ -78,10 +69,7 @@
       <tbody>
         {% for moves in location_report %}
           <tr>
-            <td>{{ moves.product_class.name }}</td>
-            <td>{{ moves.product_class.product_type }}</td>
-            <td>{{ moves.product_class.size }}</td>
-            <td>{{ moves.product_class.brand }}</td>
+            <td>{{ moves.product_class.name }} {{ moves.product_class.product_type }} {{ moves.product_class.size }} {{ moves.product_class.brand }}</td>
             <td>{{ moves.product_class.department }}</td>
             <td>{{ moves.products.count }}</td>
             <td>{{ moves.destiny }}</td>

@@ -15,10 +15,7 @@
           <table class="table table-reponsive table-striped">
             <h1>IN</h1>
             <thead class="table-inverse">
-              <th>Name</th>
-              <th>Type</th>
-              <th>Size</th>
-              <th>Brand</th>
+              <th>Product</th>
               <th>Department</th>
               <th>Amount</th>
               <th>Date</th>
@@ -26,10 +23,7 @@
             <tbody>
               {% for moves in entrance %}
                 <tr>
-                  <td>{{ moves.product_class.name }}</td>
-                  <td>{{ moves.product_class.product_type }}</td>
-                  <td>{{ moves.product_class.size }}</td>
-                  <td>{{ moves.product_class.brand }}</td>
+                  <td>{{ moves.product_class.name }} {{ moves.product_class.product_type }} {{ moves.product_class.size }} {{ moves.product_class.brand }}</td>
                   <td>{{ moves.product_class.department }}</td>
                   <td>{{ moves.products.count }}</td>
                   <td>{{ moves.date}}</td>
@@ -40,10 +34,7 @@
           <table class="table table-reponsive table-striped">
             <h1>OUT</h1>
             <thead class="table-inverse">
-              <th>Name</th>
-              <th>Type</th>
-              <th>Size</th>
-              <th>Brand</th>
+              <th>Product</th>
               <th>Department</th>
               <th>Amount</th>
               <th>From</th>
@@ -53,10 +44,7 @@
             <tbody>
               {% for move in movement %}
                 <tr>
-                  <td>{{ move.product_class.name }}</td>
-                  <td>{{ move.product_class.product_type }}</td>
-                  <td>{{ move.product_class.size }}</td>
-                  <td>{{ move.product_class.brand }}</td>
+                  <td>{{ moves.product_class.name }} {{ moves.product_class.product_type }} {{ moves.product_class.size }} {{ moves.product_class.brand }}</td>
                   <td>{{ move.product_class.department }}</td>
                   <td>{{ move.products.count }}</td>
                   <td>{{ move.origin }}</td>
