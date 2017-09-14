@@ -100,7 +100,7 @@ class ProductReportView(LoginRequiredMixin, FormView):
             context['product_report'] = product_report
 
             del self.request.session['product_class']
-            
+
         return context
 
 
@@ -152,7 +152,7 @@ class DateReportView(LoginRequiredMixin, FormView):
                     movements = MoveOut.objects.filter(
                         date__gte=init,
                         date__lte=end,
-                        destiny=location
+                        origin=location
                     ).order_by('-date')
                     context['date_report'] = movements
             else:
@@ -217,5 +217,3 @@ class LocationReportView(LoginRequiredMixin, FormView):
             del self.request.session['in_out']
 
         return context
-
-
