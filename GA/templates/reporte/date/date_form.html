@@ -31,9 +31,15 @@
     </div>
   </form>
 
-  <div class="row container-fluid form-control">
+  
     <!--If it is an IN-->
     {% if status %}
+    <br />
+    <div class="text-center">
+      <button type="button" class="btn btn-info btn-lg" onclick="printReport()">Print</button>
+    </div>
+    <br />
+    <div id="print_div">
     <table class="table table-reponsive table-striped">
       <thead class="table-inverse">
         <th>Name</th>
@@ -61,6 +67,7 @@
 
     {% else %}
     <!--If it is an Out-->
+    <div id="print_div">
     <table class="table table-reponsive table-striped">
       <thead class="table-inverse">
         <th>Name</th>
@@ -118,4 +125,22 @@
     </div>
   </form>
   {% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function printReport(){
+    var prtContent = document.getElementById("print_div");
+    var winPrint = window.open();
+    winPrint.document.write("<link rel=\"stylesheet\" href=\"{% static 'bootstrap/css/bootstrap.css' %}\" />");
+    winPrint.document.write("<div class=\"text-center\"><img src=\"{% static 'img/logo2.png' %}\" width=\"75%\"  height=\"35%\"/></div>");
+    winPrint.document.write(prtContent.innerHTML);
+    winPrint.document.close();
+    setTimeout(function () {
+      winPrint.focus();
+      winPrint.print();
+      winPrint.close();
+    }, 1500);
+  }
+</script>
 {% endblock %}

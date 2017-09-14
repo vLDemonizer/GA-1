@@ -5,12 +5,13 @@
   {% if product_report %}
     <form id="id_form" method="post" autocomplete="off">
       {% csrf_token %}
-      <div id="root" class="container-fluid"> </div>
+      <div id="root"> </div>
       <div class="text-center" style="margin-top: 1rem;">
         <button type="submit" class="btn btn-primary btn-lg" value="Load">Submit</button>
         <a class="btn btn-danger btn-lg" href="{% url 'reporte:home' %}">Cancel</a>
+        <button type="button" class="btn btn-info btn-lg" onclick="printReport()">Print</button>
       </div>
-        <div class="container-fluid">
+        <div id="print_div">
           <table class="table table-reponsive table-striped">
             <h1>IN</h1>
             <thead class="table-inverse">
@@ -36,8 +37,6 @@
               {% endfor %}
             </tbody>
           </table>
-        </div>
-        <div class="container-fluid">
           <table class="table table-reponsive table-striped">
             <h1>OUT</h1>
             <thead class="table-inverse">
@@ -90,5 +89,19 @@
       <ProductList products={JSON.parse('{{ products | escapejs }}')}/>,
       document.getElementById('root')
     );
+      function printReport(){
+        var prtContent = document.getElementById("print_div");
+        var winPrint = window.open();
+        winPrint.document.write("<link rel=\"stylesheet\" href=\"{% static 'bootstrap/css/bootstrap.css' %}\" />");
+        winPrint.document.write("<div class=\"text-center\"><img src=\"{% static 'img/logo2.png' %}\" width=\"75%\" height=\"35%\"/></div>");
+        winPrint.document.write("<div class=\"text-center\"><h2 class=\"display-4\">Product History</h2></div>");
+        winPrint.document.write(prtContent.innerHTML);
+        winPrint.document.close();
+        setTimeout(function () {
+          winPrint.focus();
+          winPrint.print();
+          winPrint.close();
+        }, 1500);
+      }
   </script>
 {% endblock %}

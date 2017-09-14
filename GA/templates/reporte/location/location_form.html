@@ -27,9 +27,14 @@
       <small>Checked = IN --------- Unchecked = OUT </small>
     </div>
   </form>
-  <div class="row container-fluid form-control">
     <!--If it is an IN-->
+    <br/>
+    <div class="text-center">
+      <button type="button" class="btn btn-info btn-lg" onclick="printReport()">Print</button>
+    </div>
+    </br>
     {% if status %}
+    <div id="print_div">
     <table class="table table-reponsive table-striped">
       <thead class="table-inverse">
         <th>Name</th>
@@ -54,9 +59,11 @@
         {% endfor %}
       </tbody>
     </table>
+    </div>
 
     {% else %}
     <!--If it is an Out-->
+    <div id="print_div">
     <table class="table table-reponsive table-striped">
       <thead class="table-inverse">
         <th>Name</th>
@@ -83,9 +90,8 @@
         {% endfor %}
       </tbody>
     </table>
+    </div>
     {% endif %}
-  </div>
-
 {% else %}
 
 <form id="id_form" method="POST" class="form-control">
@@ -114,4 +120,23 @@
 </form>
 
 {% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel">
+  function printReport(){
+    var prtContent = document.getElementById("print_div");
+    var winPrint = window.open();
+    winPrint.document.write("<link rel=\"stylesheet\" href=\"{% static 'bootstrap/css/bootstrap.css' %}\" />");
+    winPrint.document.write("<div class=\"text-center\"><img src=\"{% static 'img/logo2.png' %}\" width=\"75%\"  height=\"35%\"/></div>");
+    winPrint.document.write("<div class=\"text-center\"><h2 class=\"display-4\">Location Report</h2></h2>");
+    winPrint.document.write(prtContent.innerHTML);
+    winPrint.document.close();
+    setTimeout(function () {
+      winPrint.focus();
+      winPrint.print();
+      winPrint.close();
+    }, 1500);
+  }
+</script>
 {% endblock %}

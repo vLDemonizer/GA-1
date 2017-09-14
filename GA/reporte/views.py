@@ -93,15 +93,14 @@ class ProductReportView(LoginRequiredMixin, FormView):
             entrance = MoveIn.objects.filter(product_class=product_class).order_by('-date')
             movement = MoveOut.objects.filter(product_class=product_class).order_by('-date')
 
-            product_report = list(chain(entrance, movement))
+            product_report = True
 
             context['entrance'] = entrance
             context['movement'] = movement
             context['product_report'] = product_report
 
             del self.request.session['product_class']
-        else:
-            print("no hay data")
+            
         return context
 
 
@@ -141,9 +140,6 @@ class DateReportView(LoginRequiredMixin, FormView):
             location = self.request.session['location']
 
             context['status'] = status
-            print(init)
-            print(end)
-            print(datetime.now())
             if status:
                 if location == "Almacen":
                     movements = MoveIn.objects.filter(
@@ -198,13 +194,11 @@ class LocationReportView(LoginRequiredMixin, FormView):
 
         #if there is any info on session do:
         if 'location' in self.request.session and 'in_out' in self.request.session:
-            print("abemuh data")
             status = self.request.session['in_out']
             location = self.request.session['location']
             #if status is IN:
             if status:
                 if location == "Almacen":
-                    print(status, "Entrada", location)
                     movements = MoveIn.objects.all().order_by('-date')
                     context['location_report'] = movements
 
@@ -214,7 +208,6 @@ class LocationReportView(LoginRequiredMixin, FormView):
 
             #if status is OUT:
             else:
-                print(status,"Salida")
                 movements = MoveOut.objects.filter(origin=location).order_by('-date')
                 context['location_report'] = movements
 

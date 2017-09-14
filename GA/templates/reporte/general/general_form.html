@@ -6,12 +6,12 @@
       {% if request.user.is_staff %}
         <div class="text-center" style="margin-top: 1rem;">
           <a class="btn btn-danger btn-lg" href="{% url 'reporte:home' %}">Cancel</a>
-          <button class="btn btn-info btn-lg" onclick="printReport()">Print</button>
+          <button type="button" class="btn btn-info btn-lg" onclick="printReport()">Print</button>
         </div>
 
         <div id="print_div">
           <div class="text-center">
-             <h2>Reporte General</h2> 
+             <h2 class="display-4">Reporte General</h2> 
             <h4>Stock Value: {{ wareHouse_value }} Bs</h4>
           </div>
           <br />
@@ -54,12 +54,10 @@
     </div>
 {% endblock %}
 {% block extra_scripts %}
-<script type="text/babel">
+<script>
   function printReport(){
     var prtContent = document.getElementById("print_div");
     var winPrint = window.open();
-    var link = "<link rel=\"stylesheet\" href=\"{% static 'bootstrap/css/bootstrap.css' %}\" />";
-    var header = "<div class=\"text-center\"><img src=\"{% static 'img/logo2.png' %}\" width=\"75%\"  height=\"35%\"/></div>";
     winPrint.document.write("<link rel=\"stylesheet\" href=\"{% static 'bootstrap/css/bootstrap.css' %}\" />");
     winPrint.document.write("<div class=\"text-center\"><img src=\"{% static 'img/logo2.png' %}\" width=\"75%\"  height=\"35%\"/></div>");
     winPrint.document.write(prtContent.innerHTML);
