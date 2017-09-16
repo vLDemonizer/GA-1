@@ -69,16 +69,11 @@ class DisposableProductView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DisposableProductView, self).get_context_data(**kwargs)
-        move_pks = []
         movements = []
-        for products in Product.objects.all().order_by('product_class_id').filter(available=False):
-            for move in MoveOut.objects.all():
-                if(move.product_class == products.product_class):
-                    if(move.pk in move_pks):
-                        continue
-                    else:
-                        move_pks.append(move.pk)
-                        movements.append(move)
+        for move in MoveOut.objects.all().order_by('-date'):
+            if move.product_class.is_disposable or move.destiny == settings.LOCATIONS[4]:
+                movements.append(move)
+
 
         context['movements'] = movements
         return context
@@ -452,7 +447,7 @@ def generate_file(request):
     return response
 
 @login_required
-def make_single_move_out(request): 
+def make_single_move_out(request):
     data = request.GET
     product_class_pk = data['product_class']
     origin = settings.LOCATIONS[int(data['from_location'])]

@@ -71,6 +71,9 @@ class ProductClass(models.Model):
             'name': _('There is already another product in the database with this same characteristics')
         })
 
+    def currency_format(self):
+        return "{:,.2f} Bs".format(self.their_value)
+
 
 class Product(models.Model):
     product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)

@@ -6,13 +6,10 @@
 <div class="text-center form-group">
   <h3 class="display-3">Disposable and Disincorporated Products</h3>
 </div>
-<div id="root" class="container-fluid text-center">
+<div id="root">
   <table class="table table-responsive table-striped">
     <thead class="thead-inverse text-center">
-      <th>Name</th>
-      <th>Product Type</th>
-      <th>Size</th>
-      <th>Brand</th>
+      <th>Product</th>
       <th>Department</th>
       <th>Amount</th>
       <th>Origin</th>
@@ -22,10 +19,7 @@
     <tbody>
       {% for moves in movements %}
         <tr>
-          <td>{{ moves.product_class.name }}</td>
-          <td>{{ moves.product_class.product_type }}</td>
-          <td>{{ moves.product_class.size }}</td>
-          <td>{{ moves.product_class.brand }}</td>
+          <td>{{ moves.product_class.name }} {{ moves.product_class.product_type }} {{ moves.product_class.size }} {{ moves.product_class.brand }}</td>
           <td>{{ moves.product_class.department }}</td>
           <td>{{ moves.products.count }}</td>
           <td>{{ moves.origin }}</td>

@@ -11,8 +11,8 @@
 
         <div id="print_div">
           <div class="text-center">
-             <h2 class="display-4">Reporte General</h2> 
-            <h4>Stock Value: {{ wareHouse_value }} Bs</h4>
+             <h2 class="display-4">Reporte General</h2>
+            <h4>Stock Value: {{ wareHouse_value }}</h4>
           </div>
           <br />
           <table class="table table-reponsive table-striped">
@@ -42,8 +42,8 @@
                   <td>{{ moves.stock_desin }}</td>
                   <td>{{ moves.stock }}</td>
                   {% if request.user.is_staff %}
-                  <td>{{ moves.their_value }} Bs</td>
-                  <td>{{ moves.product_value }} Bs</td>
+                  <td>{{ moves.currency_format }}</td>
+                  <td>{{ moves.product_value }}</td>
                   {% endif %}
                 </tr>
               {% endfor %}

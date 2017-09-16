@@ -35,6 +35,10 @@ class GeneralReportView(LoginRequiredMixin, FormView):
     login_url = reverse_lazy('inventario:login')
     success_url = reverse_lazy('reporte:home')
 
+    @classmethod
+    def currency_format(self, value):
+        return "{:,.2f} Bs".format(value)
+
     def get_context_data(self, **kwargs):
         context = super(GeneralReportView, self).get_context_data(**kwargs)
 
@@ -54,16 +58,18 @@ class GeneralReportView(LoginRequiredMixin, FormView):
             setattr(product, 'stock_planta', stock_planta)
             setattr(product, 'stock_mante', stock_mante)
             setattr(product, 'stock_desin', stock_desin)
-            setattr(product, 'product_value', (product.their_value * product.stock))
+            setattr(product, 'product_value', GeneralReportView.currency_format((product.their_value * product.stock)))
 
             global_report.append(product)
 
             wareHouse_value += product.their_value * product.stock
 
+            print(product.currency_format())
+
         context['global_report'] = global_report
-        context['wareHouse_value'] = format(wareHouse_value, ',')
-        context['wareHouse_value_dol'] = format(wareHouse_value/20000, ',')
+        context['wareHouse_value'] = GeneralReportView.currency_format(wareHouse_value)
         return context
+
 
 
 class ProductReportView(LoginRequiredMixin, FormView):
