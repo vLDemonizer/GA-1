@@ -46,6 +46,7 @@ class GeneralReportView(LoginRequiredMixin, FormView):
 
         global_report = []
         wareHouse_value = 0;
+        
         for product in product_class:
             stock_almacen = Product.objects.filter(product_class=product, available=True, location="Almacen").count()
             stock_oficina = Product.objects.filter(product_class=product, available=True, location="Oficina").count()
@@ -63,8 +64,6 @@ class GeneralReportView(LoginRequiredMixin, FormView):
             global_report.append(product)
 
             wareHouse_value += product.their_value * product.stock
-
-            print(product.currency_format())
 
         context['global_report'] = global_report
         context['wareHouse_value'] = GeneralReportView.currency_format(wareHouse_value)
