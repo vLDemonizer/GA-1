@@ -1,3 +1,6 @@
+import json
+import os
+
 from datetime import datetime, timedelta
 
 from django.shortcuts import render
@@ -17,7 +20,7 @@ from GA import settings
 
 from GA import settings
 from .forms import DateReportForm, ProductReportForm, LocationReportForm, GeneralReportForm
-from inventario.models import MoveIn, MoveOut, ProductClass, Product
+from inventario.models import MoveIn, MoveOut, ProductClass, Product, User
 from inventario.code_generator import *
 
 class LandingPage(LoginRequiredMixin, TemplateView):
@@ -130,6 +133,7 @@ class DateReportView(LoginRequiredMixin, FormView):
     login_url = reverse_lazy('inventario:login')
     success_url = reverse_lazy('reporte:date')
 
+
     def form_valid(self, form):
         init_date = form.cleaned_data['init_date']
         end_date = form.cleaned_data['end_date']
@@ -160,26 +164,26 @@ class DateReportView(LoginRequiredMixin, FormView):
             location = self.request.session['location']
 
             context['status'] = status
+
             if status:
-                if location == "Almacen":
+                if location == settings.LOCATIONS[0]:
                     movements = MoveIn.objects.filter(
                         date__gte=init,
                         date__lte=end
                     ).order_by('-date')
                     context['date_report'] = movements
-                    print(movements[0].date)
                 else:
                     movements = MoveOut.objects.filter(
                         date__gte=init,
                         date__lte=end,
-                        origin=location
+                        destiny=location
                     ).order_by('-date')
                     context['date_report'] = movements
             else:
+                print(status, location)
                 movements = MoveOut.objects.filter(
                     date__gte=init,
                     date__lte=end,
-                    destiny=location,
                     origin=location
                 ).order_by('-date')
                 context['date_report'] = movements
@@ -236,3 +240,24 @@ class LocationReportView(LoginRequiredMixin, FormView):
             del self.request.session['in_out']
 
         return context
+
+
+@login_required
+def get_move_out_detail(request):
+    pk = int(request.GET.get('move_out_pk', None))
+    details = MoveOut.objects.get(pk=pk)
+    data = {
+        'origin': details.origin,
+        'destiny': details.destiny,
+        'authorized_by': User.objects.get(pk=details.authorized_by).first_name + " " + User.objects.get(pk=details.authorized_by).last_name,
+        'received_by': User.objects.get(pk=details.received_by).first_name + " " + User.objects.get(pk=details.received_by).last_name,
+        'given_by': User.objects.get(pk=details.given_by).first_name
+                       + " " + User.objects.get(pk=details.given_by).last_name,
+        'reason': details.reason,
+        'reason_description': details.reason_description,
+
+    }
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/javascript; charset=utf8'
+    )

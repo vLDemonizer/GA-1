@@ -26,7 +26,7 @@
                   <td>{{ moves.product_class.name }} {{ moves.product_class.product_type }} {{ moves.product_class.size }} {{ moves.product_class.brand }}</td>
                   <td>{{ moves.product_class.department }}</td>
                   <td>{{ moves.products.count }}</td>
-                  <td>{{ moves.date}}</td>
+                  <td>{{ moves.date }}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -49,7 +49,11 @@
                   <td>{{ move.products.count }}</td>
                   <td>{{ move.origin }}</td>
                   <td>{{ move.destiny }}</td>
-                  <td>{{ move.date }}</td>
+                  <td>
+                    <a href="#" onclick="showModal('{{ move.pk }}')">
+                      {{ move.date }}
+                    </a>
+                  </td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -68,6 +72,27 @@
       </div>
     </form>
   {% endif %}
+
+  <!--Modal Move Out Detail -->
+  <div id="id_modal_move" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLongTitle">Move Out Detail</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="id_modal_body" class="modal-body">
+          <!--Modal Body -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
 
 {% block extra_scripts %}
@@ -91,5 +116,47 @@
           winPrint.close();
         }, 1500);
       }
+  </script>
+
+  <script type="text/babel">
+
+    function showModal(move) {
+      var moveOut = parseInt(move)
+
+      $.ajax({
+        url: '/reporte/ajax/get_move_out_detail/',
+        data: {
+          'move_out_pk': moveOut,
+        },
+        dataType: 'json',
+        success: (data) => {
+          ReactDOM.render(
+            <div>
+              <table className="table table-reponsive table-sm">
+                <thead className="table-inverse">
+                  <th>Authorized</th>
+                  <th>Received</th>
+                  <th>Given</th>
+                  <th>Reason</th>
+                  <th>Reason Description</th>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td>{ data['authorized_by'] }</td>
+                      <td>{ data['received_by'] }</td>
+                      <td>{ data['given_by'] }</td>
+                      <td>{ data['reason'] }</td>
+                      <td>{ data['reason_description'] }</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>,
+            document.getElementById('id_modal_body')
+          );
+        }
+      });
+
+      $('#id_modal_move').modal('show');
+    }
   </script>
 {% endblock %}
