@@ -24,8 +24,12 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:home' %}">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Edit Product <span class="sr-only">(current)</span></a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Updates</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'inventario:product-class-search' %}">Edit Product Details</a>
+              <a class="dropdown-item" href="{% url 'inventario:product-price-update' %}">Increment Product Prices</a>
+            </div>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:print-product-codes' %}">Print Product Codes <span class="sr-only">(current)</span></a>
@@ -63,13 +67,17 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:home' %}">Inicio <span class="sr-only">(current)</span></a>
           </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Actualizacion de Productos</a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'inventario:product-class-search' %}">Edicion de Productos</a>
+                <a class="dropdown-item" href="{% url 'inventario:product-price-update' %}">Actualizar Costos</a>
+              </div>
+            </li>
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:print-product-codes' %}">Imprimir Codigo de Productos<span class="sr-only">(current)</span></a>
           </li>
           {% if request.user.is_staff %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'inventario:product-class-search' %}">Editar Producto <span class="sr-only">(current)</span></a>
-          </li>
           {% endif %}
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'inventario:disposable-product' %}">Productos Desechables <span class="sr-only">(current)</span></a>

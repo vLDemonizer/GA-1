@@ -50,6 +50,9 @@ class ProductClass(models.Model):
     def stock(self):
         return self.product_set.filter(available=True).count()
 
+    def currency_format(self):
+        return "{:,.2f} Bs".format(self.their_value)
+
     def clean_fields(self, exclude=None):
         super(ProductClass, self).clean_fields(exclude=exclude)
         try:
@@ -70,9 +73,6 @@ class ProductClass(models.Model):
         raise ValidationError({
             'name': _('There is already another product in the database with this same characteristics')
         })
-
-    def currency_format(self):
-        return "{:,.2f} Bs".format(self.their_value)
 
 
 class Product(models.Model):

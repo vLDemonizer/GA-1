@@ -18,7 +18,7 @@ from GA import settings
 
 from .forms import (
     ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm,
-    LoginForm, CodesForm,
+    LoginForm, CodesForm, PriceUpdateForm
 )
 from .models import ProductClass, Product, MoveIn, MoveOut, User
 from .code_generator import generate_full_code, create_codes_file
@@ -297,10 +297,11 @@ class MoveOutView(LoginRequiredMixin, FormView):
         return super(MoveOutView, self).form_valid(form)
 
 
-class PrintCodes(FormView):
+class PrintCodes(LoginRequiredMixin, FormView):
     form_class = CodesForm
     template_name = 'inventario/product/print_product_codes.html'
     success_url = reverse_lazy('inventario:home')
+    login_url = reverse_lazy('inventario:login')
 
     def get_context_data(self, **kwargs):
         context = super(PrintCodes, self).get_context_data(**kwargs)
@@ -326,6 +327,24 @@ class PrintCodes(FormView):
             int(data['code_range'])
         )
         return super(PrintCodes, self).form_valid(form)
+
+
+class PriceUpdateView(LoginRequiredMixin, FormView):
+    form_class = PriceUpdateForm
+    template_name = 'inventario/product/price_update_form.html'
+    success_url = reverse_lazy('inventario:home')
+    login_url = reverse_lazy('inventario:login')
+
+    def form_valid(self, form):
+        increment = float(form.cleaned_data['increment']) / 100
+        print(increment)
+        for product in ProductClass.objects.all():
+            product.cost_value += product.cost_value * increment
+            product.our_value += product.our_value * increment
+            product.their_value += product.their_value * increment
+            product.save()
+
+        return super(PriceUpdateView, self).form_valid(form)
 
 
 @login_required

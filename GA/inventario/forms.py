@@ -73,3 +73,7 @@ class CodesForm(forms.Form):
     start = forms.IntegerField()
     end = forms.IntegerField()
     code_range = forms.IntegerField()
+
+
+class PriceUpdateForm(forms.Form):
+    increment = forms.FloatField()
