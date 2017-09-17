@@ -246,15 +246,16 @@ class LocationReportView(LoginRequiredMixin, FormView):
 def get_move_out_detail(request):
     pk = int(request.GET.get('move_out_pk', None))
     details = MoveOut.objects.get(pk=pk)
+    products = details.products.all()
     data = {
         'origin': details.origin,
         'destiny': details.destiny,
         'authorized_by': User.objects.get(pk=details.authorized_by).first_name + " " + User.objects.get(pk=details.authorized_by).last_name,
         'received_by': User.objects.get(pk=details.received_by).first_name + " " + User.objects.get(pk=details.received_by).last_name,
-        'given_by': User.objects.get(pk=details.given_by).first_name
-                       + " " + User.objects.get(pk=details.given_by).last_name,
+        'given_by': User.objects.get(pk=details.given_by).first_name + " " + User.objects.get(pk=details.given_by).last_name,
         'reason': details.reason,
         'reason_description': details.reason_description,
+        'products': products,
 
     }
     return HttpResponse(
