@@ -33,7 +33,7 @@ class LandingPage(LoginRequiredMixin, TemplateView):
 
 
 class DisposableProductView(LoginRequiredMixin, TemplateView):
-    template_name = 'inventario/product/disposable_product.html'
+    template_name = 'reporte/disposable/disposable_product.html'
     login_url = reverse_lazy('inventario:login')
 
     def get_context_data(self, **kwargs):

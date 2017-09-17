@@ -2,8 +2,7 @@ from django.conf.urls import url
 from .views import (
     UserCreate, MoveInCreate, MoveOutView, ProductClassCreate,
     ProductClassList, LandingPage, UserCreate, PrintCodes,
-    PriceUpdateView,
-    DisposableProductView, Login, log_out, make_single_move_out,
+    PriceUpdateView, Login, log_out, make_single_move_out,
     get_product_global_stock, get_product_class_details,
     get_products, get_product_stock, generate_file
 )
