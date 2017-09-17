@@ -29,6 +29,22 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         return context
 
 
+class DisposableProductView(LoginRequiredMixin, TemplateView):
+    template_name = 'inventario/product/disposable_product.html'
+    login_url = reverse_lazy('inventario:login')
+
+    def get_context_data(self, **kwargs):
+        context = super(DisposableProductView, self).get_context_data(**kwargs)
+        movements = []
+        for move in MoveOut.objects.all().order_by('-date'):
+            if move.product_class.is_disposable or move.destiny == settings.LOCATIONS[4]:
+                movements.append(move)
+
+
+        context['movements'] = movements
+        return context
+
+
 class GeneralReportView(LoginRequiredMixin, FormView):
     form_class = GeneralReportForm
     template_name = 'reporte/general/general_form.html'
@@ -46,12 +62,12 @@ class GeneralReportView(LoginRequiredMixin, FormView):
 
         global_report = []
         wareHouse_value = 0;
-        
+
         for product in product_class:
-            stock_almacen = Product.objects.filter(product_class=product, available=True, location="Almacen").count()
-            stock_oficina = Product.objects.filter(product_class=product, available=True, location="Oficina").count()
-            stock_planta = Product.objects.filter(product_class=product, available=True, location="Planta").count()
-            stock_mante = Product.objects.filter(product_class=product, available=True, location="Mantenimiento").count()
+            stock_almacen = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[0]).count()
+            stock_oficina = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[1]).count()
+            stock_planta = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[2]).count()
+            stock_mante = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[3]).count()
             stock_desin = Product.objects.filter(product_class=product, available=False).count()
 
             setattr(product, 'stock_almacen', stock_almacen)
@@ -68,7 +84,6 @@ class GeneralReportView(LoginRequiredMixin, FormView):
         context['global_report'] = global_report
         context['wareHouse_value'] = GeneralReportView.currency_format(wareHouse_value)
         return context
-
 
 
 class ProductReportView(LoginRequiredMixin, FormView):
@@ -175,7 +190,6 @@ class DateReportView(LoginRequiredMixin, FormView):
             del self.request.session['location']
 
         return context
-
 
 
 class LocationReportView(LoginRequiredMixin, FormView):

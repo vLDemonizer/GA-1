@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^product-create/$', ProductClassCreate.as_view(), name='create-product'),
     url(r'^print-product-codes/$', PrintCodes.as_view(), name='print-product-codes'),
     url(r'^product-search/$', ProductClassList.as_view(), name='product-class-search'),
-    url(r'^disposable-product/$', DisposableProductView.as_view(), name='disposable-product'),
     url(r'^product-out/$', MoveOutView.as_view(), name='move-out'),
     url(r'^product-in/$', MoveInCreate.as_view(), name='move-in'),
     url(r'^product-update-price/$', PriceUpdateView.as_view(), name='product-price-update'),

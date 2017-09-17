@@ -63,22 +63,6 @@ class Login(FormView):
             return super(Login, self).form_invalid(form)
 
 
-class DisposableProductView(LoginRequiredMixin, TemplateView):
-    template_name = 'inventario/product/disposable_product.html'
-    login_url = reverse_lazy('inventario:login')
-
-    def get_context_data(self, **kwargs):
-        context = super(DisposableProductView, self).get_context_data(**kwargs)
-        movements = []
-        for move in MoveOut.objects.all().order_by('-date'):
-            if move.product_class.is_disposable or move.destiny == settings.LOCATIONS[4]:
-                movements.append(move)
-
-
-        context['movements'] = movements
-        return context
-
-
 class UserCreate(LoginRequiredMixin, FormView):
     form_class = UserCreateForm
     template_name = 'inventario/user/user_form.html'
