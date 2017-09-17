@@ -64,10 +64,10 @@ class GeneralReportView(LoginRequiredMixin, FormView):
         wareHouse_value = 0;
 
         for product in product_class:
-            stock_almacen = Product.objects.filter(product_class=product, available=True, location="Almacen").count()
-            stock_oficina = Product.objects.filter(product_class=product, available=True, location="Oficina").count()
-            stock_planta = Product.objects.filter(product_class=product, available=True, location="Planta").count()
-            stock_mante = Product.objects.filter(product_class=product, available=True, location="Mantenimiento").count()
+            stock_almacen = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[0]).count()
+            stock_oficina = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[1]).count()
+            stock_planta = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[2]).count()
+            stock_mante = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[3]).count()
             stock_desin = Product.objects.filter(product_class=product, available=False).count()
 
             setattr(product, 'stock_almacen', stock_almacen)
