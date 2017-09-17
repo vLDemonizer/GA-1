@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from .views import (
     UserCreate, MoveInCreate, MoveOutView, ProductClassCreate,
-    ProductClassList, LandingPage, UserCreate, PrintCodes, 
-    DisposableProductView, Login, log_out, make_single_move_out,
+    ProductClassList, LandingPage, UserCreate, PrintCodes,
+    Login, log_out, make_single_move_out,
     get_product_global_stock, get_product_class_details,
     get_products, get_product_stock, generate_file
 )
@@ -16,7 +16,6 @@ urlpatterns = [
     url(r'^product-create/$', ProductClassCreate.as_view(), name='create-product'),
     url(r'^print-product-codes/$', PrintCodes.as_view(), name='print-product-codes'),
     url(r'^product-search/$', ProductClassList.as_view(), name='product-class-search'),
-    url(r'^disposable-product/$', DisposableProductView.as_view(), name='disposable-product'),
     url(r'^product-out/$', MoveOutView.as_view(), name='move-out'),
     url(r'^product-in/$', MoveInCreate.as_view(), name='move-in'),
     url(r'^print-product-codes/$', PrintCodes.as_view(), name='print-codes'),

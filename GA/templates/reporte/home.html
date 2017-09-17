@@ -23,6 +23,16 @@
 
     <div class="col">
       <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/disposable-icon.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Disposable Report</h4>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:disposable-product' %}">Disposable</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
         <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Date Report</h4>
@@ -30,7 +40,11 @@
         </div>
       </div>
     </div>
+  </div>
 
+  <br>
+
+  <div class="row form-group text-center">
     <div class="col form-item">
       <div class="card" style="width: 15rem;">
         <img class="card-img-top" src="{% static 'img/product_report.jpg' %}" alt="Card image cap">
@@ -62,6 +76,16 @@
         <div class="card-body">
           <h4 class="card-title">Reporte General</h4>
           <a class="btn btn-primary btn-lg" href="{% url 'reporte:general' %}">General</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/disposable-icon.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Reporte de Desechables</h4>
+          <a class="btn btn-primary btn-lg" href="{% url 'reporte:disposable-product' %}">Desechables</a>
         </div>
       </div>
     </div>
