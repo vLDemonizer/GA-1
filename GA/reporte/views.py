@@ -257,7 +257,7 @@ def get_move_out_detail(request):
         'given_by': given_by.first_name + " " + given_by.last_name,
         'reason': details.reason,
         'reason_description': details.reason_description,
-        'products': list(details.products.all().values_list('full_code')),
+        #'products': list(details.products.all().values_list('full_code')),
     }
     return HttpResponse(
         json.dumps(data),
