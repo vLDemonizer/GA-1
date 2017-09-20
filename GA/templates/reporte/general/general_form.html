@@ -12,7 +12,12 @@
         <div id="print_div">
           <div class="text-center">
              <h2 class="display-4">Reporte General</h2>
-            <h4>Stock Value: {{ wareHouse_value }}</h4>
+            <h4><strong>Stock Value: </strong>{{ general_value }}</h4>
+            <br>
+
+            <h6><strong>Warehouse Value: </strong>{{ wareHouse_value }} - <strong>Office Value: </strong>{{ office_value }} - <strong>Polar Value: </strong>{{ polar_value }}</h6>
+            <br>
+            <h6><strong>Maintenance Value: </strong>{{ mante_value }} - <strong>Disincorporated Value: </strong>{{ disposable_value }}</h6>
           </div>
           <br />
           <table class="table table-reponsive table-striped">
