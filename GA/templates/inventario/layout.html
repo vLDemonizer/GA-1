@@ -76,9 +76,6 @@
           </li>
           {% if request.user.is_staff %}
           {% endif %}
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'inventario:disposable-product' %}">Productos Desechables <span class="sr-only">(current)</span></a>
-          </li>
           {% if request.user.admin %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'inventario:user-create' %}">Crear Nuevo Usuario </a>
@@ -102,16 +99,10 @@
     </div>
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
-    <script src="{% static 'js/babel.js' %}"></script>
-    <script src="{% static 'js/react.js' %}"></script>
-    <script src="{% static 'js/react-dom.js' %}"></script>
-    {% block extra_scripts %}
-    <script>
-      $(document).ready(function () {
-          $('#id_modal').modal('show');
-      });
-    </script>
-    {% endblock %}
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/babel.min.js' %}"></script>
+    <script src="{% static 'js/react.min.js' %}"></script>
+    <script src="{% static 'js/react-dom.min.js' %}"></script>
+    {% block extra_scripts %} {% endblock %}
   </body>
 </html>
