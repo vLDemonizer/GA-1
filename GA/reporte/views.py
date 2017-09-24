@@ -266,6 +266,7 @@ def get_move_out_detail(request):
     received_by = User.objects.get(pk=details.received_by)
     given_by = User.objects.get(pk=details.given_by)
     data = {
+        'product_class': str(details.product_class),
         'origin': details.origin,
         'destiny': details.destiny,
         'authorized_by': authorized_by.first_name + " " + authorized_by.last_name,
