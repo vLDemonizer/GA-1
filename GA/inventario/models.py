@@ -91,12 +91,33 @@ class MoveIn(models.Model):
     product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
     date = models.DateTimeField(auto_now_add=True)
+    is_move_in = models.BooleanField(default=True)
 
     def __str__(self):
         return self.product_class.name + ' Moved in on the ' + str(self.date)
 
 
 class MoveOut(MoveIn):
+    origin = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
+    authorized_by = models.SmallIntegerField(blank=False)
+    received_by = models.SmallIntegerField(blank=False)
+    given_by = models.SmallIntegerField(blank=False)
+    reason = models.CharField(max_length=15)
+    reason_description = models.TextField(max_length=300, blank=True, null=True)
+
+    def __str__(self):
+        return (
+            self.product_class.name + ' %d' % self.products.count()
+            + ' Moved out on the ' + str(self.date)
+            + ' ' + self.reason + ' From: ' + self.origin
+            + ' To: ' + self.destiny
+        )
+
+class Move_Out(models.Model):
+    destiny = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
+    product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
+    date = models.DateTimeField(auto_now_add=True)
     origin = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
     authorized_by = models.SmallIntegerField(blank=False)
     received_by = models.SmallIntegerField(blank=False)

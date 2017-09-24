@@ -20,7 +20,7 @@ from GA import settings
 
 from GA import settings
 from .forms import DateReportForm, ProductReportForm, LocationReportForm, GeneralReportForm
-from inventario.models import MoveIn, MoveOut, ProductClass, Product, User
+from inventario.models import MoveIn, Move_Out, ProductClass, Product, User
 from inventario.code_generator import *
 
 class LandingPage(LoginRequiredMixin, TemplateView):
@@ -39,7 +39,7 @@ class DisposableProductView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DisposableProductView, self).get_context_data(**kwargs)
         movements = []
-        for move in MoveOut.objects.all().order_by('-date'):
+        for move in Move_Out.objects.all().order_by('-date'):
             if move.product_class.is_disposable or move.destiny == settings.LOCATIONS[4]:
                 movements.append(move)
 
@@ -113,8 +113,8 @@ class ProductReportView(LoginRequiredMixin, FormView):
 
             product = ProductClass.objects.get(pk=product_class)
 
-            entrance = MoveIn.objects.filter(product_class=product_class).order_by('-date')
-            movement = MoveOut.objects.filter(product_class=product_class).order_by('-date')
+            entrance = MoveIn.objects.filter(product_class=product_class, is_move_in=True).order_by('-date')
+            movement = Move_Out.objects.filter(product_class=product_class).order_by('-date')
 
             product_report = True
 
@@ -169,11 +169,12 @@ class DateReportView(LoginRequiredMixin, FormView):
                 if location == settings.LOCATIONS[0]:
                     movements = MoveIn.objects.filter(
                         date__gte=init,
-                        date__lte=end
+                        date__lte=end,
+                        is_move_in=True
                     ).order_by('-date')
                     context['date_report'] = movements
                 else:
-                    movements = MoveOut.objects.filter(
+                    movements = Move_Out.objects.filter(
                         date__gte=init,
                         date__lte=end,
                         destiny=location
@@ -181,7 +182,7 @@ class DateReportView(LoginRequiredMixin, FormView):
                     context['date_report'] = movements
             else:
                 print(status, location)
-                movements = MoveOut.objects.filter(
+                movements = Move_Out.objects.filter(
                     date__gte=init,
                     date__lte=end,
                     origin=location
@@ -222,16 +223,16 @@ class LocationReportView(LoginRequiredMixin, FormView):
             #if status is IN:
             if status:
                 if location == "Almacen":
-                    movements = MoveIn.objects.all().order_by('-date')
+                    movements = MoveIn.objects.filter(is_move_in=True).order_by('-date')
                     context['location_report'] = movements
 
                 else:
-                    movements = MoveOut.objects.filter(destiny=location).order_by('-date')
+                    movements = Move_Out.objects.filter(destiny=location).order_by('-date')
                     context['location_report'] = movements
 
             #if status is OUT:
             else:
-                movements = MoveOut.objects.filter(origin=location).order_by('-date')
+                movements = Move_Out.objects.filter(origin=location).order_by('-date')
                 context['location_report'] = movements
 
             context['status'] = status
@@ -245,7 +246,7 @@ class LocationReportView(LoginRequiredMixin, FormView):
 @login_required
 def get_move_out_detail(request):
     pk = int(request.GET.get('move_out_pk', None))
-    details = MoveOut.objects.get(pk=pk)
+    details = Move_Out.objects.get(pk=pk)
     authorized_by = User.objects.get(pk=details.authorized_by)
     received_by = User.objects.get(pk=details.received_by)
     given_by = User.objects.get(pk=details.given_by)
