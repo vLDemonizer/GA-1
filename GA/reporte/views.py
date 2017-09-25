@@ -39,7 +39,7 @@ class DisposableProductView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DisposableProductView, self).get_context_data(**kwargs)
         movements = []
-        for move in MoveOut.objects.all().order_by('-date'):
+        for move in MoveOut.objects.all().order_by('-date', 'product_class'):
             if move.product_class.is_disposable or move.destiny == settings.LOCATIONS[4]:
                 movements.append(move)
 
@@ -61,7 +61,7 @@ class GeneralReportView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(GeneralReportView, self).get_context_data(**kwargs)
 
-        product_class = ProductClass.objects.all().order_by('name')
+        product_class = ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand')
 
         global_report = []
         general_value = 0
@@ -121,7 +121,7 @@ class ProductReportView(LoginRequiredMixin, FormView):
         context = super(ProductReportView, self).get_context_data(**kwargs)
         context['products'] = serializers.serialize(
             'json',
-            ProductClass.objects.all().order_by('name')
+            ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand')
         )
 
         if 'product_class' in self.request.session:

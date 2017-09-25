@@ -162,7 +162,7 @@ class ProductTable extends React.Component {
       value = parseInt(value);
       if (value <= limit) {
         this.setState({
-          unit: value 
+          unit: value
         });
       }
     }
@@ -178,7 +178,7 @@ class ProductTable extends React.Component {
       value = parseInt(value);
       if (value <= limit) {
         this.setState({
-          series: value 
+          series: value
         });
       }
     }
@@ -281,7 +281,7 @@ class ProductTable extends React.Component {
             </td>
             <td>{this.props.date}</td>
             <td>
-              <button 
+              <button
                 className="btn btn-lg btn-primary"
                 onClick={this.submitSingleMoveOut}
               >Submit</button>
@@ -790,7 +790,7 @@ class MoveOut extends React.Component {
             tittles={this.tittles}
             className="row"
           />
-          <Details 
+          <Details
             handleSelection={this.handleSelective}
             selective={this.state.selective}
             usersReady={this.state.usersReady}
@@ -836,7 +836,7 @@ class MoveOut extends React.Component {
             tittles={this.tittles}
             className="row"
           />
-          <Details 
+          <Details
             handleSelection={this.handleSelective}
             selective={this.state.selective}
             products={this.props.products}
@@ -872,5 +872,3 @@ class MoveOut extends React.Component {
     }
   }
 }
-
-
