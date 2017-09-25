@@ -64,7 +64,12 @@ class GeneralReportView(LoginRequiredMixin, FormView):
         product_class = ProductClass.objects.all().order_by('name')
 
         global_report = []
-        wareHouse_value = 0;
+        general_value = 0
+        wareHouse_value = 0
+        office_value = 0
+        polar_value = 0
+        mante_value = 0
+        disposable_value = 0
 
         for product in product_class:
             stock_almacen = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[0]).count()
@@ -82,10 +87,21 @@ class GeneralReportView(LoginRequiredMixin, FormView):
 
             global_report.append(product)
 
-            wareHouse_value += product.their_value * product.stock
+            general_value += product.their_value * product.stock
+            wareHouse_value += product.their_value * stock_almacen
+            office_value += product.their_value * stock_oficina
+            polar_value += product.their_value * stock_planta
+            mante_value += product.their_value * stock_mante
+            disposable_value += product.their_value * stock_desin
 
         context['global_report'] = global_report
+        context['general_value'] = GeneralReportView.currency_format(general_value)
         context['wareHouse_value'] = GeneralReportView.currency_format(wareHouse_value)
+        context['office_value'] = GeneralReportView.currency_format(office_value)
+        context['polar_value'] = GeneralReportView.currency_format(polar_value)
+        context['mante_value'] = GeneralReportView.currency_format(mante_value)
+        context['disposable_value'] = GeneralReportView.currency_format(disposable_value)
+
         return context
 
 
@@ -258,7 +274,7 @@ def get_move_out_detail(request):
         'given_by': given_by.first_name + " " + given_by.last_name,
         'reason': details.reason,
         'reason_description': details.reason_description,
-        #'products': list(details.products.all().values_list('full_code')),
+        'products': list(details.products.all().values_list('full_code')),
     }
     return HttpResponse(
         json.dumps(data),
