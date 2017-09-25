@@ -20,7 +20,7 @@ from .forms import (
     ProductClassForm, MoveInForm, MoveOutForm, UserCreateForm,
     LoginForm, CodesForm, PriceUpdateForm
 )
-from .models import ProductClass, Product, MoveIn, MoveOut, User
+from .models import ProductClass, Product, MoveIn, MoveOut, User, Move_Out
 from .code_generator import generate_full_code, create_codes_file
 
 
@@ -34,6 +34,25 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         for product in ProductClass.objects.all().order_by('name'):
             if product.low_stock:
                 products.append(product)
+        # Pass everything to Move_Out from MoveOut and delete MoveOut
+        """
+        for move in MoveOut.objects.all():
+            move.is_move_in = False # Clear from MoveIns
+            move_out = Move_Out.objects.create(
+                origin=move.origin,
+                destiny=move.destiny,
+                product_class=move.product_class,
+                authorized_by=move.authorized_by,
+                received_by=move.received_by,
+                given_by=move.given_by,
+                reason=move.reason,
+                reason_description=move.reason_description,
+            )
+            move_out.save()
+            print(move)
+        
+        MoveOut.objects.all().delete()
+        """
         context['products'] = products
         return context
 
@@ -263,7 +282,7 @@ class MoveOutView(LoginRequiredMixin, FormView):
                 product.location = destiny
                 product.save()
 
-        move_out = MoveOut.objects.create(
+        move_out = Move_Out.objects.create(
             origin=origin,
             destiny=destiny,
             product_class=product_class,
@@ -488,7 +507,7 @@ def make_single_move_out(request):
         product.location = destiny
         product.save()
 
-    move_out = MoveOut.objects.create(
+    move_out = Move_Out.objects.create(
         origin=origin,
         destiny=destiny,
         product_class=product_class,
