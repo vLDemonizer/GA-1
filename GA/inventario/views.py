@@ -31,7 +31,7 @@ class LandingPage(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
         products = []
-        for product in ProductClass.objects.all().order_by('name'):
+        for product in ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand'):
             if product.low_stock:
                 products.append(product)
         # Pass everything to Move_Out from MoveOut and delete MoveOut
@@ -47,12 +47,15 @@ class LandingPage(LoginRequiredMixin, TemplateView):
                 given_by=move.given_by,
                 reason=move.reason,
                 reason_description=move.reason_description,
+                date = move.date,
+                products = move.products,
             )
             move_out.save()
             print(move)
-        
+
         MoveOut.objects.all().delete()
         """
+
         context['products'] = products
         return context
 
