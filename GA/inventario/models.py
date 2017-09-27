@@ -1,4 +1,5 @@
 from random import randint
+from django.utils import timezone
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -90,11 +91,17 @@ class MoveIn(models.Model):
     destiny = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
     product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField()
     is_move_in = models.BooleanField(default=True)
 
     def __str__(self):
         return self.product_class.name + ' Moved in on the ' + str(self.date)
+
+    def save(self, *args, **kwargs):
+        "On creation, add timestamp"
+        if not self.id:
+            self.date = timezone.now()
+        return super(MoveIn, self).save(*args, **kwargs)
 
 
 class MoveOut(MoveIn):
@@ -113,11 +120,12 @@ class MoveOut(MoveIn):
             + ' To: ' + self.destiny
         )
 
+
 class Move_Out(models.Model):
     destiny = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
     product_class = models.ForeignKey(ProductClass, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField()
     origin = models.CharField(max_length=30, default=settings.PRIMARY_LOCATION)
     authorized_by = models.SmallIntegerField(blank=False)
     received_by = models.SmallIntegerField(blank=False)
@@ -133,6 +141,12 @@ class Move_Out(models.Model):
             + ' To: ' + self.destiny
         )
 
+    def save(self, *args, **kwargs):
+        "On creation, add timestamp"
+        if not self.id:
+            self.date = timezone.now()
+        return super(Move_Out, self).save(*args, **kwargs)
+        
 
 class User(AbstractUser):
     enterprise = models.CharField(max_length=20, default=settings.ENTERPRISE)
@@ -140,7 +154,6 @@ class User(AbstractUser):
     city = models.CharField(max_length=50, default=settings.CITY)
     designation =  models.CharField(max_length=50)
     admin = models.BooleanField(default=False)
-    move_out = models.ForeignKey(MoveOut, blank=True, null=True)
 
     def __str__(self):
         return self.designation + ' - ' + self.first_name + ' ' + self.last_name

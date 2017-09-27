@@ -105,16 +105,13 @@ class ProductTable extends React.Component {
     e.preventDefault()
     let product = parseInt($('#id_product_class').val());
     if (this.props.checkDirections(e) && product > 0) {
-      console.log('Directions and Product class Key READY')
       if (this.props.usersReady) {
-        console.log('Users Ready')
         if (this.state.series !== '' && this.state.unit !== '') {
-          console.log('Series and Unit READY')
           let product_class = $('#id_product_class').val();
           let from = $('#id_from_location').val();
           let to = $('#id_destiny').val();
           let reason = $('#id_reason').val();
-          let reason_description = $('#id_reason_description').val();
+          let reason_description = $('#id_reason_description').val() == null ? '' : $('#id_reason_description').val();
           let authorized_by = $('#id_authorized_by').val();
           let received_by = $('#id_received_by').val();
           $.ajax({
@@ -132,7 +129,6 @@ class ProductTable extends React.Component {
             },
             dataType: 'json',
             success: (data) => {
-              console.log(data)
               if (data) {
                 this.setState({
                   series:'',

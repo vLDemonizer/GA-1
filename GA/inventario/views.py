@@ -488,7 +488,7 @@ def make_single_move_out(request):
         product = Product.objects.get(
             product_class=product_class,
             available=True,
-            location=settings.LOCATIONS[origin],
+            location=origin,
             number=number,
         )
 
