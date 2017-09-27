@@ -118,44 +118,5 @@
       }
   </script>
 
-  <script type="text/babel">
-    function showModal(move) {
-      var moveOut = move
-
-      $.ajax({
-        url: '/reporte/ajax/get_move_out_detail/',
-        data: {
-          'move_out_pk': moveOut,
-        },
-        dataType: 'json',
-        success: (data) => {
-          ReactDOM.render(
-            <div>
-              <table className="table table-reponsive table-sm">
-                <thead className="table-inverse">
-                  <th>Authorized</th>
-                  <th>Received</th>
-                  <th>Given</th>
-                  <th>Reason</th>
-                  { data['reason_description'] ? <th>Reason Description</th> : '' }
-                </thead>
-                <tbody>
-                    <tr>
-                      <td>{ data['authorized_by'] }</td>
-                      <td>{ data['received_by'] }</td>
-                      <td>{ data['given_by'] }</td>
-                      <td>{ data['reason'] }</td>
-                      { data['reason_description'] ? <td>{ data['reason_description'] }</td> : '' }
-                    </tr>
-                </tbody>
-              </table>
-            </div>,
-            document.getElementById('id_modal_body')
-          );
-        }
-      });
-
-      $('#id_modal_move').modal('show');
-    }
-  </script>
+  <script type="text/babel" src="{% static 'react/reporte/move_out_details_control.js' %}"></script>
 {% endblock %}

@@ -61,7 +61,7 @@ class GeneralReportView(LoginRequiredMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super(GeneralReportView, self).get_context_data(**kwargs)
 
-        product_class = ProductClass.objects.all().order_by('name')
+        product_class = ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand')
 
         global_report = []
         general_value = 0
@@ -121,7 +121,7 @@ class ProductReportView(LoginRequiredMixin, FormView):
         context = super(ProductReportView, self).get_context_data(**kwargs)
         context['products'] = serializers.serialize(
             'json',
-            ProductClass.objects.all().order_by('name')
+            ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand')
         )
 
         if 'product_class' in self.request.session:
@@ -267,6 +267,7 @@ def get_move_out_detail(request):
     received_by = User.objects.get(pk=details.received_by)
     given_by = User.objects.get(pk=details.given_by)
     data = {
+        'product_class': str(details.product_class),
         'origin': details.origin,
         'destiny': details.destiny,
         'authorized_by': authorized_by.first_name + " " + authorized_by.last_name,
