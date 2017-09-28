@@ -3,7 +3,6 @@
 
 {% block content %}
     <div class="text-center">
-      {% if request.user.is_staff %}
         <div class="text-center" style="margin-top: 1rem;">
           <a class="btn btn-danger btn-lg" href="{% url 'reporte:home' %}">Cancel</a>
           <button type="button" class="btn btn-info btn-lg" onclick="printReport()">Print</button>
@@ -12,12 +11,14 @@
         <div id="print_div">
           <div class="text-center">
              <h2 class="display-4">Reporte General</h2>
+             {% if request.user.is_staff %}
             <h4><strong>Stock Value: </strong>{{ general_value }}</h4>
             <br>
 
             <h6><strong>Warehouse Value: </strong>{{ wareHouse_value }} - <strong>Office Value: </strong>{{ office_value }} - <strong>Polar Value: </strong>{{ polar_value }}</h6>
             <br>
             <h6><strong>Maintenance Value: </strong>{{ mante_value }} - <strong>Disincorporated Value: </strong>{{ disposable_value }}</h6>
+            {% endif %}
           </div>
           <br />
           <table class="table table-reponsive table-striped">
@@ -55,7 +56,6 @@
             </tbody>
           </table>
         </div>
-      {% endif %}
     </div>
 {% endblock %}
 {% block extra_scripts %}

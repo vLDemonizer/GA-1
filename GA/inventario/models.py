@@ -43,7 +43,7 @@ class ProductClass(models.Model):
 
     @property
     def low_stock(self):
-        if self.product_set.filter(available=True).count() <= self.min_amount:
+        if self.product_set.filter(available=True, location=settings.PRIMARY_LOCATION).count() <= self.min_amount:
             return True
         return False
 
@@ -146,7 +146,7 @@ class Move_Out(models.Model):
         if not self.date:
             self.date = timezone.now()
         return super(Move_Out, self).save(*args, **kwargs)
-        
+
 
 class User(AbstractUser):
     enterprise = models.CharField(max_length=20, default=settings.ENTERPRISE)
