@@ -33,8 +33,9 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         products = []
         for product in ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand'):
             if product.low_stock:
-                stock_almacen = Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[0]).count()
-                setattr(product, 'stock_almacen', stock_almacen)
+                print(product.pk)
+                setattr(product, 'stock_almacen', Product.objects.filter(product_class=product, available=True, location=settings.LOCATIONS[0]).count())
+                print(product.stock_almacen)
                 products.append(product)
 
         context['products'] = products
