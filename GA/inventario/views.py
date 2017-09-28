@@ -49,9 +49,9 @@ class LandingPage(LoginRequiredMixin, TemplateView):
                 reason_description=move.reason_description,
                 date=move.date,
             )
-            print(*(move.products.all().values_list('pk')[0]))
+            print(*(move.products.all().values_list('pk')))
             move_out.save()
-            move_out.products.add(*(move.products.all().values_list('pk')[0]))
+            move_out.products.add(*(move.products.all().values_list('pk')))
             move_out.save()
             print(move)
 
