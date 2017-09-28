@@ -21,8 +21,11 @@ function showModal(move) {
     success: (data) => {
       var products = data['products']
       var product_list = [];
+      console.log(data)
       for (var i = 0; i < data['products'].length; i++) {
-        product_list.push(<Option product={ data['products'][i][0] }/>);
+        product_list.push(
+          <Option product={ data['products'][i][0] }/>
+        );
       }
 
       ReactDOM.render(
@@ -110,15 +113,18 @@ function showModal(move) {
                 readOnly
                 style={{ marginBottom: "1rem" }}/>
             </div>
-            <div className="col">
-              <label className="row"><strong> Reason Description </strong></label>
-              <textarea
-                className="row form-control"
-                type="text"
-                readOnly
-                value={ data['reason_description'] }
-                style={{ marginBottom: "1rem" }}></textarea>
-            </div>
+
+            {data['reason_description'] != '' ? 
+              <div className="col">
+                <label className="row"><strong> Reason Description </strong></label>
+                <textarea
+                  className="row form-control"
+                  type="text"
+                  readOnly
+                  value={ data['reason_description'] }
+                  style={{ marginBottom: "1rem" }}></textarea>
+              </div> 
+            : ''}
           </div>
         </div>,
         document.getElementById('id_modal_body')
