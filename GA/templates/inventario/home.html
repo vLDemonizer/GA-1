@@ -31,7 +31,6 @@
                 {% if product.stock_almacen > 0 and product.stock_almacen <= product.min_amount %}
                   class="table-warning"
                 {% else %}
-                {% if product.stock_almacen == 0 %}
                   class="table-danger"
                 {% endif%}
                 >
