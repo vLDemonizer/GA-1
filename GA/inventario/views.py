@@ -49,11 +49,12 @@ class LandingPage(LoginRequiredMixin, TemplateView):
                 reason_description=move.reason_description,
                 date=move.date,
             )
-            print(*(move.products.all().values_list('pk')))
             move_out.save()
-            move_out.products.add(*(move.products.all().values_list('pk')))
+            productss = []
+            for product in move.products.all():
+                productss.append(product.pk)
+            move_out.products.add(*productss)
             move_out.save()
-            print(move)
 
         MoveOut.objects.all().delete()
         """
@@ -274,8 +275,8 @@ class MoveOutView(LoginRequiredMixin, FormView):
         products = Product.objects.filter(
             product_class=product_class,
             location=origin,
-        )[:amount]
-
+        ).order_by('pk')[:amount]
+        print(products)
         # If it's going to become unavailable
         if destiny == settings.LOCATIONS[4] or product_class.is_disposable:
             for product in products:
