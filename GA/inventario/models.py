@@ -44,6 +44,7 @@ class ProductClass(models.Model):
     @property
     def low_stock(self):
         if self.product_set.filter(available=True, location=settings.PRIMARY_LOCATION).count() <= self.min_amount:
+            self.product_set.filter(available=True, location=settings.PRIMARY_LOCATION).count()
             return True
         return False
 
