@@ -656,6 +656,7 @@ class Users extends React.Component {
         <div className="row">
           <div className="col">
             <UsersComponent
+              check={this.checkUsers}
               users={this.props.authorizedUsers}
               name={"authorized_by"}
               tittle={"Autorizado Por"}
@@ -663,6 +664,7 @@ class Users extends React.Component {
           </div>
           <div className="col">
             <UsersComponent
+              check={this.checkUsers}
               users={this.props.receivingUsers}
               name={"received_by"}
               tittle={"Recibido Por"}
