@@ -32,9 +32,12 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         context = super(LandingPage, self).get_context_data(**kwargs)
         products = []
         for product in ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand'):
-            if product.low_stock:
-                setattr(product, 'stock_almacen', Product.objects.filter(product_class=product.pk, available=True, location=settings.PRIMARY_LOCATION).count())
-                products.append(product)
+            if product.department == 'Equipos y Enseres' or product.department == 'Maquinaria' or product.department == 'Computacion':
+                continue
+            else:
+                if product.low_stock:
+                    setattr(product, 'stock_almacen', Product.objects.filter(product_class=product.pk, available=True, location=settings.PRIMARY_LOCATION).count())
+                    products.append(product)
 
         context['products'] = products
         return context
