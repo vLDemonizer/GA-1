@@ -28,9 +28,9 @@
             <tbody>
               {% for product in products %}
                 <tr
-                {% if product.stock_almacen > 0 and product.stock_almacen <= product.min_amount %}
+                {% if product.stock_almacen == product.min_amount %}
                   class="table-warning"
-                {% else %}
+                {% elif product.stock_almacen < product.min_amount %}
                   class="table-danger"
                 {% endif%}
                 >
