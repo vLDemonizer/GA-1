@@ -142,7 +142,7 @@ class Move_Out(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        "On creation, add timestamp"
+        "If no date given, add timestamp"
         if not self.date:
             self.date = timezone.now()
         return super(Move_Out, self).save(*args, **kwargs)
