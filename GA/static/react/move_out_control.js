@@ -737,30 +737,39 @@ class MoveOut extends React.Component {
         e.preventDefault();
         return false;
       }
-    }
-    else {
+      
+    } else {
       if (from === to) {
         this.setState({
-          error: "Desde y Hacia No Pueden ser Iguales"
+          error: "Desde y Hacia No Pueden ser Iguales."
         });
         e.preventDefault();
         return false;
       }
       if (from === '1' && to === '2') {
         this.setState({
-          error: "No Se Puede Hacer un Movimiento de Oficina a Planta"
+          error: "No Se Puede Hacer un Movimiento de Oficina a Planta."
         });
         e.preventDefault();
         return false;
       }
       if (from === '2' && to === '1') {
         this.setState({
-          error: "No Se Puede Hacer un Movimiento de Planta a Oficina"
+          error: "No Se Puede Hacer un Movimiento de Planta a Oficina."
         });
         e.preventDefault();
         return false;
       }
     }
+
+    if (!this.state.usersReady) {
+      this.setState({
+        error: 'Select all the users responsable for this movement.'
+      });
+      e.preventDefault();
+      return false;
+    } 
+
     this.setState({
       error: ''
     });
@@ -813,7 +822,13 @@ class MoveOut extends React.Component {
                   name="redirect"
                   className="btn btn-primary btn-lg"
                   value=""
-                  onClick={() => { this.checkDirections; changeRedirect(); }}>Submit and Add</button>
+                  onClick={(e) => { 
+                      if (this.checkDirections(e) == true) {
+                        changeRedirect();
+                      } 
+                    }
+                  }
+                >Submit and Add</button>
               </div>
             </div>
           }
@@ -839,6 +854,7 @@ class MoveOut extends React.Component {
           />
           <ReasonSelect reasons={this.props.reasons} />
           <Users
+            handleUsersCheck={this.checkUsers}
             authorizedUsers={this.props.admin_users}
             receivingUsers={this.props.retrieving_users}
             dispatchUser={this.props.current_user}
@@ -850,14 +866,19 @@ class MoveOut extends React.Component {
                   type="submit"
                   className="btn btn-primary btn-lg"
                   value="Cargar"
-                  onClick={this.checkDirections}
+                  onClick= {this.checkDirections}
                 />
                 <button
                   id="id_redirect"
                   name="redirect"
                   className="btn btn-primary btn-lg"
                   value=""
-                  onClick={() => { this.checkDirections; changeRedirect(); }}
+                  onClick={(e) => { 
+                      if (this.checkDirections(e) == true) {
+                        changeRedirect();
+                      } 
+                    }
+                  }
                 >Cargar y Mover otro</button>
               </div>
             </div>
