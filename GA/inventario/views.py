@@ -33,31 +33,8 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         products = []
         for product in ProductClass.objects.all().order_by('name', 'product_type', 'size', 'brand'):
             if product.low_stock:
+                setattr(product, 'stock_almacen', Product.objects.filter(product_class=product.pk, available=True, location=settings.PRIMARY_LOCATION).count())
                 products.append(product)
-        # Pass everything to Move_Out from MoveOut and delete MoveOut
-        """
-        for move in MoveOut.objects.all():
-            move.is_move_in = False # Clear from MoveIns
-            move_out = Move_Out.objects.create(
-                origin=move.origin,
-                destiny=move.destiny,
-                product_class=move.product_class,
-                authorized_by=move.authorized_by,
-                received_by=move.received_by,
-                given_by=move.given_by,
-                reason=move.reason,
-                reason_description=move.reason_description,
-                date=move.date,
-            )
-            move_out.save()
-            productss = []
-            for product in move.products.all():
-                productss.append(product.pk)
-            move_out.products.add(*productss)
-            move_out.save()
-
-        MoveOut.objects.all().delete()
-        """
 
         context['products'] = products
         return context
