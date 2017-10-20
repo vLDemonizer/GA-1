@@ -105,8 +105,11 @@ class ProductTable extends React.Component {
     e.preventDefault()
     let product = parseInt($('#id_product_class').val());
     if (this.props.checkDirections(e) && product > 0) {
+      console.log('here');
       if (this.props.usersReady) {
+        console.log('wtf');
         if (this.state.series !== '' && this.state.unit !== '') {
+          console.log('fional');
           let product_class = $('#id_product_class').val();
           let from = $('#id_from_location').val();
           let to = $('#id_destiny').val();
@@ -852,7 +855,9 @@ class MoveOut extends React.Component {
           <Details
             handleSelection={this.handleSelective}
             selective={this.state.selective}
+            usersReady={this.state.usersReady}
             products={this.props.products}
+            handleDirections={this.checkDirections}
           />
           <ReasonSelect reasons={this.props.reasons} />
           <Users
