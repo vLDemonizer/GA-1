@@ -1,0 +1,12 @@
+{% extends 'inventario/layout.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<form method='post'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type='submit' value='submit this shit nigga' />
+</form>
+
+{{ object_list }}
+{% endblock %}
