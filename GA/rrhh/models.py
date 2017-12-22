@@ -42,6 +42,11 @@ class Employee(models.Model):
     home_phone = models.CharField(max_length=40)
     mobile_phone = models.CharField(max_length=40)
 
+    def __str__(self):
+        return str(
+            str(self.employee_id) + ' ' + self.name 
+        )
+
 
 class Spouse(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
@@ -53,7 +58,7 @@ class Spouse(models.Model):
 
 
 class Spawn(models.Model):
-    employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
+    employee = models.ForeignKey(Employee, on_delete=None, blank=True, null=True)
     name = models.CharField(max_length=128) # First and Second Name
     last_name = models.CharField(max_length=128) # First and Second Last Name
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='F')
@@ -70,6 +75,11 @@ class Position(models.Model):
     pay_range = models.CharField(max_length=20, choices=PAY_RANGE_CHOICES, default='S')
     shift = models.CharField(max_length=20, choices=SHIFT_CHOICES, default='D')
 
+    def __str__(self):
+        return str(
+            self.employee.name + ' ' + self.name
+        )
+
 
 class EmployeeControl(models.Model):
     """
@@ -78,20 +88,30 @@ class EmployeeControl(models.Model):
     employee = models.ForeignKey(Employee, on_delete=None, blank=True, null=True)
     date = models.DateField()
 
+    def __str__(self):
+        return str(
+            self.employee.name + ' ' + self.date.strftime('%d-%m-%Y')
+        )
 
-class Control(models.Model):
+class ControlIn(models.Model):
     """
-    Tipo de Producto, Cantidad de entregada, Cantidad devuelta y Si fue 
-    devuelta en su totalidad.
+    Control de Entrega de Productos al personal.
     """
     product_class = models.ForeignKey(ProductClass, on_delete=None, blank=True, null=True)
+    employee_control = models.ForeignKey(EmployeeControl, on_delete=None, blank=True, null=True)
     given = models.IntegerField()
-    received = models.IntegerField()
-    reason = models.CharField(max_length=64)
+    taken_back = models.BooleanField()
 
-
-    @property
-    def taken_back(self):
-        return True if self.given == self.received else False 
+    def __str__(self):
+        return str(
+            self.product_class.name + ' ' + str(self.given) + ' ' + self.employee_control.employee.name
+        )
     
 
+class ControlOut(models.Model):
+    """
+    Control de Retiro de Productos del Personal
+    """
+    control_in = models.ForeignKey(ControlIn, on_delete=None, blank=True, null=True)
+    date = models.DateField()
+    taken = models.IntegerField()

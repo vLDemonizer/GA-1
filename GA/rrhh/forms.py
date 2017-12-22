@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Employee, Spouse, Spawn, Position, EmployeeControl, Control
+from .models import Employee, Spouse, Spawn, Position, EmployeeControl, ControlIn, ControlOut
 
 class EmployeeForm(ModelForm):
     class Meta:
@@ -64,12 +64,20 @@ class EmployeeControlForm(ModelForm):
             'date',
         ]
 
-class ControlForm(ModelForm):
+class ControlInForm(ModelForm):
     class Meta:
-        model = Control
+        model = ControlIn
         fields = [
             'product_class',
+            'employee_control',
             'given',
-            'received',
-            'reason',
+        ]
+
+class ControlOutForm(ModelForm):
+    class Meta:
+        model = ControlOut
+        fields = [
+            'control_in',
+            'date',
+            'taken',
         ]
