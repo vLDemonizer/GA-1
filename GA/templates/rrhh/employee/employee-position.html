@@ -1,0 +1,74 @@
+{% extends 'inventario/layout.html' %} 
+{% load staticfiles %} 
+{% block content %}
+
+<h2 class="text-center"> Employee Position </h2>
+<br />
+<form id="form" method="post">
+    {% csrf_token %}
+    <!-- Informacion Personal -->
+    <div class="text-center form-group row">
+        <div class="col">
+            <label for="id_employee"> ID del Empleado: </label>
+            <select id="id_employee" name="employee">
+                {% for emp in employee %}
+                <option value="{{ emp.pk }}">
+                    {{emp.employee_id}}: {{emp.name}} {{emp.last_name}}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col">
+            <label for="id_shift"> Turno: </label>
+            <select id="id_shift" name="shift">
+                <option value="D" selected> Diurno </option>
+                <option value="M"> Mixto </option>
+                <option value="N"> Nocturno </option>
+            </select>
+        </div>
+
+        <div class="col">
+            <label for="id_pay_range"> Tipo De Pago: </label>
+            <select id="id_pay_range" name="pay_range">
+                <option value="S" selected> Semanal </option>
+                <option value="Q"> Quincenal </option>
+            </select>
+        </div>
+
+        <div class="col">
+            <label for="id_is_active"> Status: </label>
+            <input id="id_is_active" name="is_active" checked type="checkbox">
+        </div>
+    </div>
+    <br />
+    <div class="text-center form-group row">
+        <div class="col">
+            <label for="id_name"> Cargo: </label>
+            <input id="id_name" name="name" required type="text" maxlength="128">
+        </div>
+
+        <div class="col">
+            <label for="id_salary"> Salario: </label>
+            <input id="id_salary" name="salary" step="any" required type="number" min="1">
+        </div>
+
+        <div class="col">
+            <label for="id_start"> Inicio: </label>
+            <input id="id_start" name="start" required type="date">
+        </div>
+
+        <div class="col">
+            <label for="id_end"> Fin : </label>
+            <input id="id_end" name="end" required type="date">
+        </div>
+
+    </div>
+    <br />
+
+    <div class="text-center row">
+        <input class="col" type='submit' value='submit this shit nigga' />
+    </div>
+</form>
+{{object_list}} 
+{% endblock %}

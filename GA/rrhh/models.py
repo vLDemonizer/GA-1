@@ -44,7 +44,7 @@ class Employee(models.Model):
 
     def __str__(self):
         return str(
-            str(self.employee_id) + ' ' + self.name 
+            str(self.employee_id) + ' ' + self.name + ' ' + self.last_name
         )
 
 
@@ -52,20 +52,37 @@ class Spouse(models.Model):
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=128) # First and Second Name
     last_name = models.CharField(max_length=128) # First and Second Last Name
+    cedula = models.IntegerField(unique=True, blank=True, null=True)
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='F')
     birthdate = models.DateField()
     mobile_phone = models.CharField(max_length=40)
 
+    def __str__(self):
+        return str(
+            str(self.employee.employee_id) + ' ' + self.name + ' ' + self.last_name
+        )
+
 
 class Spawn(models.Model):
+    """
+    Childs of the employee
+    """
     employee = models.ForeignKey(Employee, on_delete=None, blank=True, null=True)
     name = models.CharField(max_length=128) # First and Second Name
     last_name = models.CharField(max_length=128) # First and Second Last Name
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='F')
     birthdate = models.DateField()
 
+    def __str__(self):
+        return str(
+            str(self.employee.employee_id) + ' ' + self.name + ' ' + self.last_name
+        )
+
 
 class Position(models.Model):
+    """
+    Description of the shift, salary and position in the enterprise
+    """
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=128) # Position Full Name
     salary = models.FloatField()
@@ -77,7 +94,7 @@ class Position(models.Model):
 
     def __str__(self):
         return str(
-            self.employee.name + ' ' + self.name
+            str(self.employee.employee_id) + ' ' + self.employee.name + ' ' + self.name + ' ' + str(self.salary)
         )
 
 
@@ -90,7 +107,7 @@ class EmployeeControl(models.Model):
 
     def __str__(self):
         return str(
-            self.employee.name + ' ' + self.date.strftime('%d-%m-%Y')
+            str(self.employee.employee_id) + ' ' + self.employee.name + ' ' + self.date.strftime('%d-%m-%Y')
         )
 
 class ControlIn(models.Model):
@@ -104,7 +121,10 @@ class ControlIn(models.Model):
 
     def __str__(self):
         return str(
-            self.product_class.name + ' ' + str(self.given) + ' ' + self.employee_control.employee.name
+            self.product_class.name + ' ' 
+            + str(self.given) 
+            + ' ' + self.employee_control.employee.name
+            + ' ' + str(self.taken_back)
         )
     
 

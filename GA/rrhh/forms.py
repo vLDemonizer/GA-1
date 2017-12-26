@@ -26,6 +26,7 @@ class SpouseForm(ModelForm):
             'employee',
             'name',
             'last_name',
+            'cedula',
             'gender',
             'birthdate',
             'mobile_phone',
@@ -71,6 +72,7 @@ class ControlInForm(ModelForm):
             'product_class',
             'employee_control',
             'given',
+            'taken_back'
         ]
 
 class ControlOutForm(ModelForm):

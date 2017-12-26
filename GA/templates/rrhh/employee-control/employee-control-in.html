@@ -1,0 +1,49 @@
+{% extends 'inventario/layout.html' %} {% load staticfiles %} {% block content %}
+
+<h2 class="text-center"> Employee Control By Date </h2>
+<h3 class="text-center"> Entrada </h3>
+<br />
+<form id="form" method="post">
+    {% csrf_token %}
+    <!-- Informacion Personal -->
+    <div class="text-center form-group row">
+        <div class="col">
+            <label for="id_product_class"> Producto: </label>
+            <select id="id_product_class" name="product_class">
+                {% for product in products %}
+                <option value="{{ product.pk }}">
+                     {{product.name}} - {{product.product_type}} - {{product.size}} - 
+                      {{product.brand}} - {{product.department}}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col">
+            <label for="id_employee_control"> Employee Control: </label>
+            <select id="id_employee_control" name="employee_control">
+                {% for emp in employee_controls %}
+                <option value="{{ emp.pk }}">
+                    {{ emp.employee.name }} {{ emp.employee.last_name }} {{ emp.date }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col">
+            <label for="id_given"> Cantidad: </label>
+            <input id="id_given" name="given" required type="number" min="1">
+        </div>
+
+        <div class="col">
+            <label for="id_taken_back"> Devuelto?: </label>
+            <input id="id_taken_back" name="taken_back" type="checkbox">
+        </div>
+    </div>
+    <br />
+    <div class="text-center row">
+        <input class="col" type='submit' value='submit this shit nigga' />
+    </div>
+</form>
+{{object_list}} 
+{% endblock %}
