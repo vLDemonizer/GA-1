@@ -1,3 +1,7 @@
 *.pyc
 *.sqlite3
 /migrations/
+GA/inventario/migrations/0002_auto_20171223_0914.py
+GA/rrhh/migrations/0005_auto_20171223_0914.py
+GA/rrhh/migrations/0006_spouse_cedula.py
+.vscode/settings.json

@@ -2,11 +2,16 @@
 {% load staticfiles %}
 
 {% block content %}
-<form method='post'>
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type='submit' value='submit this shit nigga' />
-</form>
-
-{{object_list}}
+<div class="row">
+    <a class="btn btn-primary col" href="{% url 'rrhh:employee' %}" role="button">Crear un Empleado</a>
+    <a class="btn btn-primary col" href="{% url 'rrhh:spouse' %}" role="button">Conyugue</a>
+    <a class="btn btn-primary col" href="{% url 'rrhh:spawn' %}" role="button">Hijos</a>
+</div>
+<br />
+<div class="row" style="margin: auto ">
+    <a class="btn btn-primary col" href="{% url 'rrhh:position' %}" role="button">Cargo en la Empresa</a>
+    <a class="btn btn-primary col" href="{% url 'rrhh:employee-control' %}" role="button">Control de Empleado</a>
+    <a class="btn btn-primary col" href="{% url 'rrhh:control-in' %}" role="button">Asignacion de Productos</a>
+    <a class="btn btn-primary col" href="{% url 'rrhh:control-out' %}" role="button">Retiro de Productos</a>
+</div>
 {% endblock %}

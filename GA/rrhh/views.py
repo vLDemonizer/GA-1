@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, FormView, TemplateView
 from django.views.generic.edit import FormMixin
 from django.views.generic.list import ListView
@@ -14,14 +15,16 @@ from .models import ControlIn, ControlOut, Employee, EmployeeControl, Position, 
 from inventario.models import ProductClass
 
 
-class IndexRRHHView(TemplateView):
+class IndexRRHHView(LoginRequiredMixin, TemplateView):
     template_name = 'rrhh/index.html'
+    login_url = reverse_lazy('inventario:login')
 
 
-class EmployeeView(CreateView):
+class EmployeeView(LoginRequiredMixin, CreateView):
     form_class = EmployeeForm
     template_name = 'rrhh/employee/employee-create.html'
-    success_url = reverse_lazy('rrhh:employee')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         return super(EmployeeView, self).form_valid(form)
@@ -32,11 +35,12 @@ class EmployeeView(CreateView):
         return context
 
 
-class SpouseView(CreateView):
+class SpouseView(LoginRequiredMixin, CreateView):
     form_class = SpouseForm
     model = Spouse
     template_name = 'rrhh/employee/employee-spouse.html'
-    success_url = reverse_lazy('rrhh:spouse')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         return super(SpouseView, self).form_valid(form)
@@ -47,11 +51,13 @@ class SpouseView(CreateView):
         context['object_list'] = Spouse.objects.all()
         return context
 
-class SpawnView(CreateView):
+
+class SpawnView(LoginRequiredMixin, CreateView):
     form_class = SpawnForm
     model = Spawn
     template_name = 'rrhh/employee/employee-spawn.html'
-    success_url = reverse_lazy('rrhh:spawn')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         return super(SpawnView, self).form_valid(form)
@@ -62,11 +68,13 @@ class SpawnView(CreateView):
         context['object_list'] = Spawn.objects.all()
         return context
 
-class PositionView(CreateView):
+
+class PositionView(LoginRequiredMixin, CreateView):
     form_class = PositionForm
     model = Position
     template_name = 'rrhh/employee/employee-position.html'
-    success_url = reverse_lazy('rrhh:position')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         return super(PositionView, self).form_valid(form)
@@ -77,11 +85,13 @@ class PositionView(CreateView):
         context['object_list'] = Position.objects.all()
         return context
 
-class EmployeeControlView(CreateView):
+
+class EmployeeControlView(LoginRequiredMixin, CreateView):
     form_class = EmployeeControlForm
     model = EmployeeControl
     template_name = 'rrhh/employee-control/employee-control.html'
-    success_url = reverse_lazy('rrhh:employee-control')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         return super(EmployeeControlView, self).form_valid(form)
@@ -92,11 +102,13 @@ class EmployeeControlView(CreateView):
         context['object_list'] = EmployeeControl.objects.all()
         return context
 
-class ControlInView(CreateView):
+
+class ControlInView(LoginRequiredMixin, CreateView):
     form_class = ControlInForm
     model = ControlIn
     template_name = 'rrhh/employee-control/employee-control-in.html'
-    success_url = reverse_lazy('rrhh:control-in')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         return super(ControlInView, self).form_valid(form)
@@ -108,11 +120,13 @@ class ControlInView(CreateView):
         context['object_list'] = ControlIn.objects.all()
         return context
 
-class ControlOutView(CreateView):
+
+class ControlOutView(LoginRequiredMixin, CreateView):
     form_class = ControlOutForm
     model = ControlOut
     template_name = 'rrhh/employee-control/employee-control-out.html'
-    success_url = reverse_lazy('rrhh:control-out')
+    success_url = reverse_lazy('rrhh:index')
+    login_url = reverse_lazy('inventario:login')
 
     def form_valid(self, form):
         pk = form.cleaned_data['control_in']
