@@ -135,3 +135,12 @@ class ControlOut(models.Model):
     control_in = models.ForeignKey(ControlIn, on_delete=None, blank=True, null=True)
     date = models.DateField()
     taken = models.IntegerField()
+
+    def __str__(self):
+        return(
+            str(self.control_in.employee_control.employee.employee_id ) + ' ' +
+            self.control_in.employee_control.employee.name + ' ' +
+            self.control_in.product_class.name + ' ' + 'Given: ' +
+            str(self.control_in.given) + ' ' + 'Taken: ' +
+            str(self.taken )
+        )
