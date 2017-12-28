@@ -165,13 +165,20 @@ class ControlOutView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         pk = form.cleaned_data['control_in']
         control_in = ControlIn.objects.get(pk=pk.pk)
-        
-        taken = form.cleaned_data['taken']
+        control_out = ControlOut.objects.filter(control_in=pk.pk)
 
-        if taken > control_in.given:
+        taken = form.cleaned_data['taken']
+        all_taken = 0
+        for control in control_out:
+            all_taken = all_taken + control.taken
+        
+        all_taken = all_taken + taken
+
+        if all_taken > control_in.given:
             form.add_error('taken', 'Cannot take back more than you gave in')
             return super(ControlOutView, self).form_invalid(form)
-        if taken == control_in.given:
+
+        if all_taken == control_in.given:
             control_in.taken_back = True
             control_in.save()
         
