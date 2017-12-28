@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, FormView, TemplateView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, UpdateView
 from django.views.generic.list import ListView
 
 from .forms import (ControlInForm, ControlOutForm, EmployeeControlForm, EmployeeForm,
@@ -32,6 +32,26 @@ class EmployeeView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(EmployeeView, self).get_context_data(**kwargs)
         context['object_list'] = Employee.objects.all()
+        return context
+
+class EmployeeUpdate(LoginRequiredMixin, UpdateView):
+    model = Employee
+    fields = [
+            'name',
+            'last_name',
+            'cedula',
+            'gender',
+            'birthdate',
+            'address',
+            'civil_status',
+            'home_phone',
+            'mobile_phone',
+        ]
+    template_name = 'rrhh/employee/employee-update.html'
+    success_url = reverse_lazy('rrhh:index')
+
+    def get_context_data(self, **kwargs):
+        context = super(EmployeeUpdate, self).get_context_data(**kwargs)
         return context
 
 
@@ -100,6 +120,20 @@ class EmployeeControlView(LoginRequiredMixin, CreateView):
         context = super(EmployeeControlView, self).get_context_data(**kwargs)
         context['employee'] = Employee.objects.all()
         context['object_list'] = EmployeeControl.objects.all()
+        return context
+
+class EmpoyeeControlUpdate(LoginRequiredMixin, UpdateView):
+    model = EmployeeControl
+    fields = [
+            'employee',
+            'date',
+        ]
+    
+    template_name = 'rrhh/employee-control/employee-control-update.html'
+    success_url = reverse_lazy('rrhh:index')
+
+    def get_context_data(self, **kwargs):
+        context = super(EmpoyeeControlUpdate, self).get_context_data(**kwargs)
         return context
 
 
