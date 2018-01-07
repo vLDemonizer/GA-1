@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<br />
+<!-- Cards Items -->
+<div class="row text-center">
+
+  <div class="col">
+    <div class="card" style="width: 21rem;">
+      <img class="card-img-top" src="{% static 'img/admin.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h2 class="card-title">Administraci&oacute;n</h2>
+        <a class="btn btn-primary btn-lg" href="#">Go!</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card" style="width: 16rem;">
+      <img class="card-img-top" src="{% static 'img/almacen.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h2 class="card-title">Almac&eacute;n</h2>
+        <a class="btn btn-primary btn-lg" href="{% url 'inventario:home' %}">Go!</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card" style="width: 15rem;">
+      <img class="card-img-top" src="{% static 'img/rh.jpg' %}" alt="Card image cap">
+      <div class="card-body">
+        <h2 class="card-title">Recursos Humanos</h2>
+        <a class="btn btn-primary btn-lg" href="{% url 'rrhh:index' %}">Go!</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+    <!-- Cards Items -->
+{% endblock %}

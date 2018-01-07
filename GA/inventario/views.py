@@ -26,7 +26,7 @@ from .code_generator import generate_full_code, create_codes_file
 
 class LandingPage(LoginRequiredMixin, TemplateView):
     template_name = 'inventario/home.html'
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super(LandingPage, self).get_context_data(**kwargs)
@@ -43,36 +43,12 @@ class LandingPage(LoginRequiredMixin, TemplateView):
         return context
 
 
-class Login(FormView):
-    form_class = LoginForm
-    template_name = 'inventario/user/login.html'
-    success_url = reverse_lazy('inventario:home')
-    redirect_field_name = 'redirect_to'
-    redirect_authenticated_user = True
-
-    def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect(reverse_lazy('inventario:home'))
-
-        return super(Login, self).get(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(self.request, user)
-            return super(Login, self).form_valid(form)
-        else:
-            form.add_error('username', 'No user found')
-            return super(Login, self).form_invalid(form)
-
 
 class UserCreate(LoginRequiredMixin, FormView):
     form_class = UserCreateForm
     template_name = 'inventario/user/user_form.html'
     success_url = reverse_lazy('inventario:home')
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         first_name = form.cleaned_data['first_name']
@@ -118,7 +94,7 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
     form_class = ProductClassForm
     template_name = 'inventario/product/product_class_form.html'
     success_url = reverse_lazy('inventario:home')
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         if "Save and Add another one" in form.cleaned_data['redirect']:
@@ -136,7 +112,7 @@ class ProductClassCreate(LoginRequiredMixin, CreateView):
 class ProductClassList(LoginRequiredMixin, FormView):
     form_class = ProductClassForm
     template_name = 'inventario/product/product_class_list.html'
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
     success_url = reverse_lazy('inventario:home')
 
     def form_valid(self, form):
@@ -170,7 +146,7 @@ class MoveInCreate(LoginRequiredMixin, FormView):
     form_class = MoveInForm
     template_name = 'inventario/move/move_in_form.html'
     success_url = reverse_lazy('inventario:home')
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         destiny = form.cleaned_data['destiny']
@@ -222,7 +198,7 @@ class MoveOutView(LoginRequiredMixin, FormView):
     form_class = MoveOutForm
     template_name = 'inventario/move/move_out_form.html'
     success_url = reverse_lazy('inventario:home')
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super(MoveOutView, self).get_context_data(**kwargs)
@@ -290,7 +266,7 @@ class PrintCodes(LoginRequiredMixin, FormView):
     form_class = CodesForm
     template_name = 'inventario/product/print_product_codes.html'
     success_url = reverse_lazy('inventario:home')
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super(PrintCodes, self).get_context_data(**kwargs)
@@ -322,7 +298,7 @@ class PriceUpdateView(LoginRequiredMixin, FormView):
     form_class = PriceUpdateForm
     template_name = 'inventario/product/price_update_form.html'
     success_url = reverse_lazy('inventario:home')
-    login_url = reverse_lazy('inventario:login')
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         increment = float(form.cleaned_data['increment']) / 100
@@ -335,11 +311,6 @@ class PriceUpdateView(LoginRequiredMixin, FormView):
 
         return super(PriceUpdateView, self).form_valid(form)
 
-
-@login_required
-def log_out(request):
-    logout(request)
-    return redirect(reverse_lazy('inventario:login'))
 
 
 @login_required
