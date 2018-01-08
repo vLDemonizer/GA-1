@@ -1,82 +1,25 @@
-{% extends 'inventario/layout.html' %} 
+{% extends 'base.html' %} 
 {% load staticfiles %}
+{% block extra_styles %}
+<link rel="stylesheet" href="{% static 'css/loader.css' %}" >
+{% endblock %}
 
 {% block content %}
-<h2 class="text-center"> Crear un Nuevo Empleado </h2>
 <br />
 <form id="form" method="post">
      {% csrf_token %}
-    <!-- Informacion Personal -->
-    <div class="text-center form-group row">
-        <div class="col">
-            <label for="id_employee_id"> ID del Empleado: </label>
-            <input id="id_employee_id" name="employee_id" required type="number" min="1">
+    <div class="container-fluid" id="root">
+        <header class="text-center major">
+            <h2>Cargando...</h2>
+        </header>
+        <div class="text-center" style="margin-top: 100px;">
+            <div id="loader" ></div>
         </div>
-    
-        <div class="col">
-            <label for="id_gender"> Gender: </label>
-            <select id="id_gender" name="gender">
-                <option value="M" selected> Masculino </option>
-                <option value="F"> Femenino </option>
-                <option value="O"> Otros </option>
-            </select>
-        </div>
-    </div>
-    <br />
-    <div class="text-center form-group row">
-        <div class="col">
-            <label for="id_name"> Nombres: </label>
-            <input id="id_name" name="name" required type="text" maxlength="128">
-        </div>
-
-        <div class"col">
-            <label for="id_last_name"> Apellidos: </label>
-            <input id="id_last_name" name="last_name" required type="text" maxlength="128">
-        </div>
-
-        <div class="col">
-            <label for="id_cedula"> Cedula: </label>
-            <input id="id_cedula" name="cedula" required type="number" min="1">
-        </div>
-    </div>
-    <br />
-    <div class="text-center form-group row">
-        <div class="col">
-            <label for="id_birthdate"> Fecha De Nacimiento: </label>
-            <input id="id_birthdate" name="birthdate" required type="date">
-        </div>
-
-        <div class="col">
-            <label for="id_address"> Direccion: </label>
-            <input id="id_address" name="address" type="text" required maxlength="256">
-        </div>
-
-        <div class"col">
-            <label for="id_civil_status"> Estado Civil: </label>
-            <select id="id_civil_status" name="civil_status">
-                <option value="S" selected> Soltero </option>
-                <option value="C"> Casado </option>
-                <option value="V"> Viudo </option>
-            </select>
-        </div>
-    </div>
-    <br />
-    <div class="text-center form-group row">
-        <div class="col">
-            <label for="id_home_phone">Telefono Hogar:</label>
-            <input id="id_home_phone" name="home_phone" type="text" required maxlength="40">
-        </div>
-
-        <div class="col">
-            <label for="id_home_phone">Telefono Movil:</label>
-            <input id="id_mobile_phone" name="mobile_phone" type="text" required maxlength="40">
-        </div>
-    </div>
-
-    <div class="text-center row">
-        <input class="col" type='submit' value='submit this shit nigga' />
     </div>
 </form>
 
-{{object_list}}
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/babel" src="{% static 'react/rrhh/employee-create.jsx' %}"></script>
 {% endblock %}
