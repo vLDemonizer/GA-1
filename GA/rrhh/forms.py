@@ -49,7 +49,8 @@ class PositionForm(ModelForm):
         fields = [
             'employee',
             'name',
-            'salary',
+            'base_salary',
+            'food_salary',
             'start',
             'end',
             'is_active',

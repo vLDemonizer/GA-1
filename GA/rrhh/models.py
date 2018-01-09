@@ -85,7 +85,8 @@ class Position(models.Model):
     """
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=128) # Position Full Name
-    salary = models.FloatField()
+    base_salary = models.FloatField()
+    food_salary = models.FloatField()
     start = models.DateField() # Position Start Date
     end = models.DateField() # Position End Date
     is_active = models.BooleanField(default=True)

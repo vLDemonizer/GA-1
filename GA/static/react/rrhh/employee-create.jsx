@@ -20,7 +20,7 @@ class Position extends React.Component {
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_shift"> Turno: </label>
-                        <select id="id_shift" name="shift">
+                        <select id="id_shift" name="shift" className="custom-select">
                             <option value="D" selected> Diurno </option>
                             <option value="M"> Mixto </option>
                             <option value="N"> Nocturno </option>
@@ -29,7 +29,7 @@ class Position extends React.Component {
 
                     <div className="col">
                         <label for="id_pay_range"> Tipo De Pago: </label>
-                        <select id="id_pay_range" name="pay_range">
+                        <select id="id_pay_range" name="pay_range" className="custom-select">
                             <option value="S" selected> Semanal </option>
                             <option value="Q"> Quincenal </option>
                         </select>
@@ -37,29 +37,34 @@ class Position extends React.Component {
 
                     <div className="col">
                         <label for="id_is_active"> Status: </label>
-                        <input id="id_is_active" name="is_active" checked type="checkbox"/>
+                        <input id="id_is_active" name="is_active" type="checkbox"/>
                     </div>
                 </div>
                 <br />
                 <div className="text-center form-group row">
                     <div class="col">
                         <label for="id_name"> Cargo: </label>
-                        <input id="id_name" name="name" required type="text" maxlength="128"/>
+                        <input id="id_name" name="name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
-                        <label for="id_salary"> Salario: </label>
-                        <input id="id_salary" name="salary" step="any" required type="number" min="1"/>
+                        <label for="id_base_salary"> Salario: </label>
+                        <input id="id_base_salary" name="base_salary" className="form-control" step="any" required type="number" min="1"/>
+                    </div>
+
+                    <div className="col">
+                        <label for="id_food_salary"> Cestaticket: </label>
+                        <input id="id_food_salary" name="food_salary" className="form-control" step="any" required type="number" min="1" />
                     </div>
 
                     <div className="col">
                         <label for="id_start"> Inicio: </label>
-                        <input id="id_start" name="start" required type="date"/>
+                        <input id="id_start" name="start" className="custom-select" equired type="date"/>
                     </div>
 
                     <div className="col">
                         <label for="id_end"> Fin : </label>
-                        <input id="id_end" name="end" required type="date"/>
+                        <input id="id_end" name="end" className="form-control" required type="date"/>
                     </div>
 
                 </div>
@@ -94,22 +99,22 @@ class Spawn extends React.Component {
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_name"> Nombres: </label>
-                        <input id="id_name" name="name" required type="text" maxlength="128"/>
+                        <input id="id_name" name="name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
                         <label for="id_last_name"> Apellidos: </label>
-                        <input id="id_last_name" name="last_name" required type="text" maxlength="128"/>
+                        <input id="id_last_name" name="last_name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
                         <label for="id_birthdate"> Fecha De Nacimiento: </label>
-                        <input id="id_birthdate" name="birthdate" required type="date"/>
+                        <input id="id_birthdate" name="birthdate" className="form-control" required type="date"/>
                     </div>
 
                     <div className="col">
-                        <label for="id_gender"> Gender: </label>
-                        <select id="id_gender" name="gender">
+                        <label for="id_gender"> Sexo: </label>
+                        <select id="id_gender" name="gender" className="custom-select">
                             <option value="M"> Masculino </option>
                             <option value="F" selected > Femenino </option>
                             <option value="O"> Otros </option>
@@ -161,29 +166,29 @@ class Spouse extends React.Component {
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_name"> Nombres: </label>
-                        <input id="id_name" name="name" required type="text" maxlength="128"/>
+                        <input id="id_name" name="name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
                         <label for="id_last_name"> Apellidos: </label>
-                        <input id="id_last_name" name="last_name" required type="text" maxlength="128"/>
+                        <input id="id_last_name" name="last_name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
                         <label for="id_cedula"> Cedula: </label>
-                        <input id="id_cedula" name="cedula" required type="number" min="1"/>
+                        <input id="id_cedula" name="cedula" className="form-control" required type="number" min="1"/>
                     </div>
                 </div>
                 <br />
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_birthdate"> Fecha De Nacimiento: </label>
-                        <input id="id_birthdate" name="birthdate" required type="date"/>
+                        <input id="id_birthdate" name="birthdate" className="form-control" required type="date"/>
                     </div>
 
                     <div className="col">
-                        <label for="id_gender"> Gender: </label>
-                        <select id="id_gender" name="gender">
+                        <label for="id_gender"> Sexo: </label>
+                        <select id="id_gender" name="gender" className="custom-select">
                             <option value="M"> Masculino </option>
                             <option value="F" selected > Femenino </option>
                             <option value="O"> Otros </option>
@@ -192,7 +197,7 @@ class Spouse extends React.Component {
 
                     <div className="col">
                         <label for="id_home_phone">Telefono Movil:</label>
-                        <input id="id_mobile_phone" name="mobile_phone" type="text" required maxlength="40"/>
+                        <input id="id_mobile_phone" name="mobile_phone" className="form-control" type="text" required maxlength="40"/>
                     </div>
                 </div>
                 <br />
@@ -205,9 +210,7 @@ class Spouse extends React.Component {
                     this.state.spawns
                 }
                 <br />
-                <div className="text-center">
-                    
-                </div>
+
                 <div className="text-center">
                     {this.state.spawns.length === 0 ? 
                         ''
@@ -251,6 +254,12 @@ class Employee extends React.Component {
         }
     }
 
+    preserveData(){
+        this.id = document.getElementById("id_employee_id").value;
+        this.setState({id: this.id});
+        this.props.componentNext();
+    }
+
     render (){
         return (
             <div>
@@ -259,12 +268,12 @@ class Employee extends React.Component {
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_employee_id"> ID del Empleado: </label>
-                        <input id="id_employee_id" name="employee_id" required type="number" min="1"/>
+                        <input id="id_employee_id" name="employee_id" className="form-control" required type="number" min="1"/>
                     </div>
                 
                     <div className="col">
                         <label for="id_gender"> Sexo: </label>
-                        <select id="id_gender" name="gender">
+                        <select id="id_gender" name="gender" className="custom-select">
                             <option value="M" selected> Masculino </option>
                             <option value="F"> Femenino </option>
                             <option value="O"> Otros </option>
@@ -275,34 +284,34 @@ class Employee extends React.Component {
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_name"> Nombres: </label>
-                        <input id="id_name" name="name" required type="text" maxlength="128"/>
+                        <input id="id_name" name="name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
                         <label for="id_last_name"> Apellidos: </label>
-                        <input id="id_last_name" name="last_name" required type="text" maxlength="128"/>
+                        <input id="id_last_name" name="last_name" className="form-control" required type="text" maxlength="128"/>
                     </div>
 
                     <div className="col">
                         <label for="id_cedula"> Cedula: </label>
-                        <input id="id_cedula" name="cedula" required type="number" min="1"/>
+                        <input id="id_cedula" name="cedula" className="form-control" required type="number" min="1"/>
                     </div>
                 </div>
                 <br />
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_birthdate"> Fecha De Nacimiento: </label>
-                        <input id="id_birthdate" name="birthdate" required type="date"/>
+                        <input id="id_birthdate" name="birthdate" className="form-control" required type="date"/>
                     </div>
 
                     <div className="col">
                         <label for="id_address"> Direccion: </label>
-                        <input id="id_address" name="address" type="text" required maxlength="256"/>
+                        <input id="id_address" name="address" className="form-control" type="text" required maxlength="256"/>
                     </div>
 
                     <div className="col">
                         <label for="id_civil_status"> Estado Civil: </label>
-                        <select id="id_civil_status" name="civil_status">
+                        <select id="id_civil_status" name="civil_status" className="custom-select">
                             <option value="S" selected> Soltero </option>
                             <option value="C"> Casado </option>
                             <option value="V"> Viudo </option>
@@ -313,17 +322,17 @@ class Employee extends React.Component {
                 <div className="text-center form-group row">
                     <div className="col">
                         <label for="id_home_phone">Telefono Hogar:</label>
-                        <input id="id_home_phone" name="home_phone" type="text" required maxlength="40"/>
+                        <input id="id_home_phone" name="home_phone" className="form-control" type="text" required maxlength="40"/>
                     </div>
 
                     <div className="col">
                         <label for="id_home_phone">Telefono Movil:</label>
-                        <input id="id_mobile_phone" name="mobile_phone" type="text" required maxlength="40"/>
+                        <input id="id_mobile_phone" name="mobile_phone" className="form-control" type="text" required maxlength="40"/>
                     </div>
                 </div>
                 <br />
                 <div className="text-center row">
-                    <a className="btn btn-block btn-primary" onClick={this.props.componentNext}>
+                    <a className="btn btn-block btn-primary" onClick={ this.preserveData.bind(this) }>
                         <span style={{color: 'white'}}>Siguiente</span>
                     </a>
                 </div>
@@ -378,7 +387,13 @@ class EmployeeCreate extends React.Component {
 
     render (){
         return (
-            this.state.current
+            <div className="">
+                {this.state.current}
+                <br/>
+                <a className="btn btn-block btn-danger" href="{% url 'rrhh:index' %}">
+                    <span style={{ color: 'white' }}>Cancelar</span>
+                </a>
+            </div>
         );
     }
 };
