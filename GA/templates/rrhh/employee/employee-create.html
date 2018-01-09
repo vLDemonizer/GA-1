@@ -22,4 +22,43 @@
 
 {% block extra_scripts %}
 <script type="text/babel" src="{% static 'react/rrhh/employee-create.jsx' %}"></script>
+<script type="text/babel">
+    var data = {
+        employee: {
+            employeeID: '',
+            gender: '',
+            name: '',
+            lastName: '',
+            cedula: '',
+            birthDate: '',
+            civilStatus: '',
+            address: '',
+            homePhone: '',
+            mobilePhone: ''
+        },
+        spouse: {
+            name: '',
+            lastName: '',
+            birthDate: '',
+            gender: '',
+            mobilePhone: ''
+        },
+        spawn: [],
+        position: {
+            shift: '',
+            payRange: '',
+            status: '',
+            name: '',
+            base_salary: '',
+            food_salary: '',
+            start: '',
+            end: ''
+        }
+    };
+
+    ReactDOM.render (
+        <EmployeeCreate data={ data }/>,
+        document.getElementById('root')
+    );
+</script>
 {% endblock %}
