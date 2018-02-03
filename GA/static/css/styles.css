@@ -17,13 +17,5 @@
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
-table tbody, table thead
-{
-    display: block;
-}
 
-table tbody 
-{
-   overflow: auto;
-}
 
