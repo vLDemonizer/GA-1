@@ -17,9 +17,4 @@
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
-thead {
-  display: block;
-  overflow: auto;
-  position: fixed;
-}
 
