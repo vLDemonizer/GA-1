@@ -22,19 +22,21 @@
           </div>
           <br />
           <table class="table table-reponsive table-striped">
-            <thead class="table-inverse">
-              <th>Product</th>
-              <th>Department</th>
-              <th>Almacen</th>
-              <th>Oficina</th>
-              <th>Planta</th>
-              <th>Mant</th>
-              <th>Disi</th>
-              <th>Global Stock</th>
-              {% if request.user.is_staff %}
-              <th>Product Value</th>
-              <th>Global Value</th>
-              {% endif %}
+            <thead id="id_general" class="table-inverse">
+              <tr>
+                  <th>Product</th>
+                  <th>Department</th>
+                  <th>Almacen</th>
+                  <th>Oficina</th>
+                  <th>Planta</th>
+                  <th>Mant</th>
+                  <th>Disi</th>
+                  <th>Global Stock</th>
+                  {% if request.user.is_staff %}
+                  <th>Product Value</th>
+                  <th>Global Value</th>
+                  {% endif %}
+              </tr>
             </thead>
             <tbody>
               {% for moves in global_report %}
