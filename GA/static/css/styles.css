@@ -20,6 +20,6 @@
 thead {
   display: block;
   overflow: auto;
-  position: sticky;
+  position: fixed;
 }
 
