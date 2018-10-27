@@ -1,0 +1,62 @@
+{% extends 'base.html' %} 
+{% load staticfiles %} 
+{% load humanize %}
+{% block content %}
+
+<br />
+<h2 class="text-center"> Lista de Products </h2>
+<div>
+    <a class="btn btn-danger" href="{% url 'rrhh:index' %}"> Menu </a>
+</div>
+
+<br />
+<table id="table" class="table table-responsive table-hover table-bordered">
+    <thead>
+        <tr>
+            <th> Nombre </th>
+            <th> Descripcion </th>
+            <th> Acciones </th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td> {{ product.name }} </td>
+            <td> {{ product.type }} </td>
+            <!-- Actions -->
+            <td>
+                <!-- Update -->
+                <a href="{% url 'rrhh:product-update' pk=product.pk %}" class="mr-1"
+                    data-toggle="tooltip" data-placement="left" title="Edit {{ product.name }}">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </td>
+            <!-- product Detail -->
+        </tr>
+        {% endfor %}
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <th> Nombre </th>
+            <th> Descripcion </th>
+            <th> Acciones </th>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    $(document).ready(function() {
+        var table = $("#table").DataTable();
+
+        $('[type=search]').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+    });
+
+    
+</script>
+{% endblock extra_scripts %}

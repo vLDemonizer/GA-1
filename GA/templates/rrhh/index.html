@@ -3,16 +3,49 @@
 
 {% block content %}
 <br />
-<div class="row">
-    <a class="btn btn-primary col" href="{% url 'rrhh:employee' %}" role="button">Crear un Empleado</a>
-    <a class="btn btn-primary col" href="{% url 'rrhh:spouse' %}" role="button">Conyugue</a>
-    <a class="btn btn-primary col" href="{% url 'rrhh:spawn' %}" role="button">Hijos</a>
-</div>
-<br />
-<div class="row" style="margin: auto ">
-    <a class="btn btn-primary col" href="{% url 'rrhh:position' %}" role="button">Cargo en la Empresa</a>
-    <a class="btn btn-primary col" href="{% url 'rrhh:employee-control' %}" role="button">Control de Empleado</a>
-    <a class="btn btn-primary col" href="{% url 'rrhh:control-in' %}" role="button">Asignacion de Productos</a>
-    <a class="btn btn-primary col" href="{% url 'rrhh:control-out' %}" role="button">Retiro de Productos</a>
-</div>
+
+<!-- Cards Items -->
+<div class="row form-group text-center">
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/disposable-icon.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Agregar Empleado</h4>
+          <a class="btn btn-primary btn-lg" href="{% url 'rrhh:employee-create' %}">Agregar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/general_report.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Control de Empleados</h4>
+          <a class="btn btn-primary btn-lg" href="{% url 'rrhh:employee-list' %}">Listar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Agregar Producto</h4>
+          <a class="btn btn-primary btn-lg" href="{% url 'rrhh:product-create' %}">Agregar</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+        <div class="card" style="width: 15rem;">
+          <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">Lista de Productos</h4>
+            <a class="btn btn-primary btn-lg" href="{% url 'rrhh:product-list' %}">Listar</a>
+          </div>
+        </div>
+      </div>
+  </div>
+<!-- Cards Items -->
 {% endblock %}

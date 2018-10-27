@@ -1,0 +1,139 @@
+{% extends 'base.html' %} 
+{% load staticfiles %} 
+{% load humanize %}
+{% block content %}
+
+<br />
+<h2 class="text-center"> Lista de Empleados </h2>
+<div>
+    <a class="btn btn-danger" href="{% url 'rrhh:index' %}"> Menu Recursos Humanos </a>
+</div>
+
+<br />
+<table id="table" class="table table-responsive table-hover table-bordered">
+    <thead>
+        <tr>
+            <th> Nombre </th>
+            <th> Apellido </th>
+            <th> Cedula </th>
+            <th> Acciones </th>
+            <th> Info del Empleado </th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td> {{ employee.name }} </td>
+            <td> {{ employee.last_name }} </td>
+            <td> {{ employee.cedula | intcomma }}</td>
+            <!-- Actions -->
+            <td>
+                <!-- Update -->
+                <a href="{% url 'rrhh:employee-update' pk=employee.pk %}" class="mr-1"
+                    data-toggle="tooltip" data-placement="left" title="Edit {{ employee.name }}">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+                <!-- Remove -->
+                <a href="{% url 'rrhh:employee-delete' pk=employee.pk %}" class="mr-1"
+                    data-toggle="tooltip" data-placement="left" title="Remove {{ employee.name }}">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </a>
+                <span class="ml-2 mr-2"><strong>|</strong></span>
+                <!-- Add Product -->
+                <a href="#" class="mr-1"
+                    data-toggle="modal" data-target="#id_modal">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </a>
+                <!-- Remove Product -->
+                <a href="#" class="mr-1"
+                    data-toggle="tooltip" data-placement="left" title="Remove Product"> 
+                    <i class="fa fa-minus" aria-hidden="true"></i>
+                </a>
+            </td>
+            <!-- Employee Detail -->
+            <td>
+                <a href="{% url 'rrhh:employee-detail' pk=employee.pk %}">
+                    <i class="fa fa-address-card" aria-hidden="true"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <th> Nombre </th>
+            <th> Apellido </th>
+            <th> Cedula </th>
+            <th> Acciones </th>
+            <th> Info del Empleado </th>
+        </tr>
+    </tfoot>
+</table>
+{% include 'rrhh/employee-control/control_form.html' %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    $(document).ready(function() {
+        var table = $("#table").DataTable();
+
+        $('[type=search]').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+    });
+</script>
+
+<script type='text/javascript'>
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+    function cloneMore(selector, prefix) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        newElement.find(':input').each(function() {
+            var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        });
+        total++;
+        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+        $(selector).after(newElement);
+        var conditionRow = $('.form-row:not(:last)');
+        conditionRow.find('.btn.add-form-row')
+        .removeClass('btn-success').addClass('btn-danger')
+        .removeClass('add-form-row').addClass('remove-form-row')
+        .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
+        return false;
+    }
+    function deleteForm(prefix, btn) {
+        var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (total > 1){
+            btn.closest('.form-row').remove();
+            var forms = $('.form-row');
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            for (var i=0, formCount=forms.length; i<formCount; i++) {
+                $(forms.get(i)).find(':input').each(function() {
+                    updateElementIndex(this, prefix, i);
+                });
+            }
+        }
+        return false;
+    }
+    $(document).on('click', '.add-form-row', function(e){
+        e.preventDefault();
+        cloneMore('.form-row:last', 'form');
+        return false;
+    });
+    $(document).on('click', '.remove-form-row', function(e){
+        e.preventDefault();
+        deleteForm('form', $(this));
+        return false;
+    });
+</script>
+{% endblock extra_scripts %}

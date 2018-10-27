@@ -85,8 +85,8 @@ class Position(models.Model):
     """
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=128) # Position Full Name
-    base_salary = models.FloatField()
-    food_salary = models.FloatField()
+    base_salary = models.FloatField(default=0)
+    food_salary = models.FloatField(default=0)
     start = models.DateField() # Position Start Date
     end = models.DateField() # Position End Date
     is_active = models.BooleanField(default=True)
@@ -99,49 +99,17 @@ class Position(models.Model):
         )
 
 
+class Product(models.Model):
+    name = models.CharField(max_length=250, default='')
+    type = models.CharField(max_length=250, help_text="Talla, Color o Descripcion", default='')
+
 class EmployeeControl(models.Model):
-    """
-    Control de productos de entrada por empleado por dia.
-    """
-    employee = models.ForeignKey(Employee, on_delete=None, blank=True, null=True)
+    CONTROL_TYPE = (
+        ('I', 'Agregar'),
+        ('O', 'Quitar'),
+    )
+
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
     date = models.DateField()
-
-    def __str__(self):
-        return str(
-            str(self.employee.employee_id) + ' ' + self.employee.name + ' ' + self.date.strftime('%d-%m-%Y')
-        )
-
-class ControlIn(models.Model):
-    """
-    Control de Entrega de Productos al personal.
-    """
-    product_class = models.ForeignKey(ProductClass, on_delete=None, blank=True, null=True)
-    employee_control = models.ForeignKey(EmployeeControl, on_delete=None, blank=True, null=True)
-    given = models.IntegerField()
-    taken_back = models.BooleanField()
-
-    def __str__(self):
-        return str(
-            self.product_class.name + ' ' 
-            + str(self.given) 
-            + ' ' + self.employee_control.employee.name
-            + ' ' + str(self.taken_back)
-        )
-    
-
-class ControlOut(models.Model):
-    """
-    Control de Retiro de Productos del Personal
-    """
-    control_in = models.ForeignKey(ControlIn, on_delete=None, blank=True, null=True)
-    date = models.DateField()
-    taken = models.IntegerField()
-
-    def __str__(self):
-        return(
-            str(self.control_in.employee_control.employee.employee_id ) + ' ' +
-            self.control_in.employee_control.employee.name + ' ' +
-            self.control_in.product_class.name + ' ' + 'Given: ' +
-            str(self.control_in.given) + ' ' + 'Taken: ' +
-            str(self.taken )
-        )

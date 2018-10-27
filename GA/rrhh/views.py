@@ -4,14 +4,13 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView, DeleteView, DetailView, TemplateView
 from django.views.generic.edit import FormMixin, UpdateView
 from django.views.generic.list import ListView
 
-from .forms import (ControlInForm, ControlOutForm, EmployeeControlForm, EmployeeForm,
-                    PositionForm, SpawnForm, SpouseForm)
+from .forms import (EmployeeControlFrom, EmployeeForm, ProductForm, EmployeeControlFormset)
 
-from .models import ControlIn, ControlOut, Employee, EmployeeControl, Position, Spawn, Spouse
+from .models import Employee, EmployeeControl, Product
 from inventario.models import ProductClass
 
 
@@ -20,172 +19,82 @@ class IndexRRHHView(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('inventario:login')
 
 
-class EmployeeView(LoginRequiredMixin, CreateView):
-    form_class = EmployeeForm
-    template_name = 'rrhh/employee/employee-create.html'
-    success_url = reverse_lazy('rrhh:index')
+class ListEmployee(LoginRequiredMixin, TemplateView):
+    template_name = 'rrhh/employee/employee-list.html'
     login_url = reverse_lazy('inventario:login')
-
-    def form_valid(self, form):
-        return super(EmployeeView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(EmployeeView, self).get_context_data(**kwargs)
-        context['object_list'] = Employee.objects.all()
-        return context
-
-class EmployeeUpdate(LoginRequiredMixin, UpdateView):
-    model = Employee
-    fields = [
-            'name',
-            'last_name',
-            'cedula',
-            'gender',
-            'birthdate',
-            'address',
-            'civil_status',
-            'home_phone',
-            'mobile_phone',
-        ]
-    template_name = 'rrhh/employee/employee-update.html'
-    success_url = reverse_lazy('rrhh:index')
-
-    def get_context_data(self, **kwargs):
-        context = super(EmployeeUpdate, self).get_context_data(**kwargs)
-        return context
-
-
-class SpouseView(LoginRequiredMixin, CreateView):
-    form_class = SpouseForm
-    model = Spouse
-    template_name = 'rrhh/employee/employee-spouse.html'
-    success_url = reverse_lazy('rrhh:index')
-    login_url = reverse_lazy('inventario:login')
-
-    def form_valid(self, form):
-        return super(SpouseView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(SpouseView, self).get_context_data(**kwargs)
-        context['employee'] = Employee.objects.all()
-        context['object_list'] = Spouse.objects.all()
-        return context
-
-
-class SpawnView(LoginRequiredMixin, CreateView):
-    form_class = SpawnForm
-    model = Spawn
-    template_name = 'rrhh/employee/employee-spawn.html'
-    success_url = reverse_lazy('rrhh:index')
-    login_url = reverse_lazy('inventario:login')
-
-    def form_valid(self, form):
-        return super(SpawnView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(SpawnView, self).get_context_data(**kwargs)
-        context['employee'] = Employee.objects.all()
-        context['object_list'] = Spawn.objects.all()
-        return context
-
-
-class PositionView(LoginRequiredMixin, CreateView):
-    form_class = PositionForm
-    model = Position
-    template_name = 'rrhh/employee/employee-position.html'
-    success_url = reverse_lazy('rrhh:index')
-    login_url = reverse_lazy('inventario:login')
-
-    def form_valid(self, form):
-        return super(PositionView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(PositionView, self).get_context_data(**kwargs)
-        context['employee'] = Employee.objects.all()
-        context['object_list'] = Position.objects.all()
-        return context
-
-
-class EmployeeControlView(LoginRequiredMixin, CreateView):
-    form_class = EmployeeControlForm
-    model = EmployeeControl
-    template_name = 'rrhh/employee-control/employee-control.html'
-    success_url = reverse_lazy('rrhh:index')
-    login_url = reverse_lazy('inventario:login')
-
-    def form_valid(self, form):
-        return super(EmployeeControlView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(EmployeeControlView, self).get_context_data(**kwargs)
-        context['employee'] = Employee.objects.all()
-        context['object_list'] = EmployeeControl.objects.all()
-        return context
-
-class EmpoyeeControlUpdate(LoginRequiredMixin, UpdateView):
-    model = EmployeeControl
-    fields = [
-            'employee',
-            'date',
-        ]
     
-    template_name = 'rrhh/employee-control/employee-control-update.html'
-    success_url = reverse_lazy('rrhh:index')
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        formset = context['control_formset']
+
+        if formset.is_valid():
+            for form in formset:
+                form.save()
+        else:
+            print("bad form")
+        return self.render_to_response(context)
+
 
     def get_context_data(self, **kwargs):
-        context = super(EmpoyeeControlUpdate, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['employees'] = Employee.objects.all()
+
+        if self.request.POST:
+            context['control_formset'] = EmployeeControlFormset(self.request.POST)
+        else:
+            context['control_formset'] = EmployeeControlFormset(queryset=EmployeeControl.objects.none())
         return context
 
-
-class ControlInView(LoginRequiredMixin, CreateView):
-    form_class = ControlInForm
-    model = ControlIn
-    template_name = 'rrhh/employee-control/employee-control-in.html'
+class CreateEmployee(LoginRequiredMixin, CreateView):
+    template_name = 'rrhh/employee/employee-create.html'
+    model = Employee
+    form_class = EmployeeForm
+    login_url = reverse_lazy('inventario:login')
     success_url = reverse_lazy('rrhh:index')
+
+class UpdateEmployee(LoginRequiredMixin, UpdateView):
+    template_name = 'rrhh/employee/employee-create.html'
+    model = Employee
+    form_class = EmployeeForm
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:employee-list')
+
+class DeleteEmployee(LoginRequiredMixin, DeleteView):
+    template_name = 'rrhh/employee/employee-delete.html'
+    model = Employee
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:employee-list')
+
+class DetailEmployee(LoginRequiredMixin, DetailView):
+    template_name = 'rrhh/employee/employee-delete.html'
+    model = Employee
+    pk_url_kwarg = 'pk'
     login_url = reverse_lazy('inventario:login')
 
-    def form_valid(self, form):
-        return super(ControlInView, self).form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super(ControlInView, self).get_context_data(**kwargs)
-        context['products']  = ProductClass.objects.all()
-        context['employee_controls'] = EmployeeControl.objects.all()
-        context['object_list'] = ControlIn.objects.all()
-        return context
-
-
-class ControlOutView(LoginRequiredMixin, CreateView):
-    form_class = ControlOutForm
-    model = ControlOut
-    template_name = 'rrhh/employee-control/employee-control-out.html'
-    success_url = reverse_lazy('rrhh:index')
+# Products Views
+class CreateProduct(LoginRequiredMixin, CreateView):
+    template_name = 'rrhh/product/product_form.html'
+    model = Product
+    form_class = ProductForm
     login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:index')
 
-    def form_valid(self, form):
-        pk = form.cleaned_data['control_in']
-        control_in = ControlIn.objects.get(pk=pk.pk)
-        control_out = ControlOut.objects.filter(control_in=pk.pk)
+class UpdateProduct(LoginRequiredMixin, UpdateView):
+    template_name = 'rrhh/product/product_form.html'
+    model = Product
+    form_class = ProductForm
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:product-list')
 
-        taken = form.cleaned_data['taken']
-        all_taken = 0
-        for control in control_out:
-            all_taken = all_taken + control.taken
-        
-        all_taken = all_taken + taken
+class ListProduct(LoginRequiredMixin, ListView):
+    template_name = 'rrhh/product/product_list.html'
+    model = Product
+    context_object_name = 'products'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:index')
 
-        if all_taken > control_in.given:
-            form.add_error('taken', 'Cannot take back more than you gave in')
-            return super(ControlOutView, self).form_invalid(form)
 
-        if all_taken == control_in.given:
-            control_in.taken_back = True
-            control_in.save()
-        
-        return super(ControlOutView, self).form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super(ControlOutView, self).get_context_data(**kwargs)
-        context['control_in'] = ControlIn.objects.filter(taken_back=False)
-        context['object_list'] = ControlOut.objects.all()
-        return context

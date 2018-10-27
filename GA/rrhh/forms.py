@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import ModelForm
+from django.forms import modelformset_factory
 
-from .models import Employee, Spouse, Spawn, Position, EmployeeControl, ControlIn, ControlOut
+from .models import Employee, EmployeeControl, Product
 
 class EmployeeForm(ModelForm):
     class Meta:
@@ -19,68 +20,22 @@ class EmployeeForm(ModelForm):
             'mobile_phone',
         ]
 
-class SpouseForm(ModelForm):
-    class Meta:
-        model = Spouse
-        fields = [
-            'employee',
-            'name',
-            'last_name',
-            'cedula',
-            'gender',
-            'birthdate',
-            'mobile_phone',
-        ]
+class ProductForm(ModelForm):
 
-class SpawnForm(ModelForm):
     class Meta:
-        model = Spawn
-        fields = [
-            'employee',    
-            'name',    
-            'last_name',   
-            'gender',  
-            'birthdate',   
-        ]
+        model = Product
+        fields = '__all__'
 
-class PositionForm(ModelForm):
-    class Meta:
-        model = Position
-        fields = [
-            'employee',
-            'name',
-            'base_salary',
-            'food_salary',
-            'start',
-            'end',
-            'is_active',
-            'pay_range',
-            'shift',
-        ]
+class EmployeeControlFrom(ModelForm):
 
-class EmployeeControlForm(ModelForm):
     class Meta:
         model = EmployeeControl
-        fields = [
-            'employee',
-            'date',
-        ]
+        fields = '__all__'
 
-class ControlInForm(ModelForm):
-    class Meta:
-        model = ControlIn
-        fields = [
-            'product_class',
-            'employee_control',
-            'given',
-            'taken_back'
-        ]
-
-class ControlOutForm(ModelForm):
-    class Meta:
-        model = ControlOut
-        fields = [
-            'control_in',
-            'date',
-            'taken',
-        ]
+EmployeeControlFormset = modelformset_factory(
+    EmployeeControl,
+    can_delete=False,
+    extra=1,
+    form=EmployeeControlFrom,
+    fields = ['employee', 'product', 'type', 'date']
+)
