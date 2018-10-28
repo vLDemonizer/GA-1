@@ -2,13 +2,13 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, FormView, TemplateView, DeleteView, DetailView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView, DeleteView, DetailView
 from django.views.generic.edit import FormMixin, UpdateView
 from django.views.generic.list import ListView
 
-from .forms import (EmployeeControlFrom, EmployeeForm, ProductForm, EmployeeControlFormset)
+from .forms import (EmployeeControlForm, EmployeeForm, ProductForm, EmployeeControlFormset, EmployeeControlUpdateForm)
 
 from .models import Employee, EmployeeControl, Product
 from inventario.models import ProductClass
@@ -28,8 +28,7 @@ class ListEmployee(LoginRequiredMixin, TemplateView):
         formset = context['control_formset']
 
         if formset.is_valid():
-            for form in formset:
-                form.save()
+            formset.save()
         else:
             print("bad form")
         return self.render_to_response(context)
@@ -40,9 +39,9 @@ class ListEmployee(LoginRequiredMixin, TemplateView):
         context['employees'] = Employee.objects.all()
 
         if self.request.POST:
-            context['control_formset'] = EmployeeControlFormset(self.request.POST)
+            context['control_formset'] = EmployeeControlForm(self.request.POST)
         else:
-            context['control_formset'] = EmployeeControlFormset(queryset=EmployeeControl.objects.none())
+            context['control_formset'] = EmployeeControlForm()
         return context
 
 class CreateEmployee(LoginRequiredMixin, CreateView):
@@ -68,7 +67,8 @@ class DeleteEmployee(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('rrhh:employee-list')
 
 class DetailEmployee(LoginRequiredMixin, DetailView):
-    template_name = 'rrhh/employee/employee-delete.html'
+    template_name = 'rrhh/employee/employee-detail.html'
+    context_object_name = 'employee'
     model = Employee
     pk_url_kwarg = 'pk'
     login_url = reverse_lazy('inventario:login')
@@ -98,3 +98,84 @@ class ListProduct(LoginRequiredMixin, ListView):
     success_url = reverse_lazy('rrhh:index')
 
 
+# Control Views
+class EmployeeControlView(LoginRequiredMixin, CreateView):
+    form_class = EmployeeControlForm
+    template_name = 'rrhh/employee-control/control_form.html'
+    model = EmployeeControl
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:employee-list')
+
+    def get_queryset(self):
+        employee_pk = self.kwargs.get(self.pk_url_kwarg)
+        return Employee.objects.get(pk=employee_pk)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            control = form.save(commit=False)
+            control.type = 'I'
+            control.employee = self.get_queryset()
+            control.save()
+
+            return super().form_valid(form)
+
+        return super().form_invalid(form)
+            
+
+    def get_context_data(self, **kwargs):
+        context = super(EmployeeControlView, self).get_context_data(**kwargs)
+        context['employee'] = self.get_queryset()
+        context['products'] = ProductClass.objects.all()
+        context['agregar'] = True
+        return context
+
+
+class EmployeeControlDeleteView(LoginRequiredMixin, CreateView):
+    form_class = EmployeeControlForm
+    template_name = 'rrhh/employee-control/control_form.html'
+    model = EmployeeControl
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:employee-list')
+
+    def get_queryset(self):
+        employee_pk = self.kwargs.get(self.pk_url_kwarg)
+        return Employee.objects.get(pk=employee_pk)
+
+    def form_valid(self, form):
+        if form.is_valid():
+            control = form.save(commit=False)
+            control.type = 'O'
+            control.employee = self.get_queryset()
+            control.save()
+
+            return super().form_valid(form)
+
+        return super().form_invalid(form)
+            
+
+    def get_context_data(self, **kwargs):
+        context = super(EmployeeControlDeleteView, self).get_context_data(**kwargs)
+        context['employee'] = self.get_queryset()
+        context['products'] = ProductClass.objects.all()
+        context['agregar'] = False
+        return context
+
+
+class EmployeeControlListView(LoginRequiredMixin, ListView):
+    template_name = 'rrhh/employee-control/control-list.html'
+    model = EmployeeControl
+    context_object_name = 'controls'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:index')
+
+class EmployeeControlUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'rrhh/product/product_form.html'
+    model = EmployeeControl
+    form_class = EmployeeControlUpdateForm
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+
+    def get_success_url(self):
+        return reverse('rrhh:employee-detail', kwargs={'pk': self.kwargs.get('employee')})

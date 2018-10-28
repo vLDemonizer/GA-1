@@ -44,7 +44,7 @@ class Employee(models.Model):
 
     def __str__(self):
         return str(
-            str(self.employee_id) + ' ' + self.name + ' ' + self.last_name
+            self.name + ' ' + self.last_name
         )
 
 
@@ -103,6 +103,9 @@ class Product(models.Model):
     name = models.CharField(max_length=250, default='')
     type = models.CharField(max_length=250, help_text="Talla, Color o Descripcion", default='')
 
+    def __str__(self):
+        return f"{self.name} - {self.type}"
+    
 class EmployeeControl(models.Model):
     CONTROL_TYPE = (
         ('I', 'Agregar'),
@@ -110,6 +113,11 @@ class EmployeeControl(models.Model):
     )
 
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
+    product = models.ForeignKey(ProductClass, on_delete=models.CASCADE, blank=True, null=True)
     type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
     date = models.DateField()
+    amount = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.employee} / {self.product} / Tipo: {self.type} / {self.date} / Cantidad: {self.amount}"
+    

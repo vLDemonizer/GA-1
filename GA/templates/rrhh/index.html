@@ -4,12 +4,15 @@
 {% block content %}
 <br />
 
+<h2 class="text-center"><strong> Recursos Humanos - SHA</strong></h2>
+
+<br />
 <!-- Cards Items -->
 <div class="row form-group text-center">
 
     <div class="col">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/disposable-icon.png' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/employee.png' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Agregar Empleado</h4>
           <a class="btn btn-primary btn-lg" href="{% url 'rrhh:employee-create' %}">Agregar</a>
@@ -19,7 +22,7 @@
 
     <div class="col">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/general_report.jpg' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/employee-list.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Control de Empleados</h4>
           <a class="btn btn-primary btn-lg" href="{% url 'rrhh:employee-list' %}">Listar</a>
@@ -27,9 +30,10 @@
       </div>
     </div>
 
+    <!--
     <div class="col">
       <div class="card" style="width: 15rem;">
-        <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
+        <img class="card-img-top" src="{% static 'img/productIn.jpg' %}" alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">Agregar Producto</h4>
           <a class="btn btn-primary btn-lg" href="{% url 'rrhh:product-create' %}">Agregar</a>
@@ -38,11 +42,22 @@
     </div>
 
     <div class="col">
+      <div class="card" style="width: 15rem;">
+        <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">Lista de Productos</h4>
+          <a class="btn btn-primary btn-lg" href="{% url 'rrhh:product-list' %}">Listar</a>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="col mt-3">
         <div class="card" style="width: 15rem;">
           <img class="card-img-top" src="{% static 'img/date_reporte.png' %}" alt="Card image cap">
           <div class="card-body">
-            <h4 class="card-title">Lista de Productos</h4>
-            <a class="btn btn-primary btn-lg" href="{% url 'rrhh:product-list' %}">Listar</a>
+            <h4 class="card-title">Control de Productos por Empleados</h4>
+            <a class="btn btn-primary btn-lg" href="{% url 'rrhh:employee-control-list' %}">Listar</a>
           </div>
         </div>
       </div>

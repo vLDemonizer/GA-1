@@ -26,16 +26,30 @@ class ProductForm(ModelForm):
         model = Product
         fields = '__all__'
 
-class EmployeeControlFrom(ModelForm):
+class EmployeeControlForm(ModelForm):
+
+    class Meta:
+        model = EmployeeControl
+        fields = ['product', 'date', 'amount']
+
+class EmployeeControlUpdateForm(ModelForm):
 
     class Meta:
         model = EmployeeControl
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super(EmployeeControlUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['employee'].widget.attrs.update({'class' : 'selectpicker show-tick', 'data-live-search': True})
+        self.fields['type'].widget.attrs.update({'class' : 'selectpicker show-tick'})
+        self.fields['product'].widget.attrs.update({'class' : 'selectpicker show-tick', 'data-live-search': True})
+        self.fields['date'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['amount'].widget.attrs.update({'class' : 'form-control'})
+
 EmployeeControlFormset = modelformset_factory(
     EmployeeControl,
     can_delete=False,
     extra=1,
-    form=EmployeeControlFrom,
-    fields = ['employee', 'product', 'type', 'date']
+    form=EmployeeControlForm,
+    fields = ['product', 'date', 'amount']
 )

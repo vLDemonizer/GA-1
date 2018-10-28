@@ -21,8 +21,8 @@
             {% endif %}
           </div>
           <br />
-          <table class="table table-reponsive table-striped">
-            <thead id="id_general" class="table-inverse">
+          <table id="id_general" class="table table-reponsive table-striped">
+            <thead class="table-inverse">
               <tr>
                   <th>Product</th>
                   <th>Department</th>
@@ -61,6 +61,15 @@
     </div>
 {% endblock %}
 {% block extra_scripts %}
+<script>
+    $(document).ready(function() {
+        var table = $("#id_general").DataTable();
+
+        $('[type=search]').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        } );
+    });
+</script>
 <script>
   function printReport(){
     var prtContent = document.getElementById("print_div");
