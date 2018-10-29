@@ -8,7 +8,7 @@ from django.views.generic import CreateView, FormView, TemplateView, DeleteView,
 from django.views.generic.edit import FormMixin, UpdateView
 from django.views.generic.list import ListView
 
-from .forms import (EmployeeControlForm, EmployeeForm, ProductForm, EmployeeControlFormset, EmployeeControlUpdateForm)
+#from .forms import (EmployeeControlForm, EmployeeForm, ProductForm, EmployeeControlFormset, EmployeeControlUpdateForm)
 
 #from .models import Employee, EmployeeControl, Product
 from inventario.models import ProductClass
