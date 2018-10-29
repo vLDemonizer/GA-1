@@ -23,25 +23,10 @@ class ListEmployee(LoginRequiredMixin, TemplateView):
     template_name = 'rrhh/employee/employee-list.html'
     login_url = reverse_lazy('inventario:login')
     
-    def post(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        formset = context['control_formset']
-
-        if formset.is_valid():
-            formset.save()
-        else:
-            print("bad form")
-        return self.render_to_response(context)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['employees'] = Employee.objects.all()
-
-        if self.request.POST:
-            context['control_formset'] = EmployeeControlForm(self.request.POST)
-        else:
-            context['control_formset'] = EmployeeControlForm()
         return context
 
 class CreateEmployee(LoginRequiredMixin, CreateView):
