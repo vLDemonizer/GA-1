@@ -41,7 +41,7 @@ class Employee(models.Model):
     civil_status = models.CharField(max_length=20, choices=CIVIL_CHOICES, default='S')
     home_phone = models.CharField(max_length=40)
     mobile_phone = models.CharField(max_length=40)
-    fecha_de_ingreso = models.DateField(blank=True, null=True, default='')
+    fecha_de_ingreso = models.DateField(blank=True, null=True, default='11/24/1994')
     salario = models.FloatField(blank=True, null=True, default='')
 
     def __str__(self):
