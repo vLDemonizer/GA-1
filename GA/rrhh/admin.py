@@ -5,6 +5,7 @@ from django.contrib import admin
 
 from .models import Employee, EmployeeControl, Product
 
+"""
 admin.site.register(Employee)
 admin.site.register(Product)
-admin.site.register(EmployeeControl)
+admin.site.register(EmployeeControl)"""
