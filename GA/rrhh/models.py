@@ -66,9 +66,7 @@ class Spouse(models.Model):
 
 
 class Spawn(models.Model):
-    """
-    Childs of the employee
-    """
+    
     employee = models.ForeignKey(Employee, on_delete=None, blank=True, null=True)
     name = models.CharField(max_length=128) # First and Second Name
     last_name = models.CharField(max_length=128) # First and Second Last Name
@@ -82,9 +80,7 @@ class Spawn(models.Model):
 
 
 class Position(models.Model):
-    """
-    Description of the shift, salary and position in the enterprise
-    """
+    
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=128) # Position Full Name
     base_salary = models.FloatField(default=0)
