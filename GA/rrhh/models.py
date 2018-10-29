@@ -5,7 +5,7 @@ from django.db import models
 
 from inventario.models import ProductClass
 
-"""
+
 GENDER_CHOICES = (
     ('M', 'Masculino'),
     ('F', 'Femenino'),
@@ -66,7 +66,9 @@ class Spouse(models.Model):
 
 
 class Spawn(models.Model):
-    
+    """
+    Childs of the employee
+    """
     employee = models.ForeignKey(Employee, on_delete=None, blank=True, null=True)
     name = models.CharField(max_length=128) # First and Second Name
     last_name = models.CharField(max_length=128) # First and Second Last Name
@@ -80,7 +82,9 @@ class Spawn(models.Model):
 
 
 class Position(models.Model):
-    
+    """
+    Description of the shift, salary and position in the enterprise
+    """
     employee = models.OneToOneField(Employee, on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=128) # Position Full Name
     base_salary = models.FloatField(default=0)
@@ -100,7 +104,6 @@ class Position(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=250, default='')
     type = models.CharField(max_length=250, help_text="Talla, Color o Descripcion", default='')
-
     
 class EmployeeControl(models.Model):
     CONTROL_TYPE = (
@@ -113,5 +116,4 @@ class EmployeeControl(models.Model):
     type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
     date = models.DateField()
     amount = models.IntegerField(default=1)
-    """
     

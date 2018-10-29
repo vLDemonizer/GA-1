@@ -2,7 +2,7 @@ from django import forms
 from django.forms import widgets
 from django.forms import ModelForm
 from django.forms import modelformset_factory
-"""
+
 from .models import Employee, EmployeeControl, Product
 
 class DateInput(forms.DateInput):
@@ -70,4 +70,4 @@ EmployeeControlFormset = modelformset_factory(
     extra=1,
     form=EmployeeControlForm,
     fields = ['product', 'date', 'amount']
-)"""
+)
