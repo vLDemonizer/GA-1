@@ -49,20 +49,20 @@ class Employee(models.Model):
             self.name + ' ' + self.last_name
         )
 
-class Product(models.Model):
-    name = models.CharField(max_length=250, default='')
-    type = models.CharField(max_length=250, help_text="Talla, Color o Descripcion", default='')
+# class Product(models.Model):
+#     name = models.CharField(max_length=250, default='')
+#     type = models.CharField(max_length=250, help_text="Talla, Color o Descripcion", default='')
     
-class EmployeeControl(models.Model):
-    CONTROL_TYPE = (
-        ('I', 'Agregar'),
-        ('O', 'Quitar'),
-    )
+# class EmployeeControl(models.Model):
+#     CONTROL_TYPE = (
+#         ('I', 'Agregar'),
+#         ('O', 'Quitar'),
+#     )
 
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
-    product = models.ForeignKey(ProductClass, on_delete=models.CASCADE, blank=True, null=True)
-    type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
-    date = models.DateField()
-    amount = models.IntegerField(default=1)
+#     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
+#     product = models.ForeignKey(ProductClass, on_delete=models.CASCADE, blank=True, null=True)
+#     type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
+#     date = models.DateField()
+#     amount = models.IntegerField(default=1)
 
     
