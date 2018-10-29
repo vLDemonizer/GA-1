@@ -21,16 +21,6 @@ class Migration(migrations.Migration):
                 ('type', models.CharField(default='', help_text='Talla, Color o Descripcion', max_length=250)),
             ],
         ),
-        migrations.CreateModel(
-            name='Control',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('given', models.IntegerField()),
-                ('received', models.IntegerField()),
-                ('reason', models.TextField(max_length=64)),
-                ('product_class', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='inventario.ProductClass')),
-            ],
-        ),
         migrations.RemoveField(
             model_name='control',
             name='product_class',
@@ -38,11 +28,6 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='employeecontrol',
             name='date',
-        ),
-        migrations.AddField(
-            model_name='position',
-            name='salary',
-            field=models.FloatField(default=0),
         ),
         migrations.RemoveField(
             model_name='position',
