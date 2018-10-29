@@ -10,7 +10,7 @@ from django.views.generic.list import ListView
 
 from .forms import (EmployeeControlForm, EmployeeForm, ProductForm, EmployeeControlFormset, EmployeeControlUpdateForm)
 
-from .models import Employee, EmployeeControl, Product
+#from .models import Employee, EmployeeControl, Product
 from inventario.models import ProductClass
 
 
@@ -18,7 +18,7 @@ class IndexRRHHView(LoginRequiredMixin, TemplateView):
     template_name = 'rrhh/index.html'
     login_url = reverse_lazy('inventario:login')
 
-
+"""
 class ListEmployee(LoginRequiredMixin, TemplateView):
     template_name = 'rrhh/employee/employee-list.html'
     login_url = reverse_lazy('inventario:login')
@@ -163,4 +163,4 @@ class EmployeeControlUpdateView(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('inventario:login')
 
     def get_success_url(self):
-        return reverse('rrhh:employee-detail', kwargs={'pk': self.kwargs.get('employee')})
+        return reverse('rrhh:employee-detail', kwargs={'pk': self.kwargs.get('employee')})"""
