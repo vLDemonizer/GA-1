@@ -3,7 +3,7 @@ from django.forms import widgets
 from django.forms import ModelForm
 from django.forms import modelformset_factory
 
-from .models import Employee
+from .models import Employee, EmployeeControl, Product
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -33,41 +33,41 @@ class EmployeeForm(ModelForm):
         self.fields['home_phone'].label = 'Telefono Hogar'
         self.fields['mobile_phone'].label = 'Telefono Personal'
 
-# class ProductForm(ModelForm):
+class ProductForm(ModelForm):
 
-#     class Meta:
-#         model = Product
-#         fields = '__all__'
+    class Meta:
+        model = Product
+        fields = '__all__'
 
-# class EmployeeControlForm(ModelForm):
+class EmployeeControlForm(ModelForm):
 
-#     class Meta:
-#         model = EmployeeControl
-#         fields = ['product', 'date', 'amount']
+    class Meta:
+        model = EmployeeControl
+        fields = ['product', 'date', 'amount']
 
-# class EmployeeControlUpdateForm(ModelForm):
+class EmployeeControlUpdateForm(ModelForm):
 
-#     class Meta:
-#         model = EmployeeControl
-#         fields = '__all__'
+    class Meta:
+        model = EmployeeControl
+        fields = '__all__'
 
-#     def __init__(self, *args, **kwargs):
-#         super(EmployeeControlUpdateForm, self).__init__(*args, **kwargs)
-#         self.fields['employee'].widget.attrs.update({'class' : 'selectpicker show-tick', 'data-live-search': True})
-#         self.fields['employee'].label = 'Empleado'
-#         self.fields['type'].widget.attrs.update({'class' : 'selectpicker show-tick'})
-#         self.fields['type'].label = 'Tipo'
-#         self.fields['product'].widget.attrs.update({'class' : 'selectpicker show-tick', 'data-live-search': True})
-#         self.fields['product'].label = 'Producto'
-#         self.fields['date'].widget.attrs.update({'class' : 'form-control'})
-#         self.fields['date'].label = 'Fecha'
-#         self.fields['amount'].widget.attrs.update({'class' : 'form-control'})
-#         self.fields['amount'].label = 'Cantidad'
+    def __init__(self, *args, **kwargs):
+        super(EmployeeControlUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['employee'].widget.attrs.update({'class' : 'selectpicker show-tick', 'data-live-search': True})
+        self.fields['employee'].label = 'Empleado'
+        self.fields['type'].widget.attrs.update({'class' : 'selectpicker show-tick'})
+        self.fields['type'].label = 'Tipo'
+        self.fields['product'].widget.attrs.update({'class' : 'selectpicker show-tick', 'data-live-search': True})
+        self.fields['product'].label = 'Producto'
+        self.fields['date'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['date'].label = 'Fecha'
+        self.fields['amount'].widget.attrs.update({'class' : 'form-control'})
+        self.fields['amount'].label = 'Cantidad'
 
-# EmployeeControlFormset = modelformset_factory(
-#     EmployeeControl,
-#     can_delete=False,
-#     extra=1,
-#     form=EmployeeControlForm,
-#     fields = ['product', 'date', 'amount']
-# )
+EmployeeControlFormset = modelformset_factory(
+    EmployeeControl,
+    can_delete=False,
+    extra=1,
+    form=EmployeeControlForm,
+    fields = ['product', 'date', 'amount']
+)
