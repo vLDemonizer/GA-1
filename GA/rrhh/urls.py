@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'rrhh'
 urlpatterns = [
-    url(r'^$', views.IndexRRHHView.as_view(), name='index'),
+    url(r'^$', views.IndexRRHHView.as_view(), name='index'),"""
     url(r'^employee-list/$', views.ListEmployee.as_view(), name='employee-list'),
     url(r'^employee-create/$', views.CreateEmployee.as_view(), name='employee-create'),
     url(r'^employee-update/(?P<pk>\d+)/$', views.UpdateEmployee.as_view(), name='employee-update'),
@@ -25,5 +25,5 @@ urlpatterns = [
         views.EmployeeControlUpdateView.as_view(), name='employee-control-update'),
 
     url(r'^employee-control-delete/(?P<pk>\d+)/$', 
-        views.EmployeeControlDeleteView.as_view(), name='employee-control-delete'),
+        views.EmployeeControlDeleteView.as_view(), name='employee-control-delete'),"""
 ]

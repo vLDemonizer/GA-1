@@ -5,7 +5,7 @@ from django.db import models
 
 from inventario.models import ProductClass
 
-
+"""
 GENDER_CHOICES = (
     ('M', 'Masculino'),
     ('F', 'Femenino'),
@@ -117,4 +117,5 @@ class EmployeeControl(models.Model):
     type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
     date = models.DateField()
     amount = models.IntegerField(default=1)
+    """
     
