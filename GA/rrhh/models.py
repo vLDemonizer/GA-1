@@ -30,24 +30,24 @@ SHIFT_CHOICES = (
 )
 
 
-class Employee(models.Model):
-    employee_id = models.IntegerField(unique=True)  # Fingerprint ID
-    name = models.CharField(max_length=128) # First and Second Name
-    last_name = models.CharField(max_length=128) # First and Second Last Name
-    cedula = models.IntegerField(unique=True)
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='M')
-    birthdate = models.DateField()
-    address = models.CharField(max_length=256)
-    civil_status = models.CharField(max_length=20, choices=CIVIL_CHOICES, default='S')
-    home_phone = models.CharField(max_length=40)
-    mobile_phone = models.CharField(max_length=40)
-    fecha_de_ingreso = models.DateField(blank=True, null=True)
-    salario = models.FloatField(blank=True, null=True)
+# class Employee(models.Model):
+#     employee_id = models.IntegerField(unique=True)  # Fingerprint ID
+#     name = models.CharField(max_length=128) # First and Second Name
+#     last_name = models.CharField(max_length=128) # First and Second Last Name
+#     cedula = models.IntegerField(unique=True)
+#     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='M')
+#     birthdate = models.DateField()
+#     address = models.CharField(max_length=256)
+#     civil_status = models.CharField(max_length=20, choices=CIVIL_CHOICES, default='S')
+#     home_phone = models.CharField(max_length=40)
+#     mobile_phone = models.CharField(max_length=40)
+#     fecha_de_ingreso = models.DateField(blank=True, null=True)
+#     salario = models.FloatField(blank=True, null=True)
 
-    def __str__(self):
-        return str(
-            self.name + ' ' + self.last_name
-        )
+#     def __str__(self):
+#         return str(
+#             self.name + ' ' + self.last_name
+#         )
 
 
 class Spouse(models.Model):
