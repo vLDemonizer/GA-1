@@ -39,6 +39,11 @@ class Migration(migrations.Migration):
             model_name='employeecontrol',
             name='date',
         ),
+        migrations.AddField(
+            model_name='position',
+            name='salary',
+            field=models.FloatField(default=0),
+        ),
         migrations.RemoveField(
             model_name='position',
             name='salary',
