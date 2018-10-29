@@ -105,8 +105,6 @@ class Product(models.Model):
     name = models.CharField(max_length=250, default='')
     type = models.CharField(max_length=250, help_text="Talla, Color o Descripcion", default='')
 
-    def __str__(self):
-        return f"{self.name} - {self.type}"
     
 class EmployeeControl(models.Model):
     CONTROL_TYPE = (
@@ -119,7 +117,4 @@ class EmployeeControl(models.Model):
     type = models.CharField(max_length=20, choices=CONTROL_TYPE, default='I')
     date = models.DateField()
     amount = models.IntegerField(default=1)
-
-    def __str__(self):
-        return f"{self.employee} / {self.product} / Tipo: {self.type} / {self.date} / Cantidad: {self.amount}"
     
