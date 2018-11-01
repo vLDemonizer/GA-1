@@ -43,13 +43,13 @@
                     data-toggle="tooltip" data-placement="left" title="Editar Control" style="color: black;">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-                {% if user.is_staff %}
+                
                 <!-- Remove -->
                 <a href="{% url 'rrhh:employee-control-remove' pk=control.pk %}" class="mr-1"
                     data-toggle="tooltip" data-placement="left" title="Remover Control" style="color: red;">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                 </a>
-                {% endif %}
+                
             </td>
         </tr>
         {% endfor %}
