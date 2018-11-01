@@ -164,3 +164,11 @@ class EmployeeControlUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('rrhh:employee-detail', kwargs={'pk': self.kwargs.get('employee')})
+
+
+class EmployeeControlRemoveView(LoginRequiredMixin, DeleteView):
+    template_name = 'rrhh/employee-control/control-remove.html'
+    model = EmployeeControl
+    pk_url_kwarg = 'pk'
+    login_url = reverse_lazy('inventario:login')
+    success_url = reverse_lazy('rrhh:employee-control-list')

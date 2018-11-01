@@ -6,16 +6,16 @@
 <br />
 <div class="row">
     <div class="col-12">
-        Esta seguro que desea eliminar a:
-        <br />
-        <i>"{{ object.name }} {{ object.last_name }} {{ object.cedula }}"</i>
+        Esta seguro que desea eliminar:
+        <br/>
+        <i>"{{ object.product }} | <strong></strong>Cantidad:</strong>  {{ object.amount }} | {{ object.date }}"</i>
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-12">
         <form action="" method="POST">
             {% csrf_token %}
-            <button class="btn btn-danger">Si, Eliminar a:  "{{ object.name }} {{ object.last_name }}"</button>
+            <button class="btn btn-danger">Si, Eliminar</button>
         </form>
     </div>
 </div>

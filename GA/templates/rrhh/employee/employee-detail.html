@@ -4,7 +4,15 @@
 {% block content %}
 
 <br />
-<h2 class="text-center"> <strong>{{ employee.name }} {{ employee.last_name }} | Cedula: {{ employee.cedula | intcomma }}</strong> </h2>
+<div>
+    <h2 class="text-center"> <strong>{{ .name }} {{ employee.last_name }} | Cedula: {{ employee.cedula | intcomma }}</strong> </h2>
+</div>
+<div class="text-center">
+    {% if user.is_staff %}
+    <h3><strong>Salario:</strong> {{ employee.salario | intcomma }}</h3>
+    {% endif %}
+    <h3><strong>Fecha de Ingreso:</strong> {{ employee.fecha_de_ingreso }}</h3>
+</div>
 <div>
     <a class="btn btn-success" href="{% url 'rrhh:employee-list' %}"> Lista de Empleados </a>
 </div>
@@ -43,7 +51,7 @@
                     </a>
                     {% if user.is_staff %}
                     <!-- Remove -->
-                    <a href="#" class="mr-1"
+                    <a href="{% url 'rrhh:employee-control-remove' pk=control.pk %}" class="mr-1"
                         data-toggle="tooltip" data-placement="left" title="Remover Control" style="color: red;">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>

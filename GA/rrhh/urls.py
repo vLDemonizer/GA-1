@@ -26,4 +26,7 @@ urlpatterns = [
 
     url(r'^employee-control-delete/(?P<pk>\d+)/$', 
         views.EmployeeControlDeleteView.as_view(), name='employee-control-delete'),
+
+    url(r'^employee-control-remove/(?P<pk>\d+)/$', 
+        views.EmployeeControlRemoveView.as_view(), name='employee-control-remove'),
 ]
