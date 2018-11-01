@@ -11,7 +11,6 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('rrhh', '0009_auto_20181029_1330'),
     ]
 
     operations = [
