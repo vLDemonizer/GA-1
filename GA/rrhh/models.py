@@ -42,7 +42,7 @@ class Employee(models.Model):
     home_phone = models.CharField(max_length=40)
     mobile_phone = models.CharField(max_length=40)
     fecha_de_ingreso = models.DateField(blank=True, null=True, default='1994-11-24')
-    salario = models.FloatField(blank=True, null=True, default='')
+    salario = models.FloatField(blank=True, null=True, default=1)
 
     def __str__(self):
         return str(
