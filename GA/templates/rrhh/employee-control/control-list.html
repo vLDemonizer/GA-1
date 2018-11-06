@@ -39,7 +39,7 @@
             <!-- Actions -->
             <td>
                 <!-- Update -->
-                <a href="{% url 'rrhh:employee-control-update' pk=control.pk employee=employee.id%}" class="mr-1"
+                <a href="{% url 'rrhh:employee-control-update' pk=control.pk employee=control.employee.id%}" class="mr-1"
                     data-toggle="tooltip" data-placement="left" title="Editar Control" style="color: black;">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>

@@ -27,11 +27,22 @@ class EmployeeForm(ModelForm):
         self.fields['name'].label = 'Nombre'     
         self.fields['last_name'].label = 'Apellido'
         self.fields['gender'].label = 'Genero'
+        self.fields['gender'].widget.attrs.update({'class' : 'selectpicker show-tick'})
         self.fields['birthdate'].label = 'Fecha de Nacimiento'
         self.fields['address'].label = 'Direccion'
         self.fields['civil_status'].label = 'Estado Civil'
+        self.fields['civil_status'].widget.attrs.update({'class' : 'selectpicker show-tick'})
         self.fields['home_phone'].label = 'Telefono Hogar'
         self.fields['mobile_phone'].label = 'Telefono Personal'
+        self.fields['mobile_phone'].required = False
+        self.fields['salario_comida'].label = 'Bono de Alimentacion'
+        self.fields['salario_transporte'].label = 'Transporte'
+        self.fields['bono'].label = 'Bono'
+        self.fields['fao'].label = 'FAO'
+        
+        self.fields['ivss'].label = 'IVSS'
+        
+
 
 class ProductForm(ModelForm):
 

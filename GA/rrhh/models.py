@@ -39,10 +39,15 @@ class Employee(models.Model):
     birthdate = models.DateField()
     address = models.CharField(max_length=256)
     civil_status = models.CharField(max_length=20, choices=CIVIL_CHOICES, default='S')
-    home_phone = models.CharField(max_length=40)
-    mobile_phone = models.CharField(max_length=40)
+    home_phone = models.CharField(max_length=40, blank=True, null=True)
+    mobile_phone = models.CharField(max_length=40, blank=True, null=True)
     fecha_de_ingreso = models.DateField(blank=True, null=True, default='1994-11-24')
     salario = models.FloatField(blank=True, null=True, default=1)
+    salario_comida = models.FloatField(blank=True, null=True, default=1)
+    salario_transporte = models.FloatField(blank=True, null=True, default=1)
+    bono = models.FloatField(blank=True, null=True, default=1)
+    fao = models.BooleanField(default=False)
+    ivss = models.BooleanField(default=False)
 
     def __str__(self):
         return str(

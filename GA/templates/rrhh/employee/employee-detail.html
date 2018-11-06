@@ -5,13 +5,18 @@
 
 <br />
 <div>
-    <h2 class="text-center"> <strong>{{ .name }} {{ employee.last_name }} | Cedula: {{ employee.cedula | intcomma }}</strong> </h2>
+    <h3 class="text-center"> <strong>{{ employee.name }} {{ employee.last_name }} | Cedula: {{ employee.cedula | intcomma }}</strong> </h3>
 </div>
+<br />
 <div class="text-center">
+    <h4><strong>Fecha de Ingreso:</strong> {{ employee.fecha_de_ingreso }}</h4>
+    <h4><strong>FAO: </strong> {% if employee.fao == True %} S&iacute; {% else %} No {% endif %} -  <strong>IVSS:</strong> {% if employee.ivss == True %} S&iacute; {% else %} No {% endif %}</h4>
     {% if user.is_staff %}
-    <h3><strong>Salario:</strong> {{ employee.salario | intcomma }}</h3>
+        <br />
+        <h4><strong>Salario Base: </strong>{{ employee.salario | intcomma }} - <strong>Bono de Alimentaci&oacute;n: </strong>{{ employee.salario_comida | intcomma }}</h4>
+        <h4><strong>Transporte: </strong>{{ employee.salario_transporte | intcomma}} - <strong>Bono: </strong>{{ employee.bono | intcomma }}</h4>
+        <h4> <strong>Total: </strong> {{ total | intcomma }}</h4>
     {% endif %}
-    <h3><strong>Fecha de Ingreso:</strong> {{ employee.fecha_de_ingreso }}</h3>
 </div>
 <div>
     <a class="btn btn-success" href="{% url 'rrhh:employee-list' %}"> Lista de Empleados </a>

@@ -1,18 +1,168 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load staticfiles %}
 {% block extra_styles %}
-<link rel="stylesheet" href="{% static 'css/loader.css' %}" >
+<link rel="stylesheet" href="{% static 'css/loader.css' %}">
 {% endblock %}
 
 {% block content %}
+<br/>
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
 <br />
-<form method="POST">
-{% csrf_token %}
-<table class="table"> 
-        {{ form.as_table }}
-</table>
-<button type="submit" class="btn btn-success"> Submit </button>
-<a class="btn btn-danger" href="{% url 'rrhh:index' %}"> Cancel </a>
+<a class="btn btn-warning pull-right" href="{% url 'rrhh:index' %}">Menu RRHH</a>
+<form class="mt-3 mb-3" method="POST">
+        {% csrf_token %}
+       <fieldset>
+           <legend><strong> Datos del Empleado </strong></legend>
+           <div class="row">
+                <div class="form-group col-md-6">
+                    <label> ID del Empleado (Capta Huella) </label>
+                    {{ form.employee_id }}
+                    {{ form.employee_id.errors }}
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label> C&eacute;dula </label>
+                    {{ form.cedula }}
+                    {{ form.cedula.errors }}
+                </div>
+           </div>
+           <br/>
+           <div class="row">
+               <div class="form-group col-md-6">
+                    <label> Nombre </label>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label> Apellido </label>
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                </div>
+           </div>
+       </fieldset>
+
+       <hr />
+
+       <fieldset>
+            <legend><strong> Informac&oacute;n del Empleado </strong></legend>
+            <div class="row">
+                 <div class="form-group col-md-6">
+                     <label> Fecha de Nacimiento </label>
+                     {{ form.birthdate }}
+                     {{ form.birthdate.errors }}
+                 </div>
+ 
+                 <div class="form-group col-md-6">
+                     <label> Direcci&oacute;n </label>
+                     {{ form.address }}
+                     {{ form.address.errors }}
+                 </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="form-group col-md-6">
+                     <label class="mr-1"> G&eacute;nero </label>
+                     {{ form.gender }}
+                     {{ form.gender.errors }}
+                 </div>
+ 
+                 <div class="form-group col-md-6">
+                     <label class="mr-1"> Estado Civ&iacute;l </label>
+                     {{ form.civil_status }}
+                     {{ form.civil_status.errors }}
+                 </div>
+            </div>
+        </fieldset>
+
+        <hr />
+
+       <fieldset>
+            <legend><strong> N&uacute;meros de Contacto </strong></legend>
+            <div class="row">
+                 <div class="form-group col-md-6">
+                     <label> Casa </label>
+                     {{ form.home_phone }}
+                     {{ form.home_phone.errors }}
+                 </div>
+ 
+                 <div class="form-group col-md-6">
+                     <label> M&oacute;vil </label>
+                     {{ form.mobile_phone }}
+                     {{ form.mobile_phone.errors }}
+                 </div>
+            </div>
+        </fieldset>
+
+        <hr />
+
+        <fieldset>
+             <legend><strong> Datos Sociales </strong></legend>
+             <div class="row">
+                 <div class="form-group col-md-6">
+                        <div class="checkbox checkbox-success">
+                            {{ form.fao }}
+                            <label for="id_fao"> FAO </label>
+                        </div>
+                 </div>
+                  
+  
+                 <div class="form-group col-md-6">
+                        <div class="checkbox checkbox-success">
+                            {{ form.ivss }}
+                            <label for="id_ivss"> IVSS </label>
+                        </div>
+                 </div>
+             </div>
+         </fieldset>
+
+        {% if user.is_staff %}
+        <hr />
+
+       <fieldset>
+            <legend><strong> Salarios </strong></legend>
+            <div class="row">
+                 <div class="form-group col-md-6">
+                     <label> Base </label>
+                     {{ form.salario }}
+                     {{ form.salario.errors }}
+                 </div>
+ 
+                 <div class="form-group col-md-6">
+                     <label> Bono de Alimentaci&oacute;n </label>
+                     {{ form.salario_comida }}
+                     {{ form.salario_comida.errors }}
+                 </div>
+            </div>
+            <br />
+            <div class="row">
+                    <div class="form-group col-md-6">
+                        <label> Transporte </label>
+                        {{ form.salario_transporte  }}
+                        {{ form.salario_transporte.errors }}
+                    </div>
+    
+                    <div class="form-group col-md-6">
+                        <label> Bono </label>
+                        {{ form.bono }}
+                        {{ form.bono.errors }}
+                    </div>
+               </div>
+        </fieldset>
+        {% endif %}
+        <br />
+        <div>
+            <button type="submit" class="btn btn-success"> Submit </button>
+            <a class="btn btn-danger" href="{% url 'rrhh:index' %}"> Cancel </a>
+        </div>
 </form>
 {% endblock %}
 

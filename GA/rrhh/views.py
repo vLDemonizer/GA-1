@@ -58,6 +58,12 @@ class DetailEmployee(LoginRequiredMixin, DetailView):
     pk_url_kwarg = 'pk'
     login_url = reverse_lazy('inventario:login')
 
+    def get_context_data(self, **kwargs):
+        context = super(DetailEmployee, self).get_context_data(**kwargs)
+        employee = self.object
+        context['total'] = employee.salario + employee.salario_comida + employee.salario_transporte + employee.bono
+        return context
+
 
 # Products Views
 class CreateProduct(LoginRequiredMixin, CreateView):
